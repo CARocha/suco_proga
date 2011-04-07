@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
 from suco.encuesta.models import *
 from suco.animal_produccion.models import *
@@ -23,7 +25,7 @@ class Componente(models.Model):
         return self.nombre
         
 class TipoCultivos(models.Model):
-    tipo = models.ForeignKey(TipoCultivos)
+    tipo = models.ForeignKey(Componente)
     nombre = models.CharField(max_length=200)
     unidad = models.CharField(max_length=20)
     def __unicode__(self):
@@ -37,6 +39,7 @@ class Cultivos(models.Model):
     precio = models.FloatField('Precio de venta en el mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.FloatField('Venta organizada por año', choices=CHOICE_OPCION)
+    encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
         verbose_name_plural = "Cultivos en la Finca"

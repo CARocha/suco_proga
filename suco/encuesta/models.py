@@ -1,4 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
+from suco.lugar.models import *
 
 # Create your models here.
 class Recolector(models.Model):
@@ -37,7 +40,9 @@ class ParticipacionProyecto(models.Model):
         return self.nombre
 
 CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplicacion que necesite si o no
-
+CHOICE_SEXO = ( (1,'Hombre'),
+                (2,'Mujer')
+              )
         
 class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
@@ -53,9 +58,7 @@ class Encuesta(models.Model):
     participacion = models.ManyToManyField(ParticipacionProyecto)
     finca = models.CharField('Nombre de Finca', max_length=200)
     comunidad = models.ForeignKey(Comunidad)
-    
-    organizacion = models.ForeignKey(Organizaciones)
-    usuario = models.ForeignKey(User)
+    #usuario = models.ForeignKey(User)
     
     def __unicode__(self):
         return self.nombre

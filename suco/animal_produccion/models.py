@@ -1,5 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
-from suco.encuesta import *
+from suco.encuesta.models import *
 
 # Create your models here.
 
@@ -15,7 +17,6 @@ class ProductoAnimal(models.Model):
     animal = models.ForeignKey(Animales)
     nombre = models.CharField(max_length=100)
     unidad = models.CharField(max_length=100)
-
     def __unicode__(self):
         return u'%s-%s' % (self.animales.nombre - self.nombre)
 
@@ -49,6 +50,7 @@ class ProduccionConsumo(models.Model):
     precio = models.FloatField('Precio de venta actual en mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.FloatField('Venta organizada por año', choices=CHOICE_OPCION)
+    encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
         verbose_name_plural = "Producción y consumo en la finca"

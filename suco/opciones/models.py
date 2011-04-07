@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
 from suco.encuesta.models import *
 
@@ -6,7 +8,6 @@ from suco.encuesta.models import *
 class ManejoAgro(models.Model):
     nombre = models.CharField(max_length=50)
     unidad = models.CharField(max_length=50)
-
     def __unicode__(self):
         return self.nombre
 
@@ -90,7 +91,7 @@ class Decision(models.Model):
     def __unicode__(self):
         return self.nombre
         
-class Participacion(models.Model):
+class Participasion(models.Model):
     rubro = models.ForeignKey(Rubros)
     labores = models.BooleanField()
     beneficios = models.BooleanField()
@@ -266,7 +267,8 @@ class OtrosIngresos(models.Model):
     meses = models.IntegerField('# Meses')
     Ingreso = models.FloatField('Ingreso por mes')
     total = models.FloatField('Ingreso total por año')
-    tiene_ingreso = models.IntegerField('¿Quienes tienen ingresos?', choices=)
+    tiene_ingreso = models.IntegerField('¿Quienes tienen ingresos?', choices=CHOICE_MANEJA)
+    encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
         verbose_name_plural = "Otros Ingresos de toda la familia"

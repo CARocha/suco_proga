@@ -1,5 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
-from suco.encuesta import *
+from suco.encuesta.models import *
 
 # Create your models here.
 

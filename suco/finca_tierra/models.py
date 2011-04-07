@@ -1,5 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
-from suco.encuesta import *
+from suco.encuesta.models import *
 
 # Create your models here.
 
@@ -8,7 +10,7 @@ class Acceso(models.Model):
     def __unicode__(self):
         return self.nombre
         
- class Parcela(models.Model):
+class Parcela(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
@@ -23,7 +25,7 @@ class Documento(models.Model):
     def __unicode__(self):
         return self.nombre
  
- class AccesoTierra(models.Model):
+class AccesoTierra(models.Model):
     tierra = models.ForeignKey(Acceso, verbose_name="¿De quien es la tierra que usted va a trabajar")
     parcela = models.ForeignKey(Parcela, verbose_name="Parcela")
     casa = models.ForeignKey(Solar, verbose_name="¿De quien es la casa donde vive?")
@@ -56,7 +58,7 @@ class UsoTierra(models.Model):
         verbose_name_plural = "Uso del total de la finca"
         
 #Acceso al agua
-class AguaAcceso(odels.Model):
+class AguaAcceso(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
