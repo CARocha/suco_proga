@@ -246,6 +246,9 @@ class Procesamiento(models.Model):
     comercializada = models.FloatField('Cantidad comercializada')
     encuesta = models.ForeignKey(Encuesta)
     
+    class Meta:
+        verbose_name_plural = "Procesamiento de la producción"
+    
 # Otros ingresos de toda la familiar
 
 class Fuente(models.Model):

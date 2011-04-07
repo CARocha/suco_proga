@@ -23,7 +23,7 @@ class ProduccionConsumoInline(admin.TabularInline):
     max_num = 1
 
 class CultivoPastoInline(admin.TabularInline):
-    model = AnimalesFinca
+    model = CultivoPasto
     extra = 1
     max_num = 1
     
@@ -57,7 +57,7 @@ class AguaConsumoInline(admin.TabularInline):
     extra = 1
     max_num = 1
     
- class AguaProduccionInline(admin.TabularInline):
+class AguaProduccionInline(admin.TabularInline):
     model = AguaProduccion
     extra = 1
     max_num = 1
@@ -92,7 +92,7 @@ class OpcionesManejoInline(admin.TabularInline):
     extra = 1
     max_num = 1
     
-class SistematicoInline(admin.TabularInline):
+class SistematicaInline(admin.TabularInline):
     model = Sistematica
     extra = 1
     max_num = 1
@@ -220,12 +220,19 @@ class EncuestaAdmin(admin.ModelAdmin):
         
     save_on_top = True
     actions_on_top = True
-    inlines = [AnimalesFincaInline,ProduccionConsumoInline,CultivoPastoInline,
-               CultivosInline,EducacionInline,SaludInline,EnergiaInline,
+    inlines = [EducacionInline,SaludInline,EnergiaInline,QueUtilizaInline,AguaConsumoInline,
+               AguaProduccionInline,OrganizacionGremialInline,OrganizacionComunitariaInline,
+               AccesoTierraInline,UsoTierraInline,AccesoAguaInline,ExistenciaArbolesInline,
+               ReforestacionInline,AnimalesFincaInline,ProduccionConsumoInline,CultivoPastoInline,
+               CultivosInline,OpcionesManejoInline,SistematicaInline,SemillaInline,ParticipasionInline,
+               SueloInline,ManejoSueloInline,ProcesamientoInline,OtrosIngresosInline,
+               TipoCasaInline,DetalleCasaInline,PropiedadEquipoInline,PropiedadInfraInline,
+               ElectrodomesticoInline,SanaInline,HerramientasInline,TransporteInline,
+               AhorroInline, CreditoInline,SeguridadInline,VulnerableInline,RiesgosInline
               ]
-    list_display = ('nombre', 'finca', 'comunidad', 'organizacion')
-    list_filter = ['comunidad', 'organizacion']
-    search_fields = ['nombre', 'comunidad__nombre', 'organizacion__nombre']
+    list_display = ('nombre', 'formacion', 'comunidad', 'escolaridad')
+    list_filter = ['comunidad', 'formacion']
+    search_fields = ['nombre', 'comunidad__nombre', 'formacion__nombre']
     date_hierarchy = 'fecha'
                
 admin.site.register(Encuesta, EncuestaAdmin)
@@ -266,7 +273,7 @@ admin.site.register(Densidad)
 admin.site.register(Pendiente)
 admin.site.register(Drenaje)
 admin.site.register(Preparar)
-admin.site.register(traccion)
+admin.site.register(Traccion)
 admin.site.register(Fertilizacion)
 admin.site.register(Conservacion)
 admin.site.register(Procesado)

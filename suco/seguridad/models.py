@@ -11,7 +11,7 @@ class Componentes(models.Model):
         return self.nombre
 
 class Alimentos(models.Model):
-    componete = models.ForeignKey(Componente)
+    componete = models.ForeignKey(Componentes)
     nombre = models.CharField(max_length=100)
     def __unicode__(self):
         return self.nombre
