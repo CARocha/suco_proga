@@ -2,6 +2,9 @@
 
 from django.db import models
 from suco.lugar.models import *
+from django.contrib.auth.models import User
+import datetime
+from suco.smart_selects.db_fields import ChainedForeignKey 
 
 # Create your models here.
 class Recolector(models.Model):
@@ -57,8 +60,15 @@ class Encuesta(models.Model):
     formacion = models.ForeignKey(Tecnica)
     participacion = models.ManyToManyField(ParticipacionProyecto)
     finca = models.CharField('Nombre de Finca', max_length=200)
-    comunidad = models.ForeignKey(Comunidad)
-    #usuario = models.ForeignKey(User)
+    municipio = models.ForeignKey(Municipio)
+    comunidad = ChainedForeignKey(
+        Comunidad, 
+        chained_field="municipio",
+        chained_model_field="municipio", 
+        show_all=False, 
+        auto_choose=True
+                        )
+    usuario = models.ForeignKey(User)
     
     def __unicode__(self):
         return self.nombre

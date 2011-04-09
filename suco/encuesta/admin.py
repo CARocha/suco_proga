@@ -11,11 +11,13 @@ from suco.opciones.models import *
 from suco.organizaciones.models import *
 from suco.propiedades.models import *
 from suco.seguridad.models import *
+from django.contrib.auth.models import User
 
 class AnimalesFincaInline(admin.TabularInline):
     model = AnimalesFinca
     extra = 1
-    max_num = 1
+    max_num = None
+    can_delete = False
     
 class ProduccionConsumoInline(admin.TabularInline):
     model = ProduccionConsumo
@@ -66,6 +68,11 @@ class AccesoTierraInline(admin.TabularInline):
     model = AccesoTierra
     extra = 1
     max_num = 1
+    can_delete = False
+    radio_fields = {"tierra": admin.VERTICAL,
+                    "parcela": admin.VERTICAL,
+                    "casa": admin.VERTICAL,
+                    "documento": admin.HORIZONTAL}
     
 class UsoTierraInline(admin.TabularInline):
     model = UsoTierra
@@ -201,25 +208,22 @@ class RiesgosInline(admin.TabularInline):
     model = Riesgos
     extra = 1
     max_num = 1
-    
-   
-   
+        
 class EncuestaAdmin(admin.ModelAdmin):
-#    def queryset(self, request):
-#        if request.user.is_superuser:
-#            return Encuesta.objects.all()
-#        return Encuesta.objects.filter(user=request.user)
-
-#    def get_form(self, request, obj=None, ** kwargs):
-#        if request.user.is_superuser:
-#            form = super(EncuestaAdmin, self).get_form(self, request, ** kwargs)
-#        else:
-#            form = super(EncuestaAdmin, self).get_form(self, request, ** kwargs)
-#            form.base_fields['user'].queryset = User.objects.filter(pk=request.user.pk)
-#        return form
+    def save_model(self, request, obj, form, change):
+        #if getattr(obj, 'usuario', None) is None:
+        obj.usuario = request.user
+        obj.save()
+        
+    def queryset(self, request):
+        qs = super(EncuestaAdmin, self).queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(usuario=request.user)
         
     save_on_top = True
     actions_on_top = True
+    exclude = ('usuario',)
     inlines = [EducacionInline,SaludInline,EnergiaInline,QueUtilizaInline,AguaConsumoInline,
                AguaProduccionInline,OrganizacionGremialInline,OrganizacionComunitariaInline,
                AccesoTierraInline,UsoTierraInline,AccesoAguaInline,ExistenciaArbolesInline,
