@@ -87,17 +87,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'animal_produccion',
-    'cultivos',
-    'encuesta',
-    'familias',
-    'finca_tierra',
-    'lugar',
-    'opciones',
-    'organizaciones',
-    'propiedades',
-    'seguridad',
+    'suco.animal_produccion',
+    'suco.cultivos',
+    'suco.encuesta',
+    'suco.familias',
+    'suco.finca_tierra',
+    'suco.lugar',
+    'suco.opciones',
+    'suco.organizaciones',
+    'suco.propiedades',
+    'suco.seguridad',
     'south',
+    'suco.smart_selects',
 )
 
 # A sample logging configuration. The only tangible logging
