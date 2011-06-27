@@ -186,43 +186,43 @@ class DetalleCasaInline(admin.TabularInline):
 class PropiedadEquipoInline(admin.TabularInline):
     model = PropiedadEquipo
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class PropiedadInfraInline(admin.TabularInline):
     model = PropiedadInfra
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class ElectrodomesticoInline(admin.TabularInline):
     model = Electrodomestico
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class SanaInline(admin.TabularInline):
     model = Sana
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class HerramientasInline(admin.TabularInline):
     model = Herramientas
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class TransporteInline(admin.TabularInline):
     model = Transporte
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class AhorroInline(admin.TabularInline):
     model = Ahorro
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class CreditoInline(admin.TabularInline):
