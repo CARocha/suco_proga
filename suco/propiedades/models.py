@@ -108,7 +108,7 @@ class PropiedadInfra(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     
     def __unicode__(self):
-        return u'%s' % self.equipo.nombre
+        return u'%s' % self.infraestructura.nombre
     
     class Meta:
         verbose_name_plural = "Infraestructura para la produccion"
@@ -119,7 +119,7 @@ class Electrodomestico(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     
     def __unicode__(self):
-        return u'%s' % self.equipo.nombre
+        return u'%s' % self.electro.nombre
     
     class Meta:
         verbose_name_plural = "Electrodomésticos"
@@ -130,7 +130,7 @@ class Sana(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     
     def __unicode__(self):
-        return u'%s' % self.equipo.nombre
+        return u'%s' % self.electro.nombre
     
     class Meta:
         verbose_name_plural = "Equipos para seneamiento ambiental"
