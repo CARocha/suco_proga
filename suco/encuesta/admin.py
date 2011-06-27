@@ -22,19 +22,19 @@ class AnimalesFincaInline(admin.TabularInline):
 class ProduccionConsumoInline(admin.TabularInline):
     model = ProduccionConsumo
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
 
 class CultivoPastoInline(admin.TabularInline):
     model = CultivoPasto
     extra = 1
-    max_num = 1
+    max_num = 5
     can_delete = False
     
 class CultivosInline(admin.TabularInline):
     model = Cultivos
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class EducacionInline(admin.TabularInline):
@@ -86,7 +86,7 @@ class AccesoTierraInline(admin.TabularInline):
 class UsoTierraInline(admin.TabularInline):
     model = UsoTierra
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class AccesoAguaInline(admin.TabularInline):
@@ -106,13 +106,13 @@ class ExistenciaArbolesInline(admin.TabularInline):
 class ReforestacionInline(admin.TabularInline):
     model = Reforestacion
     extra = 1
-    max_num = 1
+    max_num = 10
     can_delete = False
     
 class OpcionesManejoInline(admin.TabularInline):
     model = OpcionesManejo
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class SistematicaInline(admin.TabularInline):
@@ -124,13 +124,13 @@ class SistematicaInline(admin.TabularInline):
 class SemillaInline(admin.TabularInline):
     model = Semilla
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
 
 class ParticipasionInline(admin.TabularInline):
     model = Participasion
     extra = 1
-    max_num = 1
+    max_num = 7
     can_delete = False
     
 class SueloInline(admin.TabularInline):
@@ -149,13 +149,13 @@ class ManejoSueloInline(admin.TabularInline):
 class ProcesamientoInline(admin.TabularInline):
     model = Procesamiento
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class OtrosIngresosInline(admin.TabularInline):
     model = OtrosIngresos
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class OrganizacionGremialInline(admin.TabularInline):
@@ -235,19 +235,19 @@ class CreditoInline(admin.TabularInline):
 class SeguridadInline(admin.TabularInline):
     model = Seguridad
     extra = 1
-    max_num = 1
+    max_num = None
     can_delete = False
     
 class VulnerableInline(admin.TabularInline):
     model = Vulnerable
     extra = 1
-    max_num = 1
+    max_num = 13
     can_delete = False
     
 class RiesgosInline(admin.TabularInline):
     model = Riesgos
     extra = 1
-    max_num = 1
+    max_num = 6
     can_delete = False
         
 class EncuestaAdmin(admin.ModelAdmin):
