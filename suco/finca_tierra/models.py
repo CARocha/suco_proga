@@ -64,7 +64,7 @@ class AguaAcceso(models.Model):
         return self.nombre
         
 class AccesoAgua(models.Model):
-    nombre = models.ForeignKey(AguaAcceso, verbose_name="Tiene acceso a agua")
+    nombre = models.ManyToManyField(AguaAcceso, verbose_name="Tiene acceso a agua", null=True, blank=True)
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:

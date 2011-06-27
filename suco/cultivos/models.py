@@ -13,7 +13,7 @@ class Pastos(models.Model):
         
 class CultivoPasto(models.Model):
     tipo = models.ForeignKey(Pastos, verbose_name="Tipo de pastos")
-    area = models.FloatField('Área')
+    area = models.FloatField('Área en manzana')
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:

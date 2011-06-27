@@ -70,5 +70,6 @@ if has_south:
         },
     )]
 
-    add_introspection_rules([], ["^smart_selects\.db_fields\.ChainedForeignKey"])
-    add_introspection_rules(rules_grouped, ["^smart_selects\.db_fields\.GroupedForeignKey"])
+    add_introspection_rules([], ["^suco\.smart_selects\.db_fields\.ChainedForeignKey"])
+    add_introspection_rules(rules_grouped, ["^suco\.smart_selects\.db_fields\.GroupedForeignKey"])
+    from south.modelsinspector import add_introspection_rules

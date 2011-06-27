@@ -18,7 +18,7 @@ class ProductoAnimal(models.Model):
     nombre = models.CharField(max_length=100)
     unidad = models.CharField(max_length=100)
     def __unicode__(self):
-        return u'%s-%s' % (self.animales.nombre - self.nombre)
+        return '%s - %s' % (self.animal.nombre, self.nombre)
 
     class Meta:
         verbose_name_plural = "Finca - Producto"

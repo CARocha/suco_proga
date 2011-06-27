@@ -38,7 +38,7 @@ class Observacion(models.Model):
         return self.nombre
         
 class Sistematica(models.Model):
-    tipo = models.ForeignKey(Observacion)
+    tipo = models.ManyToManyField(Observacion, verbose_name="Observaciones", null=True, blank=True)
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:

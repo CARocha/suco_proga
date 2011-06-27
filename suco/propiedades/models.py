@@ -185,9 +185,10 @@ class Transporte(models.Model):
 
 #Ahorro
 
-CHOICE_AHORRO = (   (1,"Si"),(2,"No"),(3,"Menos de 5 años"),
-                    (4,"Mas de 5 años"),(5,"Hombre"),(6,"Mujer"),
-                    (7,"Ambos")
+CHOICE_AHORRO = (   (1,"Si"),
+                    (2,"No"),
+                    (3,"Menos de 5 años"),
+                    (4,"Mas de 5 años")
                  )
                  
 class AhorroPregunta(models.Model):
