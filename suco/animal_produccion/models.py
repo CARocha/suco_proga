@@ -45,11 +45,11 @@ class AquienVende(models.Model):
         
 class ProduccionConsumo(models.Model):
     producto = models.ForeignKey(ProductoAnimal)
-    total_produccion = models.IntegerField('Total producion por año')
+    total_produccion = models.FloatField('Total producion por año')
     consumo = models.FloatField('Consumo familiar por año')
     precio = models.FloatField('Precio de venta actual en mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
-    venta_organizada = models.FloatField('Venta organizada por año', choices=CHOICE_OPCION)
+    venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:

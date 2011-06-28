@@ -93,9 +93,9 @@ class Decision(models.Model):
         
 class Participasion(models.Model):
     rubro = models.ForeignKey(Rubros)
-    labores = models.BooleanField()
-    beneficios = models.BooleanField()
-    decision = models.ManyToManyField(Decision)
+    labores = models.ManyToManyField(Decision, verbose_name="Labores", related_name="labore")
+    beneficios = models.ManyToManyField(Decision, verbose_name="Beneficios", related_name="beneficio")
+    decision = models.ManyToManyField(Decision, verbose_name="Decisión", related_name="decision")
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:

@@ -19,6 +19,13 @@ class CultivoPasto(models.Model):
     class Meta:
         verbose_name_plural = "Cultivos de pastos"
         
+class division(models.Model):
+    cuanto = models.FloatField('Cuantas divisiones de potrero hay')
+    encuesta = models.ForeignKey(Encuesta)
+    
+    class Meta:
+        verbose_name_plural = "Divisiones de potrero"
+        
 class Componente(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
@@ -38,8 +45,28 @@ class Cultivos(models.Model):
     consumo = models.FloatField('Consumo por año')
     precio = models.FloatField('Precio de venta en el mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
-    venta_organizada = models.FloatField('Venta organizada por año', choices=CHOICE_OPCION)
+    venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
         verbose_name_plural = "Cultivos en la Finca"
+        
+class Patio(models.Model):
+    nombre = models.CharField(max_length=200)
+    
+    def __unicode__(self):
+        return self.nombre
+        
+class CultivosPatio(models.Model):
+    cultivo = models.ForeignKey(Patio, verbose_name="Cultivos")
+    area = models.CharField('Area Mz', max_length=200)
+    total = models.FloatField('Total producción por año')
+    consumo = models.FloatField('Consumo por año')
+    precio = models.FloatField('Precio de venta en el mercado local')
+    venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
+    venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
+    encuesta = models.ForeignKey(Encuesta)
+    
+    class Meta:
+        verbose_name_plural = "Cultivos en el patio"
+    

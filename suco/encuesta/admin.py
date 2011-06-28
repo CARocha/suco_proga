@@ -31,8 +31,20 @@ class CultivoPastoInline(admin.TabularInline):
     max_num = 5
     can_delete = False
     
+class divisionInline(admin.TabularInline):
+    model = division
+    extra = 1
+    max_num = 1
+    can_delete = False
+    
 class CultivosInline(admin.TabularInline):
     model = Cultivos
+    extra = 1
+    max_num = None
+    can_delete = False
+    
+class CultivosPatioInline(admin.TabularInline):
+    model = CultivosPatio
     extra = 1
     max_num = None
     can_delete = False
@@ -268,10 +280,10 @@ class EncuestaAdmin(admin.ModelAdmin):
     inlines = [EducacionInline,SaludInline,EnergiaInline,QueUtilizaInline,AguaConsumoInline,
                AguaProduccionInline,OrganizacionGremialInline,OrganizacionComunitariaInline,
                AccesoTierraInline,UsoTierraInline,AccesoAguaInline,ExistenciaArbolesInline,
-               ReforestacionInline,AnimalesFincaInline,ProduccionConsumoInline,CultivoPastoInline,
-               CultivosInline,OpcionesManejoInline,SistematicaInline,SemillaInline,ParticipasionInline,
-               SueloInline,ManejoSueloInline,ProcesamientoInline,TipoCasaInline,DetalleCasaInline,
-               PropiedadEquipoInline,PropiedadInfraInline,
+               ReforestacionInline,AnimalesFincaInline,ProduccionConsumoInline,CultivoPastoInline,divisionInline,
+               CultivosInline,CultivosPatioInline,OpcionesManejoInline,SistematicaInline,SemillaInline,
+               ParticipasionInline,SueloInline,ManejoSueloInline,ProcesamientoInline,
+               TipoCasaInline,DetalleCasaInline,PropiedadEquipoInline,PropiedadInfraInline,
                ElectrodomesticoInline,SanaInline,HerramientasInline,TransporteInline,OtrosIngresosInline,
                AhorroInline, CreditoInline,SeguridadInline,VulnerableInline,RiesgosInline
               ]
@@ -351,3 +363,4 @@ admin.site.register(ParticipacionProyecto)
 admin.site.register(ManejoAgro)
 admin.site.register(TipoTrabajo)
 admin.site.register(AquienVende)
+admin.site.register(Patio)
