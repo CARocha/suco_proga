@@ -59,7 +59,7 @@ class Patio(models.Model):
         
 class CultivosPatio(models.Model):
     cultivo = models.ForeignKey(Patio, verbose_name="Cultivos")
-    area = models.CharField('Area Mz', max_length=200)
+    area = models.CharField('Números de arboles', max_length=200)
     total = models.FloatField('Total producción por año')
     consumo = models.FloatField('Consumo por año')
     precio = models.FloatField('Precio de venta en el mercado local')
