@@ -217,7 +217,7 @@ class SanaInline(admin.TabularInline):
     model = Sana
     extra = 1
     max_num = None
-    can_delete = False
+    #can_delete = False
     
 class HerramientasInline(admin.TabularInline):
     model = Herramientas
