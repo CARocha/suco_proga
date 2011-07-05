@@ -8,7 +8,7 @@ from suco.organizaciones.models import *
 
 CHOICE_AMBIENTE = ((1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"))
 CHOICE_TIPO_CASA = ((1,"Madera rolliza"),(2,"Adobe"),(3,"Tabla"),
-                    (4,"Minifalda"),(5,"Ladrillo o Bloque"))
+                    (4,"Minifalda"),(5,"Ladrillo o Bloque"),(6,"Taquezal"))
 
 class Piso(models.Model):
     nombre = models.CharField(max_length=100)
