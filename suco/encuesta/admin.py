@@ -41,13 +41,13 @@ class CultivosInline(admin.TabularInline):
     model = Cultivos
     extra = 1
     max_num = None
-    can_delete = False
+    #can_delete = False
     
 class CultivosPatioInline(admin.TabularInline):
     model = CultivosPatio
     extra = 1
     max_num = None
-    can_delete = False
+    #can_delete = False
     
 class EducacionInline(admin.TabularInline):
     model = Educacion
