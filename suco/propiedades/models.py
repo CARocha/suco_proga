@@ -6,7 +6,7 @@ from suco.organizaciones.models import *
 
 # Create your models here.
 
-CHOICE_AMBIENTE = ((1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"))
+CHOICE_AMBIENTE = ((1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"),(6,"6"))
 CHOICE_TIPO_CASA = ((1,"Madera rolliza"),(2,"Adobe"),(3,"Tabla"),
                     (4,"Minifalda"),(5,"Ladrillo o Bloque"),(6,"Taquezal"))
 
