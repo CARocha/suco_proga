@@ -1,0 +1,140 @@
+{% extends "basenueva.html" %}
+{%load unslugify %}
+
+{% block extra_header %}
+<script type="text/javascript">
+    var activo = 0;
+    function click_callback(id){
+        $.getJSON('/grafo/bienes/' + id, function(data) {
+            if (activo!= id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+        $(this).addClass('grafohover');
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
+{% include "filtros.html" %}
+        <div class="sidebar">
+            <div class="subindicador">Gráficos de bienes</a></div>
+            <a id="grafico1" href="#" onCLick="click_callback('tipocasa')"class="grafo">Tipo Casa</a></a>
+            <a id="grafico2" href="#" onCLick="click_callback('tipopiso')"class="grafo">Tipo Piso</a>
+            <a id="grafico3" href="#" onCLick="click_callback('tipotecho')"class="grafo">Tipo Techo</a>
+            <a id="grafico4" href="#" onCLick="click_callback('ambiente')"class="grafo">Ambientes</a>
+            <a id="grafico5" href="#" onCLick="click_callback('letrina')"class="grafo">Letrina</a>
+            <a id="grafico6" href="#" onCLick="click_callback('lavadero')"class="grafo">Lavadero</a>
+            <div id="grafo"></div>
+        </div>
+        
+  <div class="contenido mediatabla">
+    
+    <div class="subindicador">Los Equipos <a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th>EQUIPOS</th>
+                <th>Frecuencia</th>
+                <th>%</th>
+                <th>Cantidad</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_equipo|floatformat}}</td>
+                <td>{{value.equipo|floatformat}}</td>
+                <td>{{value.cantidad_pro|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+<div class="subindicador">Las Infraestructuras <a href="#" class="exportar"></a></div>
+    <table id="table_example" class="tablesorter" style="font-size:90%">
+
+        <thead>
+            <tr>
+                <th>INFRAESTRUCTURA</th>
+                <th>FRECUENCIA</th>
+                <th>%</th>
+                <th>CANTIDAD</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla_infra.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+                <td>{{value.infraestructura|floatformat}}</td>
+                <td>{{value.infraestructura_pro|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+<div class="subindicador">Las Herramientas<a href="#" class="exportar"></a></div>
+    <table id="table_example" class="tablesorter" style="font-size:90%">
+        <thead>
+            <tr>
+                <th>HERRAMIENTAS</th>
+                <th>FRECUENCIA</th>
+                <th>%</th>
+                <th>CANTIDAD</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in herramienta.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+                <td>{{value.herra|floatformat}}</td>
+                <td>{{value.por_herra|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+<div class="subindicador">Los Transportes<a href="#" class="exportar"></a></div>
+    <table id="table_example" class="tablesorter" style="font-size:90%">
+        <thead>
+            <tr>
+                <th>TRANSPORTE</th>
+                <th>FRECUENCIA</th>
+                <th>%</th>
+                <th>CANTIDAD</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in transporte.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+                <td>{{value.trans|floatformat}}</td>
+                <td>{{value.por_trans|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{% endblock %}

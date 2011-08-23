@@ -1,0 +1,139 @@
+{% extends "basenueva.html"%}
+{% load humanize %}
+{% block barra %}
+{% endblock %}
+{%load unslugify %}
+{% block extra_header %}
+<script type="text/javascript">
+    var activo = 0;
+    function click_callback(id){
+        $.getJSON('/grafo/ingreso/' + id, function(data) {
+            if (activo!= id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+        $(this).addClass('grafohover');
+    });
+});
+</script>
+{% endblock %}
+{%block content%}
+{% include "filtros.html" %}
+    <div class="sidebar" style="width:500px; padding-bottom:13px;" >
+        <div class="subindicador">Gráficos ingresos</div>
+            
+            <a href="#" id="grafico1" onCLick="click_callback('vendio')"class="grafo">A quién venden?</a>
+            <a href="#" id="grafico2" onCLick="click_callback('maneja')"class="grafo">Quién maneja el negocio?</a>
+            <a href="#" id="grafico3" onCLick="click_callback('ingreso')"class="grafo">Quién tiene los ingresos?</a>
+        <div class="subindicador">Gráficos Otros ingresos</div>
+            
+             <a href="#" id="grafico4" onCLick="click_callback('salario')"class="grafo">Tipos de Salarios</a>
+            <a href="#" id="grafico5" onCLick="click_callback('negocio')"class="grafo">Tipos de Negocio</a>
+            <a href="#" id="grafico6" onCLick="click_callback('remesa')"class="grafo">Tipos Remesas</a>
+            <a href="#" id="grafico7" onCLick="click_callback('alquiler')"class="grafo">Tipo alquiler</a>
+            <a href="#" id="grafico8" onCLick="click_callback('aportar')"class="grafo">Persona aportar en la finca</a>
+       <div id="grafo"  style="width:500px; overflow-y:auto"></div>
+    </div>
+ <div class="contenido" style="width:460px">
+<div class="subindicador">INGRESO  &raquo; Los Ingresos familiares <a class="exportar guardarXLS" href="#" onclick="exportarXLS('modalidad'); return false;"></a></div>
+
+<div id="modalidad">
+    <table style="width:100%">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th style="font-size:9px;">RUBROS</th>
+                <th style="font-size:9px;">Frecuencia</th>
+                <th style="font-size:9px;">Unidad</th>
+                <th style="font-size:9px;">Cantidad</th>
+                <th style="font-size:9px;">Precio <br> promedio</th>
+                <th style="font-size:9px;">Ingreso<br> por venta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.numero|floatformat}}</td>
+                <td>{{value.key2|unslugify}}</td>
+                <td>{{value.cantidad|floatformat}}</td>
+                <td>{{value.precio|floatformat}}</td>
+                <td>{{value.ingreso|floatformat}}</td>
+
+                {%endfor%}
+        </tbody>
+        <tr>
+            <th>TOTAL VENTA RUBROS</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{respuesta.ingreso_total|intcomma}}</th>
+        </tr>
+
+    </table>
+</div>
+    <br><div class="subindicador">INGRESO  &raquo; Los Otros Ingresos familiares <a href="#" class="exportar"></a></div><br>
+    <table style="width:100%;">
+        <caption></caption>
+        <thead>
+            <tr>
+                <th>FUENTES</th>
+                <th>FRECUENCIA</th>
+                <th>PROMEDIO MESES</th>
+                <th>INGRESO MENSUAL PROMEDIO</th>
+                <th>INGRESO TOTAL PROMEDIO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in matriz.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.meses|floatformat}}</td>
+                <td>{{value.ingreso|floatformat}}</td>
+                <td>{{value.ingresototal|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+        <tr>
+            <th>TOTAL OTROS INGRESO</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{respuesta.ingreso_otro|intcomma}}</th>
+        </tr>
+    </table style="width:100%;">
+    <br>
+<div class="subindicador">INGRESO  &raquo; Ingreso Bruto</div>
+    <table>
+        <tr colspan="2">
+            <th>INGRESO BRUTO</th>
+
+            <th>{{respuesta.brutoo|intcomma}}</th>
+        </tr>
+    </table>
+    <div class="subindicador">INGRESO  &raquo; Ingreso Neto</a></div>
+    <table style="width:100%;">
+        <tr colspan="2">
+            <th>INGRESO NETO</th>
+
+            <th>{{respuesta.total_neto|intcomma}}</th>
+        </tr>
+    </table>
+</div>
+<div class="clean"></div>
+
+{%endblock%}

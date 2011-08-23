@@ -1,0 +1,52 @@
+{% extends "basenueva.html" %}
+{% load unslugify %}
+{%block extra_header%}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".educacion").addClass("activa");
+    });
+    </script>
+{%endblock%}
+{% block barra %}
+<div class="indicadores">
+	{% include "nav_familia.html" %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% include "filtros.html" %}
+
+<div class="contenido fulltabla">
+	<div class="subindicador">FAMILIA &raquo; Educación<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
+	
+<div id="modalidad">	
+    <table style="width:100%;">        
+        <thead>
+            <tr>
+                <th></th>
+                <th>Número total</th>
+                <th>No sabe leer</th>
+                <th>Primaria incompleta</th>
+                <th>Primaria completa</th>
+                <th>Secundaria incompleta</th>
+                <th>Bachiller</th>
+                <th>Universitario</th>
+                <th>Vive fuera de la comunidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for fila in tabla_educacion%}
+            <tr>
+                {%for celda in fila %}
+                <td>{{celda}}</td>
+                {%endfor%}
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="clean"></div>
+{% endblock %}
+

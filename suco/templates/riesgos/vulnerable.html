@@ -1,0 +1,46 @@
+{% extends "basenueva.html" %}
+{%load unslugify %}
+{%block extra_header%}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".vulnerable").addClass("activa");
+    });
+    </script>
+{%endblock%}
+{% block barra %}
+<div class="indicadores">
+	{% include "nav_riesgos.html" %}
+</div>
+{% endblock %}
+{% block content %}
+
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+	<div class="subindicador">RIESGO &raquo; Vulnerabilidades de las fincas<a href="#" class="exportar"></a></div>
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Fenomeno</th>
+                <th>Causa</th>
+                <th>Frecuencia</th>
+                <th>%</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            {%for a in lista2%}
+               
+            <tr>
+                <td>{{a.1|unslugify}}</td>
+                <td>{{a.0|unslugify}}</td>
+                <td>{{a.2|floatformat}}</td>
+                <td>{{a.3|floatformat}}</td>
+           
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <br></br><br></br>
+</div>
+<div class="clean"></div>
+{% endblock %}

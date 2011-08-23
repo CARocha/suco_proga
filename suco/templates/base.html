@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{%block title%}Sistema de Informaci&oacute;n Monitoreo GPE{%endblock%}</title>
+        <link href="{{STATIC_URL}}css/acicafoc.css" rel="stylesheet" type="text/css" media="all" title=""/>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				cargar_altura();
+			});
+			function cargar_altura(){
+				var alto_sidebar = $('.sidebar').height();
+				var alto_cuerpo = $('.cuerpo').height();
+				if(alto_sidebar > alto_cuerpo){
+					$('.cuerpo').height(alto_sidebar);
+				}else{
+					$('.sidebar').height(alto_cuerpo);
+				}
+			}
+		</script>
+		{%block extra_header%}{%endblock%}
+    </head>
+    <body>
+        <div id="header">
+            <div class="wrapper">
+                <div class="entrar_link">
+                    <img src="/archivos/imagen/entrar.png" alt="Entrar">
+                	<a href="/admin/">Administrar</a>
+                </div>
+                <div class="titulo"><a href="/">Sistema de Monitoreo</a></div>
+                <div class="gpae-logo"><img src="/archivos/imagen/gpae-logo.png" alt="GPAE"></div>
+                <div class="clean"></div>                                
+            </div>
+        </div>        
+        <div id="user1">
+            <div class="wrapper">
+                <div id="filtros">
+                <div class="datos_aux">
+                	<div class="enlaces"><a href="/index/" class="cambiar_consulta">Nueva Consulta</a> &nbsp;|&nbsp; <span style="color: #FF7F00">Filtros seleccionados: </span></div>
+                	<div class="valores">
+                	{%if num_familias%}<span class="variables_filtro"><b>Familias: </b>{{num_familias}}</span>{%endif%}
+                    {%if request.session.fecha%}<span class="variables_filtro"><b>Año: </b>{{request.session.fecha}}</span>{%endif%}
+                    {%if request.session.departamento%}<span class="variables_filtro"><b>Departamento: </b>{{request.session.departamento}}</span>{%endif%}
+                    {%if request.session.municipio.nombre%}<span class="variables_filtro"><b>Municipio: </b>{{request.session.municipio.nombre}}</span>{%endif%}
+                    {%if request.session.comunidad.nombre%}<span class="variables_filtro"><b>Comunidad: </b>{{request.session.comunidad.nombre}}</span>{%endif%}
+                    {%if request.session.socio%}<span class="variables_filtro"><b>Socio: </b>{%if request.session.socio = '1'%}Si{%else%}No{%endif%}</span>{%endif%}
+                    {%if request.session.desde%}<span class="variables_filtro"><b>Años de socio: </b>{%if request.session.desde = '1'%}Menos de 5 {%else%}Mas de 5 {%endif%}</span>{%endif%}
+                    {%if request.session.duenio%}<span class="variables_filtro"><b>Tipo Dueño: </b>{%if request.session.duenio = '1'%}Hombre{%endif%}{%if request.session.duenio = '2'%}Mujer{%endif%}{%if request.session.duenio = '3'%}Mancomunado{%endif%}{%if request.session.duenio = '4'%}Parientes{%endif%}{%if request.session.duenio = '5'%}Colectivo{%endif%}{%if request.session.duenio = '6'%}No hay{%endif%}</span>{%endif%}
+                	</div>
+                	<div class="clean"></div>
+                </div>                
+                {% block filtros %}                    
+                                                        
+                {% endblock %}
+                <div class="clean"></div>
+                </div>
+                <div id="selectos">
+                {% block barra %}{% endblock %}
+                <div class="clean"></div>
+                </div>                
+            </div>
+        </div>
+        <div id="user2">
+            <div class="wrapper">
+                <div id="titulo">
+                    {% block titulo %}{% endblock %}
+                </div>
+                <div class="contenido">
+                	{% block contenido %}
+
+                	{% endblock %}                	
+                	<div class="clean"></div>                	
+                </div>                
+            </div>
+        </div>
+        <div class="footer">
+			<div class="wrapper">
+				Sistema de Monitoreo <b>GPAE</b><br>
+				Es un esfuerzo conjunto de <a href="http://simas.org.ni"><img src="/archivos/imagen/new/simas_logo.png" alt="Simas"></a>
+			</div>
+		</div>
+    </body>
+</html>

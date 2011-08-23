@@ -1,0 +1,188 @@
+{% extends "basenueva.html" %}
+{%block extra_header%}
+<script type="text/javascript">
+$(document).ready(function () {
+    //Esconde todas las divs , muestra la primera tag con su div
+    $('.escondete').hide();
+    $('#tablatab1').show();
+    $('#1').addClass('activa');
+    
+    // cuando click en una tab enconde todas y muestra la deseada
+    $('.tab').click(function(){
+        $('.tab').each(function(){
+            $(this).removeClass("activa");
+        });
+        $(this).addClass('activa');
+        $(".escondete").hide();
+        var id = $(this).attr("id");
+        $('#tablatab'+id).show();
+        return false;
+    });
+});
+</script>
+{%endblock%}
+{% block barra %}
+<div class="indicadores">
+    <div id="contenedor_igual">
+        <a href="#" class="tab" id="1" >Tamaño de plantaciones</a>   
+        <a href="#" class="tab"  id="2">Producción</a>    
+        <a href="#" class="tab" id="3" >Costos</a>   
+    </div>
+</div>
+{% endblock %}
+{%block content%}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+
+<div id="tablatab1" class="escondete">
+<div class="subindicador">Tamaño de las plantaciones<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+     <thead>
+        <tr>
+            <th></th>
+            <th colspan="2">¿Cuántos tienen?</th>
+            <th colspan="2">Área</th>
+            <th colspan="2">Número de plantas</th>
+            <th colspan="2">Número de plantas injertadas</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>Frecuencia</th>
+            <th>%</th>
+            <th>Total</th>
+            <th>Promedio</th>
+            <th>Total</th>
+            <th>Promedio</th>
+            <th>Total</th>
+            <th>Promedio</th>
+        </tr>
+     </thead>
+        <tr>
+            <td>Viveros</td>
+            {%for dato in vivero%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Plantas en desarrollo menos 1 año</td>
+            {%for dato in planta_menos%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Plantas en desarrollo más 1 año</td>
+            {%for dato in planta_mas%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Plantas en producción</td>
+            {%for dato in planta_produccion%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Plantas élite de cacao</td>
+            {%for dato in planta_elite%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+    </table>
+</div>
+<div id="tablatab2" class="escondete">
+    {{lista_produccion}}
+<div class="subindicador">Producción<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+     <thead>
+        <tr>
+            <th></th>
+            <th>Frecuencia</th>
+            <th>%</th>
+            <th>Producción total(qq seco)</th>
+            <th>Promedio(qq seco)</th>
+            <th>% producción</th>
+        </tr>
+     </thead>
+        <tr>
+            <td>total</td>
+            {%for dato in lista_total%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Sin fermentar</td>
+            {%for dato in lista_sin_fermentar%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Fermentado convencional</td>
+            {%for dato in lista_fermentado%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Fermentado organico</td>
+            {%for dato in lista_organico%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+    </table><br>
+        <table>
+        <thead>
+        <tr>
+            <th>Productividad (qq/mz) </th>
+            <th>{{productividad}}</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div id="tablatab3" class="escondete">
+<div class="subindicador">Costo de producción<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+     <thead>
+        <tr>
+            <th></th>
+            <th>Frecuencia</th>
+            <th>Total</th>
+            <th>Promedio</th>
+        </tr>
+     </thead>
+        <tr>
+            <td>Gasto anual de cacao</td>
+            {%for dato in costo_area%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>Gasto anual finca</td>
+            {%for dato in costo_finca%}
+            <td>{{dato}}</td>
+            {%endfor%}
+        </tr>
+        <tr>
+            <td>% de Gasto de cacao</td>
+            <td>---</td>
+            <td>{{porcentaje_cacao}}</td>
+            <td>---</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <thead>
+        <tr>
+            <th>Costo de mantenimiento cacao/mz </th>
+            <th> {{mantenimiento_cacao}}</th>
+        </tr>
+        <tr>
+            <th>Costo de mantenimiento qq</th>
+            <th> {{mantenimiento_qq}}</th>
+        </tr>
+        </thead>
+    </table>
+<br></br>
+</div>
+</div>
+<div class="clean"></div>
+
+{%endblock%}

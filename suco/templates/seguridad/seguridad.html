@@ -1,0 +1,44 @@
+{% extends "basenueva.html"%}
+{%load unslugify %}
+{% block barra %}
+{%endblock%}
+{% block content %}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+<div class="subindicador">La Seguridad Alimentaria<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+
+        <thead>
+            <tr>
+                <th>ALIMENTOS</th>
+                <!--        <th>FRECUENCIA</th>-->
+                <th>Producen</th>
+                <th>%</th>
+                <th>Compran</th>
+                <th>%</th>
+                <th>Consumen suficiente verano</th>
+                <th>%</th>
+                <th>Consumen suficiente invierno</th>
+                <th>%</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <!--        <td>{{value.frecuencia|floatformat}}</td>-->
+                <td>{{value.producen|floatformat}}</td>
+                <td>{{value.por_producen|floatformat}}</td>
+                <td>{{value.compran|floatformat}}</td>
+                <td>{{value.por_compran|floatformat}}</td>
+                <td>{{value.consumen|floatformat}}</td>
+                <td>{{value.por_consumen|floatformat}}</td>
+                <td>{{value.invierno|floatformat}}</td>
+                <td>{{value.por_invierno|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{% endblock %}

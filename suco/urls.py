@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 import settings
 from os import path as os_path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -17,10 +18,15 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('suco.smart_selects.urls')),
+    #(r'^xls/$', 'monitoreo.utils.save_as_xls'),
+    (r'^$', 'suco.encuesta.views.index'),
+    (r'^', include('suco.encuesta.urls')),
 )
 
-if settings.DEBUG:
-    urlpatterns += patterns('',
-                            (r'^files/(.*)$', 'django.views.static.serve',
-                             {'document_root': os_path.join(settings.MEDIA_ROOT)}),
-                           )
+urlpatterns += staticfiles_urlpatterns() 
+
+#if settings.DEBUG:
+#    urlpatterns += patterns('',
+#                            (r'^files/(.*)$', 'django.views.static.serve',
+#                             {'document_root': os_path.join(settings.MEDIA_ROOT)}),
+#                           )

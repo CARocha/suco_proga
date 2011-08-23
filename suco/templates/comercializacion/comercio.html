@@ -1,0 +1,169 @@
+{% extends "basenueva.html" %}
+{%block extra_header%}
+<style type="text/css">
+	.comer-graph{
+		float: left;
+	}
+</style>
+<script type="text/javascript">
+$(document).ready(function () {
+    //Esconde todas las divs , muestra la primera tag con su div
+    $('.escondete').hide();
+    $('#tablatab1').show();
+    $('#1').addClass('activa');
+    
+    // cuando click en una tab enconde todas y muestra la deseada
+    $('.tab').click(function(){
+        $('.tab').each(function(){
+            $(this).removeClass("activa");
+        });
+        $(this).addClass('activa');
+        $(".escondete").hide();
+        var id = $(this).attr("id");
+        $('#tablatab'+id).show();
+        return false;
+    });
+});
+</script>
+<script type="text/javascript">
+    var plotOptions = {
+         pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+               enabled: false
+            },
+            showInLegend: true
+         },
+         series: {
+            dataLabels: {
+                enabled: true,
+                align: "center",
+                formatter: function() {
+                    return ''+ this.percentage.toFixed(0) + ' %';
+                },
+                color: '#000',
+                style: {
+                    font: '12px Trebuchet MS, Verdana, sans-serif'
+                }
+            }
+        }
+    }
+    var tooltip = {
+        formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ this.y;
+        }
+    }    
+    var chart;
+    $(document).ready(function(){
+    	{% for key, value in lista_vende.items %}    	
+    	var chart_{{forloop.counter}} = new Highcharts.Chart({
+            chart: {
+                renderTo: '{{key|slugify}}',
+                defaultSeriesType: 'pie',
+                height: 480,
+                width: 480
+            },
+            title: {
+                text: 'Producto: {{key}}'
+            },
+            subtitle: {
+                text: 'A quien vende.'
+            },                                
+            tooltip: tooltip,
+            plotOptions: plotOptions,
+            series: [{data: [{% for k, v in value.items %}['{{k}}', {{v}}],{% endfor %}]}]
+        });	
+    	{% endfor %}
+    	{% for key, value in lista_donde.items %}    	
+    	var chart_{{forloop.counter}}_1 = new Highcharts.Chart({
+            chart: {
+                renderTo: '{{key|slugify}}_1',
+                defaultSeriesType: 'pie',
+                height: 480,
+                width: 480
+            },
+            title: {
+                text: 'Producto: {{key}}'
+            },
+            subtitle: {
+                text: 'Donde lo vende'
+            },                                
+            tooltip: tooltip,
+            plotOptions: plotOptions,
+            series: [{data: [{% for k, v in value.items %}['{{k}}', {{v}}],{% endfor %}]}]
+        });	
+    	{% endfor %}
+    });
+</script>
+{%endblock%}
+{% block barra %}
+<div class="indicadores">
+    <div id="contenedor_igual">
+        <a href="#" class="tab" id="1" >Comercialización</a>   
+        <a href="#" class="tab" id="4" >Gráficos comercialización</a>
+        <a href="#" class="tab"  id="2">Capacitaciones técnicas</a>    
+        <a href="#" class="tab" id="3" >Capacitaciones en tema social</a>
+    </div>
+</div>
+{% endblock %}
+{%block content%}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+
+<div id="tablatab1" class="escondete">
+    <div class="subindicador">Comercialización<a href="#" class="exportar"></a></div>
+        <table style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Productos</th>
+                        <th>unidad</th>
+                        <th>Frecuencia</th>
+                        <th>Porcentajes(%)</th>
+                        <th>Volumen auto-consumo</th>
+                        <th>Volumen venta</th>
+                        <th>Precio</th>
+                        <th>Ingreso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key, value in lista_producto.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        {%for i in value%}
+                            <td>{{i}}</td>    
+                        {%endfor%}
+                   {%endfor%}
+                </tbody>
+        </table>
+</div>
+    <br>
+<div id="tablatab2" class="escondete">
+    <div class="subindicador">Capacitaciones técnicas recibidas<a href="#" class="exportar"></a></div>
+    {% with tabla=dicc2 titulo='' primer_td='Acciones' colspan=7 titulo_combinado='¿Quiénes de la familia de usted han recibido capacitaciones técnicas en los últimos 2 años' percent=1 %}
+    {% include "comercializacion/tabla_generica.html" %}
+    {% endwith %}
+    <br>
+</div>
+<div id="tablatab3" class="escondete">
+    <div class="subindicador">Capacitaciones en tema social recibidas<a href="#" class="exportar"></a></div>
+    {% with tabla=dicc1 titulo='' primer_td='Acciones' colspan=7 titulo_combinado='¿Quiénes de la familia de usted han recibido capacitaciones en temas sociales en los ultimos 2 años' percent=1 %}
+    {% include "comercializacion/tabla_generica.html" %}
+    {% endwith %}
+</div>
+<div id="tablatab4" class="escondete">
+	<div class="subindicador">A quien vende sus productos</div>
+	{% for key in lista_vende.keys %}
+	<div id="{{key|slugify}}" class="comer-graph"></div>
+	{% endfor %}
+	<div class="clean"></div>
+	<div class="subindicador">Donde vende sus productos</div>	
+	{% for key in lista_donde.keys %}
+	<div id="{{key|slugify}}_1" class="comer-graph"></div>
+	{% endfor %}
+	<div class="clean"></div>		
+</div>
+</div>
+<div class="clean"></div>
+
+{%endblock%}

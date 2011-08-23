@@ -1,0 +1,62 @@
+{% load tools %}
+
+<div id="{{titulo|slugify}}">
+	<table width="100%">
+		<caption>{{titulo}}</caption>
+		<thead>
+			<tr>
+				<th rowspan="2">{{primer_td}}</th>
+				<th colspan="{{colspan}}" class="centrado">{{titulo_combinado}}</th>
+				{% if not percent == 1 %}<th rowspan="2">Total</th>{% endif %}
+				{% if percent == 1 %}<th rowspan="2" class="centrado">%</th>{% endif %}
+			</tr>
+			<tr>				
+				{% for key, value in tabla.items|slice:":1" %}
+				{% for k in value.keys %}
+				<th class="centrado">{{k}}</th>
+				{% endfor %}
+				{% endfor %}	
+				{% if percent == 1 %}<th>Total</th>{% endif %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in tabla.items %}
+			<tr>
+				<td>{{key}}</td>
+				{% for k, v in value.items %}
+				<td>{{v}}</td>
+				{% endfor %}				
+				<td>{{value|total_dict}}</td>
+				{% if percent == 1 %}
+					{% with total=value|total_dict %}
+					<td>{{total|frecuencia:tabla}}</td>
+					{% endwith %}
+				{% endif %}								
+			</tr>
+			{% endfor %}
+			<tr>
+				<td class="negrita">Total</td>
+				{% for key, value in tabla.items|slice:":1" %}
+				{% for k in value.keys %}
+				<td>{{tabla|total_per_key:k}}</td>
+				{% endfor %}
+				{% endfor %}				
+				<td>{{tabla|total_general}}</td>								
+			</tr>
+			<tr>
+			    <td>Porcentajes</td>
+			    {% for key, value in tabla.items|slice:":1" %}
+				{% for k in value.keys %}
+				{% if percent == 1 %}
+					{% with total=tabla|total_per_key:k %}
+					<td>{{total|frecuencia:tabla}}</td>
+					{% endwith %}
+				{% endif %}					
+				{% endfor %}
+				{% endfor %}
+			</tr>
+			
+		</tbody>
+	</table>
+</div>
+<br><br>

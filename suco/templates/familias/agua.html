@@ -1,0 +1,89 @@
+{% extends "basenueva.html" %}
+{%load unslugify %}
+{%block extra_header%}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".agua").addClass("activa");
+    });
+    </script>
+<script type="text/javascript">
+    //si activo es 0 el html interno esta vacio
+    //caso si activo es otro num sustituir grafico
+    //si activo es el mismo id, esconder grafico
+    var activo = 0; 
+    function click_callback(url, id){
+        $.getJSON(url + id, function(data) {
+            if (activo!= url + id){
+                $("#grafo").html('<img src="' + data.url + '" onload="cargar_altura();"/>');                
+                activo = url + id;
+            }else{
+                $("#grafo").html('');                
+                activo = 0;
+            }            
+        });        
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+       $(this).addClass('grafohover');
+ //       click_callback('/grafo/agua-disponibilidad/', $(this).attr('id'));
+    });
+});
+</script>
+{%endblock%}
+{% block barra %}
+
+<div class="indicadores">
+	{% include "nav_familia.html" %}
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% include "filtros.html" %}
+<!-- Me dijeron que no lleva graficos
+<div class="sidebar">   
+   <div class="subindicador">GRAFICOS</div>
+   <a id="1" href="#" class="grafo">Río</a>
+   <a id="2" href="#" class="grafo">Ojo de Agua</a>
+   <a id="3" href="#"  class="grafo">Pozo Comunitario</a>
+   <a id="4" href="#" class="grafo">Pozo Propio</a>
+   <a id="5" href="#" class="grafo">Agua comunitaria</a>
+   <a id="6" href="#"  class="grafo">Agua en casa</a>    
+    <div class="separador"></div>
+    <div id="grafo"></div>
+</div>
+-->
+
+
+<div class="contenido fulltabla">
+
+    <div class="subindicador">FAMILIA &raquo; Agua de consumo<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
+ 
+<div id="modalidad">
+		<table style="width:100%;">
+			<thead>
+				<tr>
+					<th>Fuente</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in tabla%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+</div>
+	</div>
+	<div class="clean"></div>
+</div>
+
+{% endblock %}

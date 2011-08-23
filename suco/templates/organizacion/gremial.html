@@ -1,0 +1,166 @@
+{% extends "basenueva.html" %}
+{%load unslugify %}
+{% block barra %}
+<div class="indicadores">
+	{% include "nav_org.html" %}
+</div>
+{% endblock %}
+
+{%block extra_header%}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".gremial").addClass("activa");
+    });
+</script>
+
+<script type="text/javascript">
+    var activo = 0; 
+    function click_callback(id){
+        $.getJSON('/grafo/organizacion/' + id, function(data) {
+            if (activo!= id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+        $(this).addClass('grafohover');
+    });
+});
+</script>
+{%endblock%}
+
+{% block content %}
+{% include "filtros.html" %}
+<div class="sidebar">
+    
+        <div class="subindicador">Gráficos</a></div>
+        <a id="grafico2" href="#" onCLick="click_callback('beneficio')" class="grafo">Beneficio de ser Socio/a</a>
+        
+ <div id="grafo"></div>
+</div> 
+
+<div class="contenido mediatabla">
+ 
+<div class="subindicador">Es socio/a de organización Gremial <a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Frecuencia</th>
+                <th>porcentaje %</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for key, value in tabla_gremial.items %}
+            <td>{{key|unslugify}}</td>
+            <td>{{value.frecuencia|floatformat:2}}</td>
+            <td>{{value.porcentaje|floatformat:2}}</td>
+       </tr>
+            {% endfor %}
+            
+       <tr>
+            <th>TOTAL</th>
+            <th>{{divisor|floatformat:2}}</th>
+            <th>100</th>
+      </tr>
+       
+       <tbody>
+    </table>
+<br>
+<div class="subindicador">Desde cuando socios <a href="#" class="exportar"></a></div>
+     <table  width="100%">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Frecuencia</th>
+                <th>porcentaje %</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for key, value in tabla_desde.items %}
+            <td>{{key|unslugify}}</td>
+            <td>{{value.frecuencia|floatformat:2}}</td>
+            <td>{{value.porcentaje|floatformat:2}}</td>
+       </tr>
+            {% endfor %}
+            
+       <tr>
+            <th>TOTAL</th>
+            <th>{{divisor1|floatformat:2}}</th>
+            <th>100</th>
+      </tr>
+       
+       </tbody>
+    </table>
+<br>
+<div class="subindicador">Soy miembro de órgano gremials<a href="#" class="exportar"></a></div>
+     <table  width="100%">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Frecuencia</th>
+                <th>porcentaje %</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for key, value in tabla_miembro.items %}
+            <td>{{key|unslugify}}</td>
+            <td>{{value.frecuencia|floatformat:2}}</td>
+            <td>{{value.porcentaje|floatformat:2}}</td>
+       </tr>
+            {% endfor %}
+            
+       <tr>
+            <th>TOTAL</th>
+            <th>{{divisor2|floatformat:2}}</th>
+            <th>100</th>
+      </tr>
+       
+       </tbody>
+    </table>
+<br>
+
+<br>
+<div class="subindicador">He recibido capacitación para desempeñar mi cargo <a href="#" class="exportar"></a></div>
+    <table  width="100%">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Frecuencia</th>
+                <th>porcentaje %</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for key, value in tabla_capacitacion.items %}
+            <td>{{key|unslugify}}</td>
+            <td>{{value.frecuencia|floatformat:2}}</td>
+            <td>{{value.porcentaje|floatformat:2}}</td>
+       </tr>
+            {% endfor %}
+            
+       <tr>
+            <th>TOTAL</th>
+            <th>{{divisor4|floatformat:2}}</th>
+            <th>100</th>
+      </tr>
+       
+       </tbody>
+    </table>
+
+</div>
+<div class="clean"></div>
+{% endblock %}

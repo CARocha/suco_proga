@@ -1,0 +1,69 @@
+{% extends "basenueva.html" %}
+{%load unslugify %}
+{% block barra %}
+<div class="indicadores">
+	{% include "nav_tierra.html" %}
+</div>
+{% endblock %}
+{% block extra_header %}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".reforestacion").addClass("activa");
+    });
+    </script>
+<script type="text/javascript">
+    var activo = 0;
+    function click_callback(id){
+        $.getJSON('/grafo/arboles/' + id, function(data) {
+            if (activo!= id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+       $(this).addClass('grafohover');
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
+{% include "filtros.html" %}
+
+<div class="contenido fulltabla">
+    <br>
+    <div class="subindicador">Reforestación en ultimo año<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th>Actividad</th>
+                <th>Frecuencia</th>
+                <th>% Frec.</th>
+                <th>Cantidad de arboles sembrados</th>
+                <th>% Cantidad de arboles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.numero|floatformat}}</td>
+                <td>{{value.porcentaje_num|floatformat}}</td>
+                <td>{{value.nativos|floatformat}}</td>
+                <td>{{value.porcentaje_nativos|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{% endblock %}

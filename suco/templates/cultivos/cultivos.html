@@ -1,0 +1,34 @@
+{% extends "basenueva.html"%}
+{%load unslugify %}
+{% block barra %}
+{% endblock %}
+
+{%block content%}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+	<div class="subindicador">Los cultivos y la producción<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th>CULTIVOS</th>
+                <th>Unidad</th>
+                <th>Consumo por año</th>
+                <th>Venta libre por año</th>
+                <th>Vente organizada por año</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.key2|unslugify}}</td>
+                <td>{{value.consumo|floatformat}}</td>
+                <td>{{value.libre|floatformat}}</td>
+                <td>{{value.organizada|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{%endblock%}

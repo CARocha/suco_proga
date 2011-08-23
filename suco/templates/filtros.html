@@ -1,0 +1,27 @@
+<div id="filtroslaterales">
+    <div class="nombrefiltro">Encuestas</div>
+    <div class="filtrovalor">{{num_familias}}</div>
+    
+    <div class="nombrefiltro">Filtros </div>
+    {%if request.session.fecha%}
+        <div class="filtrovalor"><b>Año:</b> {{request.session.fecha}}</div>
+    {%endif%}
+    {%if request.session.departamento%}
+        <div class="filtrovalor"><b>Departamento:</b> {{request.session.departamento}}</div>
+    {%endif%}
+    {%if request.session.municipio.nombre%}
+        <div class="filtrovalor"><b>Municipio:</b> {{request.session.municipio.nombre}}</div>
+    {%endif%}
+    {%if request.session.comunidad.nombre%}
+        <div class="filtrovalor"><b>Comunidad:</b> {{request.session.comunidad.nombre}}</div>
+    {%endif%}
+    {%if request.session.socio%}
+        <div class="filtrovalor"><b>Socio:</b> {%if request.session.socio = '1'%}Si{%else%}No{%endif%}</div>
+    {%endif%}
+    {%if request.session.desde%}
+        <div class="filtrovalor"><b>Años de socio:</b> {%if request.session.desde = '1'%}Menos de 5 {%else%}Mas de 5 {%endif%}</div>
+    {%endif%}
+    {%if request.session.duenio%}
+        <div class="filtrovalor"><b>Tipo Dueño:</b> {%if request.session.duenio = '1'%}Hombre{%endif%}{%if request.session.duenio = '2'%}Mujer{%endif%}{%if request.session.duenio = '3'%}Mancomunado{%endif%}{%if request.session.duenio = '4'%}Parientes{%endif%}{%if request.session.duenio = '5'%}Colectivo{%endif%}{%if request.session.duenio = '6'%}No hay{%endif%}</div>
+    {%endif%}
+</div>
