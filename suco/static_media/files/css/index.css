@@ -1,0 +1,135 @@
+body{
+	background: #a3c166;
+	font-family: "Trebuchet MS", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+.wrapper{
+	width: 1100px;
+	margin: 0 auto;
+    background:#fff;
+}
+.nav{
+	float: right;
+}
+img{
+	border: none;
+}
+a{
+	outline: none;	
+}
+.clean{
+	clear: both;
+}
+.nav{
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 6px;
+}
+.nav a{
+	color: #555753;
+	font-size: 12px;
+	text-decoration: none;	
+}
+.nav a:hover{
+	color: #000;
+}
+.main{
+	background: url(/archivos/imagen/new/index_bg.jpg) no-repeat;	
+}
+.main .top{
+	height: 335px;
+}
+.main .top .left{
+	float: left;
+	width: 357px;
+	padding: 10px 10px 10px 15px;
+}
+.main .top .right{
+	float: left;
+	width: 572px;
+}
+.title{
+	font-size: 25px;
+	color: #000;
+	margin-top: 10px; 
+}
+.title .name{
+	margin-top: 8px;
+}
+.intro-info{
+	padding-top: 18px;
+	width: 208px;
+	color: #f1cd8b;
+	font-size: 12px;
+}
+.info-module{
+	float: left;
+	background: url(/archivos/imagen/new/info-module.png) no-repeat;
+	width: 100px;
+	margin-left: 5px;
+	text-transform: uppercase;
+	color: #fff;	
+	font-size: 10px;
+	height: 45px;
+	text-align: center;
+	padding-top: 10px;
+	position: relative;
+	margin-top: 278px;
+}
+.info-module span{
+	font-size: 20px;
+	font-weight: bold;
+}
+.main .bottom{
+	height: 260px;
+}
+.sprites{
+	display: block;
+	height: 162px;
+	width: 175px;
+	float: left;
+	margin-top: 70px;
+	margin-left: 55px;	
+}
+.sprites:hover{
+	background-position: 0 -162px;
+}
+.monitoreo_sprite{
+	background: url(/archivos/imagen/new/monitoreo_sprite.png) no-repeat;	
+}
+.general_sprite{
+	background: url(/archivos/imagen/new/general_sprite.png) no-repeat;	
+}
+.acerca_sprite{
+	background: url(/archivos/imagen/new/acerca_sprite.png) no-repeat;	
+}
+.tutorial_sprite{
+	background: url(/archivos/imagen/new/tutorial_sprite.png) no-repeat;	
+}
+.footer{
+	margin-top: 5px;
+	background: #595a44 url(/archivos/imagen/new/footer_bg.jpg) repeat-x bottom;
+	height: 120px;
+	padding-top: 20px;
+	font-size: 13px;	
+}
+.footer img{
+	float: right;
+	margin-right: 720px;
+	margin-top: -25px;
+}
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
