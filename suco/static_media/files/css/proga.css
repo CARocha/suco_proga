@@ -70,6 +70,37 @@ a{
     padding:20px 20px 0px 20px;
 }
 
+#formindex{
+    background:url(../img/fondo_form_index.png) no-repeat;
+    width:556px;
+    height:256px;
+    float:left;
+}
+
+#menuformindex{
+    width:116px;
+    float:left;
+    padding-top:3px;
+}
+
+#menuformindex a{
+    background:url(../img/fondo_form_menu.png) no-repeat;
+    background-position:center top;
+    display:block;
+    width:106px;
+    height:55px;
+    color:#fff;
+    font-size:18px;
+    padding:10px 0px 0px 10px;
+  text-shadow: 0px 1px 0px #000;
+  -moz-text-shadow: 0px 1px 0px #000;
+  -webkit-text-shadow: 0px 1px 0px #000;
+}
+
+#menuformindex a:hover{
+    background-position:center bottom;
+}
+
 #encolaboracion{
     background:#ededed;
     height:26px;
@@ -78,7 +109,7 @@ a{
     text-align:center;
     padding-top:3px;
     border-top-right-radius:5px;
-    border-top-left-radius:5px;
+    border-top-left-radius:5px; 
     -moz-border-radius-topright:5px;
     -moz-border-radius-topleft:5px;
     -webkit-border-top-left-radius:5px;
@@ -94,9 +125,8 @@ a{
 
 #menu #column2{
     float:left;
-    width:635px;
+    width:675px;
     height:200px;
-    background:blue;
 }
 
 #menu #column3{
@@ -329,9 +359,12 @@ ul, li{margin:0; padding:0; list-style:none;}
 	width: 734px;
 	padding-top: 15px;
 }
+.formulario_consulta{
+    margin:8px;
+}
 .formulario_consulta .form_widget{
 	float: left;
-	background: #d49111;
+
 	padding-left: 5px;
 	padding-right: 5px;
 	padding-top: 5px;
@@ -343,38 +376,67 @@ ul, li{margin:0; padding:0; list-style:none;}
 	border: 1px #ad9b82 solid;
 	background-color: #fff;
 	color: #595042;
-	font-family: 'Georgia', sans-serif;
+	font-size:11px;
 }
-.columna_uno{
-	float: left;
-	width: 120px;	
-}
-.columna_uno select{
-	width: 70px;
-}
+
+.columna_uno,
 .columna_dos, 
 .columna_tres, 
 .columna_cuatro{
 	float: left;
-	width: 200px;
+	width: 180px;
 }
+.columna_uno select,
 .columna_dos select, 
 .columna_tres select, 
 .columna_cuatro select{
 	width: 158px;
+    border-radius: 3px;
+    -webkit-border-radius:3px;
+    -moz-border-radius: 3px;
+    height:30px;
+    line-height:25px;
 }
 .consultar{
 
 	background: url(../img/consultar-boton.png) no-repeat;
+    	background-position: center top;
 	width: 185px;
-	height: 29px;
+	height: 47px;
 	border: none;
 	margin-top: 10px;
 	margin-bottom: 5px;
+    cursor:pointer;
 }
-input[type='submit'].consultar:hover{
-	background-position: 0 -30px;
+.consultar:hover{
+	background-position: center bottom;
 }
+
+#franjaverde{
+    background: url(../img/franjaverde.jpg) no-repeat;
+    height:142px;
+    color:#3e581a;
+}
+
+#acercade{
+    width:550px;
+    float:left;
+    margin: 0px 20px 0px 20px;
+}
+#ayuda{
+    width:500px;
+    float:left;
+}
+.tituloverde{
+float:left;
+width:120px;
+margin-right:10px;
+height:300px;
+color:#8cc63f;
+font-size:30px;
+font-weight:bold;
+}
+
 #selectos{
 	background-color: #91a83c;	
 }

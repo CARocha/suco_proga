@@ -5,9 +5,9 @@ from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('suco.encuesta.views',
     (r'^index/$', 'inicio'),
-    (r'^index/ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
-    (r'^index/ajax/municipio/(?P<departamento>\d+)/$', 'get_municipios'),
-    (r'^index/ajax/comunidad/(?P<municipio>\d+)/$', 'get_comunidad'),
+    (r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
+    (r'^ajax/municipio/(?P<departamento>\d+)/$', 'get_municipios'),
+    (r'^ajax/comunidad/(?P<municipio>\d+)/$', 'get_comunidad'),
     #graficas para los indicadores
     (r'^grafo/organizacion/(?P<tipo>\w+)/$', 'organizacion_grafos'),
     (r'^grafo/agua-disponibilidad/(?P<tipo>\d+)/$', 'agua_grafos_disponibilidad'),

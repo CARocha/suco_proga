@@ -122,10 +122,37 @@ def inicio(request):
         
 #-------------------------------------------------------------------------------
 def index(request):
-    familias = Encuesta.objects.all().count()
-    #organizacion = OrganizacionesOCB.objects.all().count()  
+    if request.method == 'POST':
+        mensaje = None
+        form = MonitoreoForm(request.POST)
+        if form.is_valid():            
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['fecha'] = form.cleaned_data['fecha']
+            request.session['departamento'] = form.cleaned_data['departamento']
+            try:
+                municipio = Municipio.objects.get(id=int(form.cleaned_data['municipio'])) 
+            except:
+                municipio = None
+            try:
+                comunidad = Comunidad.objects.get(id=int(form.cleaned_data['comunidad']))                
+            except:
+                comunidad = None
 
-    return direct_to_template(request, 'index.html', locals())        
+            request.session['municipio'] = municipio 
+            request.session['comunidad'] = comunidad
+            request.session['sexo'] = form.cleaned_data['sexo']
+            request.session['duenio'] = form.cleaned_data['dueno']
+
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+    else:
+        form = MonitoreoForm()
+        mensaje = "Existen alguno errores"
+    
+    
+    dict = {'form': form,'user': request.user, }
+    return render_to_response('index.html', dict,
+                              context_instance=RequestContext(request))      
         
 #-------------------------------------------------------------------------------
 def generales(request):
