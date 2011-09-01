@@ -250,10 +250,10 @@ def agua(request):
     '''Agua'''
     consulta = _queryset_filtrado(request)
     tabla = []
-    total = consulta.aggregate(total=Count('agua__fuente'))
+    total = consulta.aggregate(total=Count('aguaconsumo__fuente'))
 
-    for choice in Fuente.objects.all():
-        query = consulta.filter(agua__fuente=choice)
+    for choice in FuenteConsumo.objects.all():
+        query = consulta.filter(aguaconsumo__fuente=choice)
         numero = query.count()
         fila = [choice.nombre, numero,
                 #saca_porcentajes(numero, total['total'], False),
@@ -557,15 +557,15 @@ def gremial(request):
         tabla_desde[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
      
     #miembro
-    tabla_miembro = {}
-    divisor2  = a.filter(organizaciongremial__miembro_gremial__in=(1,2,3)).count()
-                                         
-    for p in CHOICE_MIEMBRO_GREMIAL:
-        key = slugify(p[1]).replace('-','_')
-        query = a.filter(organizaciongremial__miembro_gremial = p[0])
-        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__miembro_gremial'))['frecuencia']
-        porcentaje = saca_porcentajes(frecuencia,divisor2)
-        tabla_miembro[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
+#    tabla_miembro = {}
+#    divisor2  = a.filter(organizaciongremial__miembro_gremial__in=(1,2,3)).count()
+#                                         
+#    for p in CHOICE_MIEMBRO_GREMIAL:
+#        key = slugify(p[1]).replace('-','_')
+#        query = a.filter(organizaciongremial__miembro_gremial = p[0])
+#        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__miembro_gremial'))['frecuencia']
+#        porcentaje = saca_porcentajes(frecuencia,divisor2)
+#        tabla_miembro[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
     
 #    #desde miembro
 #    tabla_desde_miembro = {}
@@ -578,22 +578,21 @@ def gremial(request):
 #        tabla_desde_miembro[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
         
     #capacitación
-    tabla_capacitacion = {}
-    divisor4 = a.filter(organizaciongremial__capacitacion__in=[1,2]).count()    
-    for t in CHOICE_OPCION:
-        key = slugify(t[1]).replace('-','_')
-        query = a.filter(organizaciongremial__capacitacion = t[0])
-        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__capacitacion'))['frecuencia']
-        porcentaje = saca_porcentajes(frecuencia,divisor4)
-        tabla_capacitacion[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
-        
+#    tabla_capacitacion = {}
+#    divisor4 = a.filter(organizaciongremial__capacitacion__in=[1,2]).count()    
+#    for t in CHOICE_OPCION:
+#        key = slugify(t[1]).replace('-','_')
+#        query = a.filter(organizaciongremial__capacitacion = t[0])
+#        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__capacitacion'))['frecuencia']
+#        porcentaje = saca_porcentajes(frecuencia,divisor4)
+#        tabla_capacitacion[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
         
     return render_to_response('organizacion/gremial.html', 
                                  {'tabla_gremial': tabla_gremial, 'tabla_desde':tabla_desde,
-                                 'num_familias': num_familias,'divisor':divisor,'divisor1':divisor1,
-                                 'tabla_miembro':tabla_miembro, 'divisor2':divisor2,
-                                 
-                                 'tabla_capacitacion':tabla_capacitacion, 'divisor4':divisor4},
+                                 'num_familias': num_familias,'divisor':divisor,'divisor1':divisor1
+                                 #'tabla_miembro':tabla_miembro, 'divisor2':divisor2,
+                                 #'tabla_capacitacion':tabla_capacitacion, 'divisor4':divisor4
+                                 },
                                  context_instance=RequestContext(request))
                                  
 #-------------------------------------------------------------------------------
@@ -1050,9 +1049,9 @@ def equipos(request):
     tabla = {}
     totales = {}
     
-    totales['numero'] = a.aggregate(numero=Count('propiedades__equipo'))['numero']
+    totales['numero'] = a.aggregate(numero=Count('propiedadequipo__equipo'))['numero']
     totales['porciento_equipo'] = 100
-    totales['cantidad_equipo'] = a.aggregate(cantidad=Sum('propiedades__cantidad_equipo'))['cantidad']
+    totales['cantidad_equipo'] = a.aggregate(cantidad=Sum('propiedadequipo__cantidad'))['cantidad']
     totales['porciento_cantidad'] = 100
     
     for i in Equipos.objects.all():
@@ -1060,8 +1059,8 @@ def equipos(request):
         query = a.filter(propiedades__equipo = i)
         frecuencia = query.count()
         por_equipo = saca_porcentajes(frecuencia, num_familia)
-        equipo = query.aggregate(equipo=Sum('propiedades__cantidad_equipo'))['equipo']
-        cantidad_pro = query.aggregate(cantidad_pro=Avg('propiedades__cantidad_equipo'))['cantidad_pro']
+        equipo = query.aggregate(equipo=Sum('propiedadequipo__cantidad'))['equipo']
+        cantidad_pro = query.aggregate(cantidad_pro=Avg('propiedadequipo__cantidad'))['cantidad_pro']
         tabla[key] = {'frecuencia':frecuencia, 'por_equipo':por_equipo,
                       'equipo':equipo,'cantidad_pro':cantidad_pro}
     
@@ -1069,9 +1068,9 @@ def equipos(request):
     tabla_infra = {}
     totales_infra = {}
     
-    totales_infra['numero'] = a.aggregate(numero=Count('infraestructura__infraestructura'))['numero']
+    totales_infra['numero'] = a.aggregate(numero=Count('propiedadinfra__infraestructura'))['numero']
     totales_infra['porciento_infra'] = 100
-    totales_infra['cantidad_infra'] = a.aggregate(cantidad_infra=Sum('infraestructura__cantidad_infra'))['cantidad_infra']
+    totales_infra['cantidad_infra'] = a.aggregate(cantidad_infra=Sum('propiedadinfra__cantidad'))['cantidad_infra']
     totales_infra['por_cantidad_infra'] = 100
        
     for j in Infraestructuras.objects.all():
@@ -1079,8 +1078,8 @@ def equipos(request):
         query = a.filter(infraestructura__infraestructura = j)
         frecuencia = query.count()
         por_frecuencia = saca_porcentajes(frecuencia, num_familia)
-        infraestructura = query.aggregate(infraestructura=Sum('infraestructura__cantidad_infra'))['infraestructura']
-        infraestructura_pro = query.aggregate(infraestructura_pro=Avg('infraestructura__cantidad_infra'))['infraestructura_pro']
+        infraestructura = query.aggregate(infraestructura=Sum('propiedadinfra__cantidad'))['infraestructura']
+        infraestructura_pro = query.aggregate(infraestructura_pro=Avg('propiedadinfra__cantidad'))['infraestructura_pro']
         tabla_infra[key] = {'frecuencia':frecuencia, 'por_frecuencia':por_frecuencia,
                              'infraestructura':infraestructura,
                              'infraestructura_pro':infraestructura_pro}
