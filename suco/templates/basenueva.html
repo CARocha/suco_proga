@@ -2,28 +2,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="{{STATIC_URL}}css/acicafoc.css" rel="stylesheet" type="text/css">
+<link href="{{STATIC_URL}}css/proga.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/highcharts.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/exporting_patched.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/grafico.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/table.exporting.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
-<title>Sistema de Monitoreo ACICAFOC | {%block title%}{%endblock%}</title>
-    <script type="text/javascript">
-    $(document).ready(function () {
-        $("ul.menu_body li:even").addClass("alt");
-        $('img.menu_head').click(function () {
-        $('ul.menu_body').slideToggle('medium');
-        });
-        $('ul.menu_body li a').mouseover(function () {
-        $(this).animate({ fontSize: "12px", paddingLeft: "20px" }, 50 );
-        });
-        $('ul.menu_body li a').mouseout(function () {
-        $(this).animate({ fontSize: "12px", paddingLeft: "10px" }, 50 );
-        });
-    });
-    </script>
+<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+<title>Sistema de Monitoreo PROGA | {%block title%}{%endblock%}</title>
     <script type="text/javascript">
     $(document).ready(function() {
         alto = $(".contenido").height();
@@ -39,33 +26,15 @@
 	<div class="main">
         <div id="header">
             <div id="logo"></div>
-            <div id="cooperantes">
-                <img src="{{STATIC_URL}}img/banco.jpg">
-                <img src="{{STATIC_URL}}img/japon.jpg">
-            </div>
-            <div class="clean"></div>
-        </div>
-        <div id="menu">
-            <div id="cambiar-indicador" class="left">
-                <img id="home" src="{{STATIC_URL}}img/home.png" class="menu_head" />
-                <ul class="menu_body">
-                    <li><a href="/"><img src="{{STATIC_URL}}img/homemini.png">INICIO</a></li>
-                    <li><a href="/index?shva=1"><img src="{{STATIC_URL}}img/cambiarmini.png">CAMBIAR INDICADOR </a></li>
-                    <li><a href="/index/"><img src="{{STATIC_URL}}img/nuevamini.png">NUEVA CONSULTA</a></li>
-                </ul>
-            </div>
-            {%block barra%}{%endblock%}
-            <div class="clean"></div>
         </div>
         {%block content%}
         {%endblock%}
 	</div>	
 </div>
 <div class="footer">
-	<div style="margin-left:15px;">
-		Sistema de Monitoreo <b>ACICAFOC</b><br>
-		Desarrollado en Nicaragua, bajo plataforma <a href="http://djangoproject.org">Django</a>
-	</div>
+	<center>
+		Desarrollado por  <a href="http://www.simas.org.ni">SIMAS</a>, bajo plataforma <a href="http://djangoproject.org">Django</a>
+	</center>
 </div>
 </body>
 </html>

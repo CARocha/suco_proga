@@ -3,42 +3,136 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/markerclusterer.js"></script>
 <script type="text/javascript">
-    var map;
-    var markers = [];
-    $(document).ready(function () {     
-        var infowindow = new google.maps.InfoWindow();
-        var myLatlng = new google.maps.LatLng(13.567,-85);
-        var myOptions = {
-            zoom: 8,
-            mapTypeControl: true,
-            center: myLatlng,
-            mapTypeId: google.maps.MapTypeId.TERRAIN
-        }
-        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        var image = new google.maps.MarkerImage('',
-        new google.maps.Size(15, 32),
-        new google.maps.Point(0,0),
-        new google.maps.Point(0, 32));
-            $.getJSON('/mapa/', function(data){
-                $.each(data, function(i, elemento){
-                    var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
-                    var marker = new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        title: elemento.nombre,
-                        icon: image,                        
-                        item: '',
-                        id: elemento.id                        
-                    });                    
-                    markers.push(marker);                    
-                });
-                var markerCluster = new MarkerClusterer(map, markers);
+    $(document).ready(function() {
+        var departamento = document.getElementById("id_departamento");
+        var organizacion = document.getElementById("id_organizacion");
+        var municipio = document.getElementById("id_municipio");
+        var comunidad= document.getElementById("id_comunidad");
+        organizacion.options[0] = new Option("Organización");
+        organizacion.options[0].value = '';
+        municipio.options[0] = new Option("Municipio");
+        municipio.options[0].value = '';
+        comunidad.options[0] = new Option("Comunidad");
+        comunidad.options[0].value = '';
+        
+        //municipios
+        $("#id_departamento").change(function () {
+            var index = departamento.options.selectedIndex;
+            var id = departamento.options[index].value;
+            if(id != ''){
+            	$.getJSON("ajax/municipio/" + id +"/", 
+            			function(data){
+                            municipio.options.length = 0;
+                            comunidad.options.length = 0;
+                            municipio.options[0] = new Option("Municipio");
+                            municipio.options[0].value = '';
+                            comunidad.options[0] = new Option("Comunidad");
+                            comunidad.options[0].value = '';
+                            for(i=0; i< data.length; i++){
+                                municipio.options[i+1] = new Option(data[i][1], data[i][0]);
+                        }
+                });            	
+            }            
+        });
+        
+        //organizacion
+        $("#id_departamento").change(function () {
+            var index = departamento.options.selectedIndex;
+            var id = departamento.options[index].value;
+            if(id != ''){
+            	$.getJSON("ajax/organizaciones/" + id +"/",
+                        function(data){
+                            organizacion.options.length = 0;
+                            organizacion.options.length = 0;
+                            organizacion.options[0] = new Option("Organización");                
+                            organizacion.options[0].value = '';
+                            for(i=0; i< data.length; i++){
+                                organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
+                            }
+             	});
+            }            
+        });
+        
+        //comunidad
+        $("#id_municipio").change(function () {
+            var index = municipio.options.selectedIndex;
+            var id = municipio.options[index].value;
+            $.getJSON("ajax/comunidad/" + id +"/",
+            function(data){
+                comunidad.options.length = 0;
+                comunidad.options[0] = new Option("Comunidad");
+                comunidad.options[0].value = '';
+                for(i=0; i< data.length; i++){
+                    comunidad.options[i+1] = new Option(data[i][1], data[i][0]);
+                }
             });
-                
+        });
+        
     });
 </script>
 {%endblock%}
 {%block content%}
+<div id="menu">
+            <div id="column1">
+                <img src="{{STATIC_URL}}img/logogrande.png">
+            </div>
+            <div id="column2">
+                <div id ="menuformindex">
+                    <a href="#">Consulta de indicadores</a>
+                    <a href="#">Estadisticas Generales</a>
+                </div>
+                <div id="formindex">
+                    <form action="." method="POST">
+                    {% csrf_token %}
+                    <div class="formulario_consulta">
+                   
+                        <div class="columna_uno">
+                            <div class="form_widget date_widget"><img src="{{STATIC_URL}}img/fecha.png" alt=""> {{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>                                           
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.sexo}}</div>
+                        </div>
+                        <div class="columna_dos">                
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.departamento}}</div><br>
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.municipio}}</div>
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.comunidad}}</div>
+                            
+                        </div>
+                        <div class="columna_tres">                
+                            
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/organizacion.png" alt=""> {{form.organizacion}}</div>
+                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.dueno}}</div>                
+                        </div>
+                        <div class="columna_cuatro">
+                                    
+                        </div>
+
+                        <div class="clean"></div>            
+                                    <input type="submit" value="" class="consultar"/> 
+                    </div>        
+                    </form>
+                </div>
+                <div class="clean"></div>
+            </div>
+            <div id="column3">
+                <div id="encolaboracion">En Colaboración</div>
+                <a href="#"><center><img src="{{STATIC_URL}}img/canadalogo.jpg"></center></a>
+                <a href="#"><center><img src="{{STATIC_URL}}img/cooperacioncanadalogo.jpg"></center></a>
+                <a href="#"><center><img src="{{STATIC_URL}}img/sucologo.jpg"></center></a>
+                <a href="#"><center><img src="{{STATIC_URL}}img/inprhu.jpg"></center></a>
+                <a href="#"><center><img src="{{STATIC_URL}}img/inatec.jpg"></center></a>
+            </div>
+            <div class="clean"></div>
+        
+</div>
+<img src="{{STATIC_URL}}img/barraazul.jpg">
+<div id="franjaverde">
+    <div id="acercade">
+        <div class="tituloverde">Acerca del Sistema</div>A adipiscing augue odio odio turpis dapibus mid et ultricies ultricies odio tristique. Dolor, in est? Vut nascetur? Adipiscing porttitor placerat adipiscing, dictumst mauris. Ac! Magna non et natoque magna, elementum sit ultrices augue dolor augue eros penatibus? Pellentesque hac diam enim proin et, a, pellentesque sed platea, integer ultricies 
+    </div>
+    <div id="ayuda">
+        <div class="tituloverde">Como se Usa?</div>A adipiscing augue odio odio turpis dapibus mid et ultricies ultricies odio tristique. Dolor, in est? Vut nascetur? Adipiscing porttitor placerat adipiscing, dictumst mauris. Ac! Magna non et natoque magna, elementum sit ultrices augue dolor augue eros penatibus? Pellentesque hac diam enim proin et, a, pellentesque sed platea, integer ultricies 
+    </div>
+    <div class="clean"></div>
+</div>
         <div id="indexleft">
             <div id ="numencuestados"><b>{{familias}}</b> Familias encuestadas en la actualidad</div>
             <div id="tituloacerca">ACERCA DEL SISTEMA DE MONITOREO</div>
@@ -52,10 +146,6 @@
                 <br><br>Ahora bien, es en este momento que se hace necesario hacer un monitoreo de impacto en la zona del proyecto, para verificar y evaluar el grado de cumplimiento de los objetivos y resultados. Pero sobre todo, saber si realmente la influencia del proyecto es positiva ya asertiva en su punto de intervención
             </div>
             <div class="clean"></div>
-            <div id="titulomapa">Mapa Geografico de encuestados</div>
-            <div id="mapaindex">
-                <div id="map_canvas"></div>
-            </div>
         </div>
         <div id="indexright">
             <br>
