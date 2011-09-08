@@ -11,7 +11,7 @@ a, font, img, ul, li {
 }
 body{
 	background: #fff;
-	font-family: 'Yanone Kaffeesatz', sans-serif;
+	font-family: 'Yanone Kaffeesatz', sans-serif; 
 	margin: 0;
 	padding: 0;
 }
@@ -430,10 +430,22 @@ ul, li{margin:0; padding:0; list-style:none;}
 }
 
 .bloque_dept{
-    width:265px;
-    height:215px;
-    background:red;
+    width:245px;
+    height:225px;
     float:left;
+    margin:5px;
+    padding:10px;
+    border-right:#ebebeb 1px solid;
+}
+
+.personas{
+    background: url(../img/personas.jpg) no-repeat ;
+    background-position:center bottom;
+    
+}
+
+.mapita{
+    float:right;
     margin:5px;
 }
 
@@ -446,8 +458,44 @@ ul, li{margin:0; padding:0; list-style:none;}
     font-size:30px;
     font-weight:bold;
     text-align:right;
+
 }
 
+.nombre_dept{
+    width:250px;
+    height:24px;
+    font-size:30px;
+    color:#93c8eb;
+    margin-bottom:20px;
+}
+
+.circle_encuesta{
+    background: url(../img/circulo_num.jpg) no-repeat;
+    width:80px;
+    height:80px;
+    float:left;
+    text-align:center;
+    font-size:33px;
+    color:#fff;
+    padding-top:5px;
+    
+}
+
+.circle_encuesta_gen{
+    margin-top:73px;
+    margin-left:28px;
+    width:80px;
+    height:80px;
+    float:left;
+    text-align:center;
+    font-size:33px;
+    color:#fff;
+    padding-top:5px;
+    
+}
+.cantidad{
+    font-size:14px;
+}
 #selectos{
 	background-color: #91a83c;	
 }
