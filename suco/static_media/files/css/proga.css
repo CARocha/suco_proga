@@ -421,20 +421,31 @@ ul, li{margin:0; padding:0; list-style:none;}
 #acercade{
     width:550px;
     float:left;
-    margin: 0px 20px 0px 20px;
+    margin: 10px 20px 0px 20px;
 }
 #ayuda{
+    margin-top:10px;
     width:500px;
     float:left;
 }
+
+.bloque_dept{
+    width:265px;
+    height:215px;
+    background:red;
+    float:left;
+    margin:5px;
+}
+
 .tituloverde{
-float:left;
-width:120px;
-margin-right:10px;
-height:300px;
-color:#8cc63f;
-font-size:30px;
-font-weight:bold;
+    float:left;
+    width:130px;
+    margin-right:10px;
+    height:100px;
+    color:#8cc63f;
+    font-size:30px;
+    font-weight:bold;
+    text-align:right;
 }
 
 #selectos{

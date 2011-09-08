@@ -87,24 +87,21 @@
                     <div class="formulario_consulta">
                    
                         <div class="columna_uno">
-                            <div class="form_widget date_widget"><img src="{{STATIC_URL}}img/fecha.png" alt=""> {{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>                                           
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.sexo}}</div>
+                            <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>                                           
+                            <div class="form_widget">{{form.sexo}}</div>
                         </div>
                         <div class="columna_dos">                
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.departamento}}</div><br>
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.municipio}}</div>
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.comunidad}}</div>
-                            
+                            <div class="form_widget">{{form.departamento}}</div><br>
+                            <div class="form_widget">{{form.municipio}}</div>
+                            <div class="form_widget">{{form.comunidad}}</div>
                         </div>
                         <div class="columna_tres">                
-                            
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/organizacion.png" alt=""> {{form.organizacion}}</div>
-                            <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.dueno}}</div>                
+                            <div class="form_widget">{{form.organizacion}}</div>
+                            <div class="form_widget">{{form.dueno}}</div>                
                         </div>
                         <div class="columna_cuatro">
                                     
                         </div>
-
                         <div class="clean"></div>            
                                     <input type="submit" value="" class="consultar"/> 
                     </div>        
@@ -133,50 +130,12 @@
     </div>
     <div class="clean"></div>
 </div>
-        <div id="indexleft">
-            <div id ="numencuestados"><b>{{familias}}</b> Familias encuestadas en la actualidad</div>
-            <div id="tituloacerca">ACERCA DEL SISTEMA DE MONITOREO</div>
-            <div class="column">
-                <img src="{{STATIC_URL}}img/foto.jpg">
-                <br><br>
-                En la región Centroamericana, como en otras zonas en subdesarrollo, el manejo forestal comunitario es una de las alternativas más viables para resolver el gran dilema de la conciliación entre la preservación de la naturaleza y el desarrollo económico.
-            </div>
-            <div class="column">
-                El manejo forestal comunitario busca el uso razonable o planificado de de los bosques en las localidades de grupos indígenas y campesinos. La importancia de adecuadas prácticas de manejo forestal permite el bienestar socioeconómico, logrando un equilibrio entre las alternativas comerciales que ofrecen los bosques y la conservación de los patrimonios naturales y culturales de la humanidad.
-                <br><br>Ahora bien, es en este momento que se hace necesario hacer un monitoreo de impacto en la zona del proyecto, para verificar y evaluar el grado de cumplimiento de los objetivos y resultados. Pero sobre todo, saber si realmente la influencia del proyecto es positiva ya asertiva en su punto de intervención
-            </div>
-            <div class="clean"></div>
-        </div>
-        <div id="indexright">
-            <br>
-            <div class="menuindex">
-                <a class="menutitulo"href="/general">Estadistícas Generales</a>
-                <a href=""><img src="{{STATIC_URL}}img/generales.png" class="left"></a>
-                <p>Datos generales de la encuesta visibilizados geográficamente en las zonas de cobertura</p>
-                <a class="flecha" href=""></a>
-                <div class="clean"></div>
-            </div>
-            <div class="menuindex">
-                <a class="menutitulo"href="/index">Consulta de indicadores</a>
-                <a href="/index"><img src="{{STATIC_URL}}img/filtros.png" class="left"></a>
-                <p>A través de los filtros/indicadores podemos acceder a la información y los gráficos de acuerdo a nuestras necesidades. </p>
-                <a class="flecha" href="/index"></a>
-                <div class="clean"></div>
-            </div>
-            <div class="menuindex">
-                <a class="menutitulo"href="{{STATIC_URL}}manualAcicafocUsuario.pdf">Aprende a usar el sistema</a>
-                <a href="{{STATIC_URL}}manualAcicafocUsuario.pdf"><img src="{{STATIC_URL}}img/aprende.png" class="left"></a>
-                <p>Muestra la ayuda del sistema, cómo manipular la información disponible.</p>
-                <a class="flecha" href="{{STATIC_URL}}manualAcicafocUsuario.pdf"></a>
-                <div class="clean"></div>
-            </div>
-            <div class="menuindex">
-                <a class="menutitulo"href="/admin">Administrar el sistema</a>
-                <a href="/admin"><img src="{{STATIC_URL}}img/administrar.png" class="left"></a>
-                <p>Acceso a la administración válido únicamente para usuarios registrados.</p>
-                <a class="flecha" href=""></a>
-                <div class="clean"></div>
-            </div>
-        </div>
-        <div class="clean"></div>
+<div>
+    <div class="bloque_dept"></div>
+    <div class="bloque_dept"></div>
+    <div class="bloque_dept"></div>
+    <div class="bloque_dept"></div>
+    <div class="clean"></div>
+</div>
+       
 {%endblock%}
