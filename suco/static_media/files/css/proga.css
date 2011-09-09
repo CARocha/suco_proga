@@ -449,6 +449,30 @@ ul, li{margin:0; padding:0; list-style:none;}
     margin:5px;
 }
 
+#navegacion{
+    height:78px;
+    background: url(../img/hojadelgada.jpg) no-repeat ;
+}
+
+#botones-nav{
+    margin-left:25px;
+    padding-top:10px;
+
+}
+
+#botones-nav a{
+    margin-left:10px;
+
+}
+
+#botones-nav img:hover{
+
+      box-shadow: 1px 0px 6px #19200d;
+  -moz-box-shadow: 1px 0px 6px #19200d;
+  -khtml-box-shadow: 1px 0px 6px #19200d;
+  -webkit-box-shadow: 1px 0px 6px #19200d;
+}
+
 .tituloverde{
     float:left;
     width:130px;
@@ -677,10 +701,43 @@ td {
 }
 #contenedor_indicadores{
 	border-bottom:#e3e3e3 2px solid;
-    padding-left:200px;
     background-position:bottom left;
-    margin-top:30px;
-    height:60px;
+    margin-top:10px;
+    margin-bottom:10px;
+    width:200px;
+    height:350px;
+    float:left;
+    background:#EFEFEF;
+    margin-left:15px;
+}
+
+.nuevotitulo{
+    height:40px;
+    color:#babdb6;
+    font-size:23px;
+    padding:5px 0px 0px 15px;
+    border-bottom:#e3e3e3 1px solid;
+}
+
+#contenedor_indicadores a{
+    width:145px;
+	display: block;
+	float: left;
+    padding:8px 14px;
+    color:#555753;
+	margin: 8px 8px 8px 12px;
+    border:#d7d7d7 1px solid;
+    background:#fff url(../img/fondobotonindicador.png) repeat-x;
+    border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+  text-shadow: 0px 1px 0px #fff;
+  -moz-text-shadow: 0px 1px 0px #fff;
+  -webkit-text-shadow: 0px 1px 0px #fff;
+}
+#contenedor_indicadores a:hover{
+    background:url(../img/fondobotonindicador2.png) repeat-x;
+
 }
 
 .contenedor{width:960px!important;}
@@ -700,25 +757,7 @@ td {
 .comercializaciongroup{
     background:url(../img/comercializaciongroup.jpg) no-repeat;
 }
-#contenedor_indicadores a{
-	display: block;
-	float: left;
-    padding:8px 14px;
-    color:#555753;
-	margin: 8px;
-    border:#d7d7d7 1px solid;
-    background:url(../img/fondobotonindicador.png) repeat-x;
-    border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-  text-shadow: 0px 1px 0px #fff;
-  -moz-text-shadow: 0px 1px 0px #fff;
-  -webkit-text-shadow: 0px 1px 0px #fff;
-}
-#contenedor_indicadores a:hover{
-    background:url(../img/fondobotonindicador2.png) repeat-x;
 
-}
 .manejo_sprite{
 	background: url(/archivos/imagen/new/manejo_sprite.jpg) no-repeat;
 }

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
@@ -78,8 +78,9 @@ def _queryset_filtrado(request):
 #-------------------------------------------------------------------------------
 
 # Comienza la parte del index
+'''
+def inicio(request):
 
-def inicio(request): 
     if request.method == 'POST':
         mensaje = None
         form = MonitoreoForm(request.POST)
@@ -103,23 +104,24 @@ def inicio(request):
 
             mensaje = "Todas las variables estan correctamente :)"
             request.session['activo'] = True
-            centinela = 1
-        else:
-            centinela = 0            
+        print 'hola'
+        return HttpResponseRedirect('/menu')           
     else:
         form = MonitoreoForm()
         mensaje = "Existen alguno errores"
-        centinela = 0
     
     shva = request.GET.get('shva', '')
     if shva and request.session['activo']:
         shva = 1
-        centinela = 1
     
-    dict = {'form': form,'user': request.user,'centinela':centinela, 'shva':shva}
+    dict = {'form': form,'user': request.user, 'shva':shva}
     return render_to_response('encuestas/inicio.html', dict,
                               context_instance=RequestContext(request))        
-        
+'''
+def menu(request):
+    return render_to_response('encuestas/menu.html',
+                              context_instance=RequestContext(request)) 
+
 #-------------------------------------------------------------------------------
 def index(request):
     if request.method == 'POST':
@@ -145,11 +147,10 @@ def index(request):
 
             mensaje = "Todas las variables estan correctamente :)"
             request.session['activo'] = True
+            return HttpResponseRedirect('/menu') 
     else:
         form = MonitoreoForm()
         mensaje = "Existen alguno errores"
-    
-    
     dict = {'form': form,'user': request.user, }
     return render_to_response('index.html', dict,
                               context_instance=RequestContext(request))      
