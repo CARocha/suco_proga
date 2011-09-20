@@ -4,9 +4,10 @@ from django.views.generic.simple import direct_to_template
 #from models import Encuesta
 
 urlpatterns = patterns('suco.encuesta.views',
-    (r'^index/$', 'inicio'),
+    #(r'^index/$', 'inicio'),
     (r'^menu/$', 'menu'),
-    (r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
+    (r'^general/$', 'generales'),
+#    (r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
     (r'^ajax/municipio/(?P<departamento>\d+)/$', 'get_municipios'),
     (r'^ajax/comunidad/(?P<municipio>\d+)/$', 'get_comunidad'),
     #graficas para los indicadores

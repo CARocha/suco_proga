@@ -10,8 +10,17 @@ CHOICE_DESDE_F = (('','Desde'),(1,"Menos de 5 año"),(2,"Mas de 5 años"))
 CHOICE_DUENO_F = (('', u'Dueño'),(1,"Hombre"),(2,"Mujer"),(3,"Mancomunado"),(4,"Parientes"),(5,"Colectivo"),(6,"No hay"))
 CHOICE_SEXO = (('', u'Sexo'),(1,'Hombre'),(2,'Mujer'))
 
+def get_anios():
+    choices = []
+    years = []
+    for en in Encuesta.objects.all().order_by('fecha'):
+        years.append(en.fecha.year)
+    for year in list(set(years)):
+        choices.append((year, year))
+    return choices
+
 class MonitoreoForm(forms.Form):
-    fecha = forms.ChoiceField(choices=ANOS_CHOICES)
+    fecha = forms.ChoiceField(choices=get_anios(), label="Años")
     departamento = forms.ModelChoiceField(queryset=Departamento.objects.all(), 
             required=False, empty_label="Departamento")
     organizacion = forms.CharField(widget = forms.Select, required=False)

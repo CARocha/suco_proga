@@ -4,7 +4,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var departamento = document.getElementById("id_departamento");
-        var organizacion = document.getElementById("id_organizacion");
+        //var organizacion = document.getElementById("id_organizacion");
         var municipio = document.getElementById("id_municipio");
         var comunidad= document.getElementById("id_comunidad");
         organizacion.options[0] = new Option("Organización");
@@ -35,22 +35,22 @@
         });
         
         //organizacion
-        $("#id_departamento").change(function () {
-            var index = departamento.options.selectedIndex;
-            var id = departamento.options[index].value;
-            if(id != ''){
-            	$.getJSON("ajax/organizaciones/" + id +"/",
-                        function(data){
-                            organizacion.options.length = 0;
-                            organizacion.options.length = 0;
-                            organizacion.options[0] = new Option("Organización");                
-                            organizacion.options[0].value = '';
-                            for(i=0; i< data.length; i++){
-                                organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
-                            }
-             	});
-            }            
-        });
+        //$("#id_departamento").change(function () {
+        //    var index = departamento.options.selectedIndex;
+        //    var id = departamento.options[index].value;
+        //    if(id != ''){
+        //    	$.getJSON("ajax/organizaciones/" + id +"/",
+        //                function(data){
+        //                    organizacion.options.length = 0;
+        //                    organizacion.options.length = 0;
+        //                    organizacion.options[0] = new Option("Organización");                
+        //                    organizacion.options[0].value = '';
+        //                    for(i=0; i< data.length; i++){
+        //                        organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
+        //                    }
+        //     	});
+        //    }            
+       // });
         
         //comunidad
         $("#id_municipio").change(function () {

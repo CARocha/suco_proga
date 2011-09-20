@@ -128,7 +128,7 @@ def index(request):
         mensaje = None
         form = MonitoreoForm(request.POST)
         if form.is_valid():            
-            request.session['organizacion'] = form.cleaned_data['organizacion']
+#            request.session['organizacion'] = form.cleaned_data['organizacion']
             request.session['fecha'] = form.cleaned_data['fecha']
             request.session['departamento'] = form.cleaned_data['departamento']
             try:
@@ -152,7 +152,17 @@ def index(request):
         form = MonitoreoForm()
         mensaje = "Existen alguno errores"
     dict = {'form': form,'user': request.user, }
-    return render_to_response('index.html', dict,
+    
+    depart = []
+    var=0
+    for depar in Departamento.objects.all():
+        conteo = Encuesta.objects.filter(comunidad__municipio__departamento=depar).aggregate(conteo=Count('comunidad__municipio__departamento'))['conteo']
+        if conteo != 0:
+            var += 1
+            depart.append([depar.nombre,conteo,var])
+    mujeres = Encuesta.objects.filter(sexo=2).count()
+    hombres = Encuesta.objects.filter(sexo=1).count()  
+    return render_to_response('index.html', locals(),
                               context_instance=RequestContext(request))      
         
 #-------------------------------------------------------------------------------
@@ -786,13 +796,13 @@ def cultivos(request):
     #**********calculosdelasvariables*****
     tabla = {} 
     for i in Cultivos.objects.all():
-        key = slugify(i.nombre).replace('-', '_')
-        key2 = slugify(i.unidad).replace('-', '_')
-        query = a.filter(cultivosfinca__cultivos = i)
+        key = slugify(i.cultivo).replace('-', '_')
+        key2 = slugify(i.cultivo.unidad).replace('-', '_')
+        query = a.filter(cultivos__cultivo = i)
         #totales = query.aggregate(total=Sum('cultivosfinca__total'))['total']
-        consumo = query.aggregate(consumo=Sum('cultivosfinca__consumo'))['consumo']
-        libre = query.aggregate(libre=Sum('cultivosfinca__venta_libre'))['libre']
-        organizada =query.aggregate(organizada=Sum('cultivosfinca__venta_organizada'))['organizada']
+        consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+        libre = query.aggregate(libre=Sum('cultivos__venta_libre'))['libre']
+        organizada =query.aggregate(organizada=Sum('cultivos__venta_organizada'))['organizada']
         tabla[key] = {'key2':key2,'consumo':consumo,'libre':libre,'organizada':organizada}
     
     return render_to_response('cultivos/cultivos.html',
@@ -1084,7 +1094,7 @@ def equipos(request):
     
     for i in Equipos.objects.all():
         key = slugify(i.nombre).replace('-','_')
-        query = a.filter(propiedades__equipo = i)
+        query = a.filter(propiedadequipo__equipo = i)
         frecuencia = query.count()
         por_equipo = saca_porcentajes(frecuencia, num_familia)
         equipo = query.aggregate(equipo=Sum('propiedadequipo__cantidad'))['equipo']
@@ -1103,7 +1113,7 @@ def equipos(request):
        
     for j in Infraestructuras.objects.all():
         key = slugify(j.nombre).replace('-','_')
-        query = a.filter(infraestructura__infraestructura = j)
+        query = a.filter(propiedadinfra__infraestructura = j)
         frecuencia = query.count()
         por_frecuencia = saca_porcentajes(frecuencia, num_familia)
         infraestructura = query.aggregate(infraestructura=Sum('propiedadinfra__cantidad'))['infraestructura']
@@ -1766,11 +1776,11 @@ def get_municipios(request, departamento):
     lista = [(municipio.id, municipio.nombre) for municipio in municipios]
     return HttpResponse(simplejson.dumps(lista), mimetype='application/javascript')
     
-def get_organizacion(request, departamento):
-    encuestas = Encuesta.objects.filter(municipio__departamento=departamento)    
-    organizaciones = OrganizacionOCB.objects.filter(encuesta__in=encuestas).distinct()
-    lista = [(organizacion.id, organizacion.nombre) for organizacion in organizaciones]
-    return HttpResponse(simplejson.dumps(lista), mimetype='application/javascript')
+#def get_organizacion(request, departamento):
+#    encuestas = Encuesta.objects.filter(municipio__departamento=departamento)    
+#    organizaciones = OrganizacionOCB.objects.filter(encuesta__in=encuestas).distinct()
+#    lista = [(organizacion.id, organizacion.nombre) for organizacion in organizaciones]
+#    return HttpResponse(simplejson.dumps(lista), mimetype='application/javascript')
 
 def get_comunidad(request, municipio):
     comunidades = Comunidad.objects.filter(municipio = municipio )

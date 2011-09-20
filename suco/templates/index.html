@@ -5,11 +5,11 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var departamento = document.getElementById("id_departamento");
-        var organizacion = document.getElementById("id_organizacion");
+        //var organizacion = document.getElementById("id_organizacion");
         var municipio = document.getElementById("id_municipio");
         var comunidad= document.getElementById("id_comunidad");
-        organizacion.options[0] = new Option("Organización");
-        organizacion.options[0].value = '';
+        //organizacion.options[0] = new Option("Organización");
+        //organizacion.options[0].value = '';
         municipio.options[0] = new Option("Municipio");
         municipio.options[0].value = '';
         comunidad.options[0] = new Option("Comunidad");
@@ -36,22 +36,22 @@
         });
         
         //organizacion
-        $("#id_departamento").change(function () {
-            var index = departamento.options.selectedIndex;
-            var id = departamento.options[index].value;
-            if(id != ''){
-            	$.getJSON("ajax/organizaciones/" + id +"/",
-                        function(data){
-                            organizacion.options.length = 0;
-                            organizacion.options.length = 0;
-                            organizacion.options[0] = new Option("Organización");                
-                            organizacion.options[0].value = '';
-                            for(i=0; i< data.length; i++){
-                                organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
-                            }
-             	});
-            }            
-        });
+        //$("#id_departamento").change(function () {
+        //    var index = departamento.options.selectedIndex;
+        //    var id = departamento.options[index].value;
+        //    if(id != ''){
+        //    	$.getJSON("ajax/organizaciones/" + id +"/",
+       //                 function(data){
+       //                     organizacion.options.length = 0;
+       //                     organizacion.options.length = 0;
+       //                     organizacion.options[0] = new Option("Organización");                
+       //                     organizacion.options[0].value = '';
+       //                     for(i=0; i< data.length; i++){
+       //                         organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
+       //                     }
+       //      	});
+       //     }            
+       // });
         
         //comunidad
         $("#id_municipio").change(function () {
@@ -78,8 +78,8 @@
             </div>
             <div id="column2">
                 <div id ="menuformindex">
-                    <a href="#">Consulta de indicadores</a>
-                    <a href="#">Estadisticas Generales</a>
+<!--                    <a href="#">Consulta de indicadores</a>-->
+                    <a href="/general">Estadisticas Generales</a>
                 </div>
                 <div id="formindex">
                     <form action="." method="POST">
@@ -96,7 +96,7 @@
                             <div class="form_widget">{{form.comunidad}}</div>
                         </div>
                         <div class="columna_tres">                
-                            <div class="form_widget">{{form.organizacion}}</div>
+<!--                            <div class="form_widget">{{form.organizacion}}</div>-->
                             <div class="form_widget">{{form.dueno}}</div>                
                         </div>
                         <div class="columna_cuatro">
@@ -132,32 +132,20 @@
     <div class="clean"></div>
 </div>
 <div>
+    {%for lugar in depart%}
     <div class="bloque_dept">
-        <div class="nombre_dept">Estelí</div>
-        <div class="circle_encuesta"> 31 <br> <span class="cantidad">Encuestas</span></div>
-        <img class="mapita"src="{{STATIC_URL}}img/esteli.jpg">
-        <center><img src="{{STATIC_URL}}img/joven1.jpg"></center>
+        <div class="nombre_dept">{{lugar.0}}</div>
+        <div class="circle_encuesta"> {{lugar.1}} <br> <span class="cantidad">Encuestas</span></div>
+        <img class="mapita"src="{{STATIC_URL}}img/{{lugar.0}}.jpg">
+        <center><img src="{{STATIC_URL}}img/joven{{lugar.2}}.jpg"></center>
         <div class="clean"></div>
     </div>
-    <div class="bloque_dept">
-        <div class="nombre_dept">Nueva Segovia</div>
-        <div class="circle_encuesta">31 <br> <span class="cantidad">Encuestas</span></div>
-        <img class="mapita" src="{{STATIC_URL}}img/segovia.jpg">
-        <center><img src="{{STATIC_URL}}img/joven2.jpg"></center>
-        <div class="clean"></div>
-    </div>
-    <div class="bloque_dept">
-        <div class="nombre_dept">Madriz</div>
-        <div class="circle_encuesta">31 <br> <span class="cantidad">Encuestas</span></div>
-        <img class="mapita"src="{{STATIC_URL}}img/madriz.jpg">
-        <center><img src="{{STATIC_URL}}img/joven1.jpg"></center>
-        <div class="clean"></div>
-    </div>
+    {%endfor%}
     <div class="bloque_dept personas">
         <div class="nombre_dept">Sexo de Encuestados</div>
         <div class="clean"></div>
-        <div class="circle_encuesta_gen">31 <br> <span class="cantidad">Encuestas</span></div>
-        <div class="circle_encuesta_gen">31 <br> <span class="cantidad">Encuestas</span></div>
+        <div class="circle_encuesta_gen">{{mujeres}} <br> <span class="cantidad">Encuestas</span></div>
+        <div class="circle_encuesta_gen">{{hombres}} <br> <span class="cantidad">Encuestas</span></div>
         <div class="clean"></div>
     </div>
     <div class="clean"></div>
