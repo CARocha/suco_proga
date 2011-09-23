@@ -59,11 +59,11 @@ def _queryset_filtrado(request):
         if 'sexo' in  request.session:
             params['sexo'] = request.session['sexo']
             
-        if 'organizacion' in request.session:
-            params['beneficiario'] = request.session['organizacion']            
+#        if 'organizacion' in request.session:
+#            params['beneficiario'] = request.session['organizacion']            
 
         if 'duenio' in  request.session:
-            params['tenencia__dueno'] = request.session['duenio']
+            params['accesotierra__documento'] = request.session['duenio']
         
         unvalid_keys = []
         for key in params:
@@ -231,7 +231,8 @@ def educacion(request):
     #**********************************
     
     tabla_educacion = []
-    
+    grafo = []
+    suma = 0 
     for e in CHOICE_EDUCACION:
         objeto = a.filter(educacion__sexo = e[0]).aggregate(num_total = Sum('educacion__total'),
                 no_leer = Sum('educacion__no_leer'), 
@@ -241,6 +242,13 @@ def educacion(request):
                 bachiller = Sum('educacion__bachiller'), 
                 universitario = Sum('educacion__universitario'),
                 f_comunidad = Sum('educacion__f_comunidad'))
+        try:
+            suma = int(objeto['p_completa'] or 0) + int(objeto['s_incompleta'] or 0) + int(objeto['bachiller'] or 0) + int(objeto['universitario'] or 0)
+        except:
+            pass
+        variable = round(saca_porcentajes(suma,objeto['num_total']))
+        grafo.append([e[1],variable])
+        
         fila = [e[1], objeto['num_total'],
                 saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
                 saca_porcentajes(objeto['p_incompleta'], objeto['num_total'], False),
@@ -251,8 +259,7 @@ def educacion(request):
                 saca_porcentajes(objeto['f_comunidad'], objeto['num_total'], False)]
         tabla_educacion.append(fila)
     
-    return render_to_response('familias/educacion.html', {'tabla_educacion':tabla_educacion,
-                                  'num_familias':num_familias},
+    return render_to_response('familias/educacion.html', locals(),
                                   context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #Tabla Energia
@@ -520,9 +527,9 @@ def grafos_bienes(request, tipo):
     legends = []
     #----------------------
     if tipo == 'tipocasa':
-        for opcion in Casa.objects.all():
-            data.append(consulta.filter(tipocasa__tipo=opcion).count())
-            legends.append(opcion.nombre)
+        for opcion in CHOICE_TIPO_CASA:
+            data.append(consulta.filter(tipocasa__tipo=opcion[0]).count())
+            legends.append(opcion[1])
         return grafos.make_graph(data, legends, 
                 'Tipos de casas', return_json = True,
                 type = grafos.PIE_CHART_2D)
@@ -780,9 +787,7 @@ def animales(request):
             pass
 
     return render_to_response('animales/animales.html', 
-                              {'tabla':tabla, 'totales': totales, 
-                               'num_familias': consulta.count(),
-                               'tabla_produccion': tabla_produccion},
+                              locals(),
                               context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #Tabla Cultivos
@@ -1159,10 +1164,30 @@ def equipos(request):
         por_trans = query.aggregate(por_trans=Avg('transporte__numero'))['por_trans']
         transporte[key] = {'frecuencia':frecuencia,'por_frecuencia':por_frecuencia,
                            'trans':trans,'por_trans':por_trans}
+                           
+    electro = {}
+    for m in Electro.objects.all():
+        key = slugify(m.nombre).replace('-','_')
+        query = a.filter(electrodomestico__electro = m)
+        frecuencia = query.count()
+        por_frecuencia = saca_porcentajes(frecuencia, num_familia)
+        trans = query.aggregate(transporte=Sum('electrodomestico__cantidad'))['transporte']
+        por_trans = query.aggregate(por_trans=Avg('electrodomestico__cantidad'))['por_trans']
+        electro[key] = {'frecuencia':frecuencia,'por_frecuencia':por_frecuencia,
+                           'trans':trans,'por_trans':por_trans}
+                           
+    sana = {}
+    for m in Sanamiento.objects.all():
+        key = slugify(m.nombre).replace('-','_')
+        query = a.filter(sana__electro = m)
+        frecuencia = query.count()
+        por_frecuencia = saca_porcentajes(frecuencia, num_familia)
+        trans = query.aggregate(transporte=Sum('sana__cantidad'))['transporte']
+        por_trans = query.aggregate(por_trans=Avg('sana__cantidad'))['por_trans']
+        sana[key] = {'frecuencia':frecuencia,'por_frecuencia':por_frecuencia,
+                           'trans':trans,'por_trans':por_trans}
            
-    return render_to_response('bienes/equipos.html', {'tabla':tabla,'totales':totales,
-                              'num_familias':num_familia,'tabla_infra':tabla_infra,
-                              'herramienta':herramienta,'transporte':transporte},
+    return render_to_response('bienes/equipos.html', locals(),
                                context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #Tabla seguridad alimentaria
@@ -1198,6 +1223,34 @@ def seguridad_alimentaria(request):
                                context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #tabla finca vulnerable
+def graves(request,numero):
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familia = a.count()
+    #******************************************
+    suma = 0
+    for p in Graves.objects.all():
+        fenomeno = a.filter(vulnerable__motivo__id=numero, vulnerable__respuesta=p).count()
+        suma += fenomeno
+        
+    lista = []
+    for x in Graves.objects.all():
+        fenomeno = a.filter(vulnerable__motivo__id=numero, vulnerable__respuesta=x).count()
+        porcentaje = round(saca_porcentajes(fenomeno,suma),2)
+        lista.append([x.nombre,fenomeno,porcentaje])        
+    return lista
+    
+def suma_graves(request,numero):
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familia = a.count()
+    #******************************************
+    suma = 0
+    for p in Graves.objects.all():
+        fenomeno = a.filter(vulnerable__motivo__id=numero, vulnerable__respuesta=p).count()
+        suma += fenomeno
+    return suma
+
 @session_required
 def vulnerable(request):
     ''' Cuales son los Riesgos que hace las fincas vulnerables '''
@@ -1205,6 +1258,45 @@ def vulnerable(request):
     a = _queryset_filtrado(request)
     num_familia = a.count()
     #******************************************
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familia = a.count()
+    num_familias = num_familia
+    #******************************************
+    
+    #fenomenos naturales
+    sequia = graves(request,1)
+    total_sequia = suma_graves(request,1)
+    inundacion = graves(request,2)
+    total_inundacion = suma_graves(request,2)
+    vientos = graves(request,3)
+    total_vientos = suma_graves(request,3)
+    deslizamiento = graves(request,4)
+    total_deslizamiento = suma_graves(request,4)
+    
+    #Razones agricolas
+    falta_semilla = graves(request,5)
+    total_falta_semilla = suma_graves(request,5)
+    mala_semilla = graves(request,6)
+    total_mala_semilla = suma_graves(request,6)
+    plagas = graves(request,7)
+    total_plagas = suma_graves(request,7)
+    
+    #Razones de mercado
+    bajo_precio = graves(request,8)
+    total_bajo_precio = suma_graves(request,8)
+    falta_venta = graves(request,9)
+    total_falta_venta = suma_graves(request,9)
+    estafa = graves(request,10)
+    total_estafa = suma_graves(request,10)
+    falta_calidad = graves(request,11)
+    total_falta_calidad = suma_graves(request,11)
+    
+    #inversion
+    falta_credito = graves(request,12)
+    total_falta_credito = suma_graves(request,12)
+    alto_interes = graves(request,13)
+    total_alto_interes = suma_graves(request,13)
     
     tabla = {}
     lista2 = []
@@ -1214,22 +1306,10 @@ def vulnerable(request):
         query = a.filter(vulnerable__motivo = i)
         frecuencia = query.count()
         porce = saca_porcentajes(frecuencia,num_familia)
-#        fenon = query.filter(vulnerable__motivo=i,vulnerable__respuesta=1).aggregate(fenon=Count('vulnerable__respuesta'))['fenon']
-#        agri = query.filter(vulnerable__motivo=i,vulnerable__respuesta=2).aggregate(agri=Count('vulnerable__respuesta'))['agri']
-#        merc = query.filter(vulnerable__motivo=i,vulnerable__respuesta=3).aggregate(merc=Count('vulnerable__respuesta'))['merc']
-#        inver = query.filter(vulnerable__motivo=i,vulnerable__respuesta=4).aggregate(inver=Count('vulnerable__respuesta'))['inver']
         
         lista2.append([key,key2,frecuencia,porce])
-                       
-        #tabla[key] = {'key2':key2,'frecuencia':frecuencia,'porce':porce}
-#    lista = []              
-#    for key, value in sorted(tabla.iteritems(), key=lambda (k,v): (v,k)):
-#        lista.append([key,value])
-                      
-    #print lista
     
-    return render_to_response('riesgos/vulnerable.html',{'num_familias':num_familia, 
-                              'lista2':lista2},
+    return render_to_response('riesgos/vulnerable.html',locals(),
                               context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #tabla mitigacion de riesgos

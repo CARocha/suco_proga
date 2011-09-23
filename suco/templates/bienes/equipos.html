@@ -135,6 +135,54 @@ $(document).ready(function () {
             {%endfor%}
         <tbody>
     </table>
+
+<div class="subindicador">Los Electrodomésticos<a href="#" class="exportar"></a></div>
+    <table id="table_example" class="tablesorter" style="font-size:90%">
+        <thead>
+            <tr>
+                <th>electrodomesticos</th>
+                <th>FRECUENCIA</th>
+                <th>%</th>
+                <th>CANTIDAD</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in electro.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+                <td>{{value.trans|floatformat}}</td>
+                <td>{{value.por_trans|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
+    
+    <div class="subindicador">Los equipos de sanamiento ambiental<a href="#" class="exportar"></a></div>
+    <table id="table_example" class="tablesorter" style="font-size:90%">
+        <thead>
+            <tr>
+                <th>Equipos</th>
+                <th>FRECUENCIA</th>
+                <th>%</th>
+                <th>CANTIDAD</th>
+                <th>Promedio por familia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in sana.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+                <td>{{value.trans|floatformat}}</td>
+                <td>{{value.por_trans|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
 </div>
 <div class="clean"></div>
 {% endblock %}
