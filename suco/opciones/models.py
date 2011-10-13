@@ -53,6 +53,7 @@ class CultivosVariedad(models.Model):
 
     class Meta:
         verbose_name_plural = "Cultivos variedad"
+        ordering = ['cultivo']
 
 class Variedades(models.Model):
     cultivo = models.ForeignKey(CultivosVariedad)
@@ -62,6 +63,7 @@ class Variedades(models.Model):
 
     class Meta:
         verbose_name_plural = "Variedades"
+        ordering = ['cultivo']
         
 CHOICE_ORIGEN = ((1,'Nativo'), (2,'Introducido'))
 
