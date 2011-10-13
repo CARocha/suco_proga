@@ -44,7 +44,7 @@ $(document).ready(function () {
 <div class="sidebar">
     
         <div class="subindicador">Gráficos</a></div>
-        <a id="grafico2" href="#" onCLick="click_callback('beneficio')" class="grafo">Beneficio de ser Socio/a</a>
+<!--        <a id="grafico2" href="#" onCLick="click_callback('beneficio')" class="grafo">Beneficio de ser Socio/a</a>-->
         
  <div id="grafo"></div>
 </div> 
@@ -105,61 +105,6 @@ $(document).ready(function () {
        </tbody>
     </table>
 <br>
-<div class="subindicador">Soy miembro de órgano gremials<a href="#" class="exportar"></a></div>
-     <table  width="100%">
-        <thead>
-            <tr>
-                <th>Categoria</th>
-                <th>Frecuencia</th>
-                <th>porcentaje %</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            {% for key, value in tabla_miembro.items %}
-            <td>{{key|unslugify}}</td>
-            <td>{{value.frecuencia|floatformat:2}}</td>
-            <td>{{value.porcentaje|floatformat:2}}</td>
-       </tr>
-            {% endfor %}
-            
-       <tr>
-            <th>TOTAL</th>
-            <th>{{divisor2|floatformat:2}}</th>
-            <th>100</th>
-      </tr>
-       
-       </tbody>
-    </table>
-<br>
-
-<br>
-<div class="subindicador">He recibido capacitación para desempeñar mi cargo <a href="#" class="exportar"></a></div>
-    <table  width="100%">
-        <thead>
-            <tr>
-                <th>Categoria</th>
-                <th>Frecuencia</th>
-                <th>porcentaje %</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            {% for key, value in tabla_capacitacion.items %}
-            <td>{{key|unslugify}}</td>
-            <td>{{value.frecuencia|floatformat:2}}</td>
-            <td>{{value.porcentaje|floatformat:2}}</td>
-       </tr>
-            {% endfor %}
-            
-       <tr>
-            <th>TOTAL</th>
-            <th>{{divisor4|floatformat:2}}</th>
-            <th>100</th>
-      </tr>
-       
-       </tbody>
-    </table>
 
 </div>
 <div class="clean"></div>

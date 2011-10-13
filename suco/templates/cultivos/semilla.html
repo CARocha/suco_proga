@@ -1,0 +1,44 @@
+{% extends "basenueva.html"%}
+{%load unslugify %}
+{% block titulo %}
+Uso de Semilla
+<div class="cambiar_indicador"><a href="#" id="mas">Cambiar Indicador <span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></a></div>
+{% endblock%}
+{% block content %}
+
+{% include "filtros.html" %}
+
+<div class="contenido">   
+    <table>
+        <caption>Uso de semilla</caption>
+        <thead>
+            <tr>
+                <th>Cultivo</th>
+                <th>Variedad</th>
+                <th>Frecuencia</th>
+                <th>%</th>
+                <th>Nativos</th>
+                <th>%</th>
+                <th>Introducido</th>
+                <th>%</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for k in lista%}
+            <tr>
+                <td>{{k.1|unslugify}}</td>
+                <td>{{k.0|unslugify}}</td>
+                <td>{{k.2|floatformat}}</td>
+                <td>{{k.3|floatformat}}</td>
+                <td>{{k.4|floatformat}}</td>
+                <td>{{k.5|floatformat}}</td>
+                <td>{{k.6|floatformat}}</td>
+                <td>{{k.7|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <br></br><br></br>
+</div>
+
+{% endblock %}

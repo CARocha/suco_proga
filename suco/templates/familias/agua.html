@@ -62,10 +62,13 @@ $(document).ready(function () {
 
 <div class="contenido fulltabla">
 
-    <div class="subindicador">FAMILIA &raquo; Agua de consumo<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
+    <div class="subindicador">FAMILIA &raquo; Agua para consumo humano<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
  
 <div id="modalidad">
+    <h1>Agua para consumo humano</h1>
+    
 		<table style="width:100%;">
+		<caption>Fuentes de consumo de agua </caption>
 			<thead>
 				<tr>
 					<th>Fuente</th>
@@ -81,9 +84,100 @@ $(document).ready(function () {
 			</tr>
 			{%endfor%}
 		</table>
-</div>
-	</div>
-	<div class="clean"></div>
+		
+	    <table style="width:100%;">
+	    <caption>Como trata agua para beber y cocinar</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in tratar%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		
+		<table style="width:100%;">
+		<caption>Disponibilidad de agua para uso domestico</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in disponibilidad%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		<br>
+		<h1>Agua para la producción</h1>
+		<table style="width:100%;">
+		<caption>Fuente de agua</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in fuentes%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		<table style="width:100%;">
+		<caption>Equipos para bombeo</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in bombeo%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		<table style="width:100%;">
+		<caption>Energia utilizada</caption>
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Frecuencia</th>
+					<th>%</th>
+				</tr>
+			</thead>
+			{% for fila in energia%}
+			<tr>
+				{%for celda in fila%}
+				<td>{{celda}}</td> 
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
 </div>
 
+</div>
+	<div class="clean"></div>
+    {{fuentes}}<br>
+    {{equipo}}<br>
+    {{energia}}
 {% endblock %}

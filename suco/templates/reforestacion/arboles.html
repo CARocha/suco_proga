@@ -38,18 +38,68 @@ $(document).ready(function () {
 {% endblock %}
 {% block content %}
 {% include "filtros.html" %}
+<div class="sidebar">
+   <div class="subindicador">Gráficos</a></div>
+        <h1>Gráficos tipos de arboles</h1>
+        <a id="grafico1" href="#" onCLick="click_callback('maderable')" class="grafo">Árbol Maderable</a>
+        <a id="grafico2" href="#" onCLick="click_callback('forrajero')" class="grafo">Árbol Forrajero</a>
+        <a id="grafico3" href="#" onCLick="click_callback('energetico')" class="grafo">Árbol Energetico</a>
+        <a id="grafico4" href="#" onCLick="click_callback('frutal')" class="grafo">Árbol Frutal</a>
+    <div id="grafo"></div>
+</div>
 
-<div class="contenido fulltabla">
+<div class="contenido mediatabla">
     <br>
-    <div class="subindicador">Reforestación en ultimo año<a href="#" class="exportar"></a></div>
+    <div class="subindicador">Existencia de árboles<a href="#" class="exportar"></a></div>
+     <table>
+        <caption>Tabla Existencia de Arboles</caption>
+        <thead>
+            <tr>
+                <th>TIPO</th>
+                <th>TOTAL</th>
+                <th>PROMEDIO/FINCA</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Maderables</td>
+                <td>{{maderable}}</td>
+                <td>{{pro_maderable}}</td>
+                
+            </tr>
+            <tr>
+                <td>Forrajero</td>
+                <td>{{forrajero}}</td>
+                <td>{{pro_forrajero}}</td>
+               
+            </tr>
+            <tr>
+                <td>Energetico</td>
+                <td>{{energetico}}</td>
+                <td>{{pro_energetico}}</td>
+                
+            </tr>
+            <tr>
+                <td>Frutales</td>
+                <td>{{frutal}}</td>
+                <td>{{pro_frutal}}</td>
+               
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table>
+    
     <table style="width:100%;">
+    <caption>Reforestación</caption>
         <thead>
             <tr>
                 <th>Actividad</th>
                 <th>Frecuencia</th>
                 <th>% Frec.</th>
                 <th>Cantidad de arboles sembrados</th>
-                <th>% Cantidad de arboles</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -59,7 +109,7 @@ $(document).ready(function () {
                 <td>{{value.numero|floatformat}}</td>
                 <td>{{value.porcentaje_num|floatformat}}</td>
                 <td>{{value.nativos|floatformat}}</td>
-                <td>{{value.porcentaje_nativos|floatformat}}</td>
+                
             </tr>
             {%endfor%}
         <tbody>
