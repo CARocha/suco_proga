@@ -1342,6 +1342,34 @@ def calculo_cultivo(request,tipo):
     #******************************
     #********** calculos de los ingreso de los productos de los animales ************
     tabla = {}
+    for cultivo in TipoCultivos.objects.filter(tipo=tipo):
+        key = slugify(cultivo.nombre).replace('-','_')
+        key2 = slugify(cultivo.unidad).replace('-','_')
+        consulta = a.filter(cultivos__cultivo = cultivo)
+        numero = consulta.count()
+        total = consulta.aggregate(total=Sum('cultivos__total'))['total'] 
+        consumo = consulta.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+        try:
+            cantidad = total - consumo
+        except:
+            pass
+        precio = consulta.aggregate(precio=Avg('cultivos__precio'))['precio']
+        try:
+            ingreso = precio * cantidad
+        except:
+            ingreso = 0
+        if ingreso > 0:
+            tabla[key] = {'key2':key2,'numero':numero,'cantidad':cantidad,
+                          'ingreso':ingreso,'precio':precio}
+    return tabla
+
+def calculo_animal(request):
+    #******Variables***************
+    a = _queryset_filtrado(request)
+    num_familias = a.count()
+    #******************************
+    #********** calculos de los ingreso de los productos de los animales ************
+    tabla = {}
     for producto in ProductoAnimal.objects.all():
         key = slugify(producto.nombre).replace('-','_')
         key2 = slugify(producto.unidad).replace('-','_')
@@ -1350,19 +1378,19 @@ def calculo_cultivo(request,tipo):
         total = consulta.aggregate(total=Sum('produccionconsumo__total_produccion'))['total'] 
         consumo = consulta.aggregate(consumo=Sum('produccionconsumo__consumo'))['consumo']
         try:
-            vende = total - consumo
+            cantidad = total - consumo
         except:
             pass
         precio = consulta.aggregate(precio=Avg('produccionconsumo__precio'))['precio']
         try:
-            ingreso = precio * vende
+            ingreso = precio * cantidad
         except:
             ingreso = 0
         if ingreso > 0:
-            tabla[key] = {'key2':key2,'numero':numero,'ingreso':ingreso,
-                          'precio':precio}
+            tabla[key] = {'key2':key2,'numero':numero,'cantidad':cantidad,
+                          'ingreso':ingreso,'precio':precio}
     return tabla
-    
+        
 @session_required
 def ingresos(request):
     '''tabla de ingresos'''
@@ -1444,13 +1472,17 @@ def ingresos(request):
         
     #********* calculos de las variables de otros ingresos******
     matriz = {}
+    ingresototal = 0
     for j in Fuente.objects.all():
         key = slugify(j.nombre).replace('-','_')
         consulta = a.filter(otrosingresos__trabajo = j)
         frecuencia = consulta.count()
-        meses = consulta.aggregate(meses=Avg('otrosingresos__meses'))['meses']
+        meses = consulta.aggregate(meses=Sum('otrosingresos__meses'))['meses']
         ingreso = consulta.aggregate(ingreso=Avg('otrosingresos__Ingreso'))['ingreso']
-        ingresototal = meses * ingreso
+        try:
+            ingresototal = meses * ingreso
+        except:
+            pass
         respuesta['ingreso_otro'] +=  ingresototal
         matriz[key] = {'frecuencia':frecuencia,'meses':meses,
                        'ingreso':ingreso,'ingresototal':ingresototal}

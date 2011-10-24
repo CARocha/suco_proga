@@ -37,6 +37,8 @@ class TipoCultivos(models.Model):
     unidad = models.CharField(max_length=20)
     def __unicode__(self):
         return self.nombre
+    class Meta:
+        verbose_name_plural = "Tipos cultivos en la finca"
         
 class Cultivos(models.Model):
     cultivo = models.ForeignKey(TipoCultivos, verbose_name="Cultivos")
