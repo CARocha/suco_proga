@@ -1,0 +1,379 @@
+{% extends "basenueva.html" %}
+
+{% block extra_header %}
+<script type="text/javascript">
+function Grafo5(){
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'grafo',
+            defaultSeriesType: 'column',
+            height: 350,
+            width: 520
+        },
+        title: {
+            text: 'Labores'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Semilla',
+                'Parcela',
+                'Especies mayores',
+                'Reforestación',
+                'Patio',
+                'Especies menores'
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Cantidad Mz'
+            }
+        },
+
+        tooltip: {
+            formatter: function() {
+                return ''+
+                    this.series.name +': '+ this.y +'';
+            }
+        },
+        plotOptions: {
+            column: {
+                groupPadding: 0,
+                pointPadding: 0.9,
+                borderWidth: 0
+            },
+            series: {
+                pointWidth: 20,
+                minPointLength : 1
+            }
+        },
+        series: [
+            {
+                    name: 'Hijas',
+                    data: [{{labores.semilla.Hijas}},{{labores.parcela.Hijas}},
+                    {{labores.especies_mayores.Hijas}},{{labores.reforestacion.Hijas}},
+                    {{labores.patio.Hijas}},{{labores.especies_menores.Hijas}}],
+            },
+            {
+                    name: 'Hijos',
+                    data: [{{labores.semilla.Hijos}},{{labores.parcela.Hijos}},
+                    {{labores.especies_mayores.Hijos}},{{labores.reforestacion.Hijos}},
+                    {{labores.patio.Hijos}},{{labores.especies_menores.Hijos}}],
+            },
+            {
+                    name: 'Mujer',
+                    data: [{{labores.semilla.Mujer}},{{labores.parcela.Mujer}},
+                    {{labores.especies_mayores.Mujer}},{{labores.reforestacion.Mujer}},
+                    {{labores.patio.Mujer}},{{labores.especies_menores.Mujer}}],
+            },
+            {
+                    name: 'Hombres',
+                    data: [{{labores.semilla.Hombre}},{{labores.parcela.Hombre}},
+                    {{labores.especies_mayores.Hombre}},{{labores.reforestacion.Hombre}},
+                    {{labores.patio.Hombre}},{{labores.especies_menores.Hombre}}],
+            },
+            
+                ]
+    });
+}
+
+function Grafo6(){
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'grafo',
+            defaultSeriesType: 'column',
+            height: 350,
+            width: 520
+        },
+        title: {
+            text: 'Beneficios'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Semilla',
+                'Parcela',
+                'Especies mayores',
+                'Reforestación',
+                'Patio',
+                'Especies menores'
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Cantidad Mz'
+            }
+        },
+
+        tooltip: {
+            formatter: function() {
+                return ''+
+                    this.series.name +': '+ this.y +'';
+            }
+        },
+        plotOptions: {
+            column: {
+                groupPadding: 0,
+                pointPadding: 0.9,
+                borderWidth: 0
+            },
+            series: {
+                pointWidth: 20,
+                minPointLength : 1
+            }
+        },
+        series: [
+            {
+                    name: 'Hijas',
+                    data: [{{beneficio.semilla.Hijas}},{{beneficio.parcela.Hijas}},
+                    {{beneficio.especies_mayores.Hijas}},{{beneficio.reforestacion.Hijas}},
+                    {{beneficio.patio.Hijas}},{{beneficio.especies_menores.Hijas}}],
+            },
+            {
+                    name: 'Hijos',
+                    data: [{{beneficio.semilla.Hijos}},{{beneficio.parcela.Hijos}},
+                    {{beneficio.especies_mayores.Hijos}},{{beneficio.reforestacion.Hijos}},
+                    {{beneficio.patio.Hijos}},{{beneficio.especies_menores.Hijos}}],
+            },
+            {
+                    name: 'Mujer',
+                    data: [{{beneficio.semilla.Mujer}},{{beneficio.parcela.Mujer}},
+                    {{beneficio.especies_mayores.Mujer}},{{beneficio.reforestacion.Mujer}},
+                    {{beneficio.patio.Mujer}},{{beneficio.especies_menores.Mujer}}],
+            },
+            {
+                    name: 'Hombres',
+                    data: [{{beneficio.semilla.Hombre}},{{beneficio.parcela.Hombre}},
+                    {{beneficio.especies_mayores.Hombre}},{{beneficio.reforestacion.Hombre}},
+                    {{beneficio.patio.Hombre}},{{beneficio.especies_menores.Hombre}}],
+            },
+            
+                ]
+    });
+}
+function Grafo7(){
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'grafo',
+            defaultSeriesType: 'column',
+            height: 350,
+            width: 520
+        },
+        title: {
+            text: 'Toma de decisiones'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Semilla',
+                'Parcela',
+                'Especies mayores',
+                'Reforestación',
+                'Patio',
+                'Especies menores'
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Cantidad Mz'
+            }
+        },
+
+        tooltip: {
+            formatter: function() {
+                return ''+
+                    this.series.name +': '+ this.y +'';
+            }
+        },
+        plotOptions: {
+            column: {
+                groupPadding: 0,
+                pointPadding: 0.9,
+                borderWidth: 0
+            },
+            series: {
+                pointWidth: 20,
+                minPointLength : 1
+            }
+        },
+        series: [
+            {
+                    name: 'Hijas',
+                    data: [{{deciciones.semilla.Hijas}},{{deciciones.parcela.Hijas}},
+                    {{deciciones.especies_mayores.Hijas}},{{deciciones.reforestacion.Hijas}},
+                    {{deciciones.patio.Hijas}},{{deciciones.especies_menores.Hijas}}],
+            },
+            {
+                    name: 'Hijos',
+                    data: [{{deciciones.semilla.Hijos}},{{deciciones.parcela.Hijos}},
+                    {{deciciones.especies_mayores.Hijos}},{{deciciones.reforestacion.Hijos}},
+                    {{deciciones.patio.Hijos}},{{deciciones.especies_menores.Hijos}}],
+            },
+            {
+                    name: 'Mujer',
+                    data: [{{deciciones.semilla.Mujer}},{{deciciones.parcela.Mujer}},
+                    {{deciciones.especies_mayores.Mujer}},{{deciciones.reforestacion.Mujer}},
+                    {{deciciones.patio.Mujer}},{{deciciones.especies_menores.Mujer}}],
+            },
+            {
+                    name: 'Hombres',
+                    data: [{{deciciones.semilla.Hombre}},{{deciciones.parcela.Hombre}},
+                    {{deciciones.especies_mayores.Hombre}},{{deciciones.reforestacion.Hombre}},
+                    {{deciciones.patio.Hombre}},{{deciciones.especies_menores.Hombre}}],
+            },
+            
+                ]
+    });
+}
+
+</script>
+
+<script type="text/javascript">
+    //si activo es 0 el html interno esta vacio
+    //caso si activo es otro num sustituir grafico
+    //si activo es el mismo id, esconder grafico
+    var activo = 0;
+    $.ajaxSetup({ cache: false });
+    function click_callback(id){
+        $.getJSON('/grafo/fincas/' + id, function(data) {
+            if (activo != id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".usotierra").addClass("activa");
+    });
+    </script>
+<script type="text/javascript">
+    //si activo es 0 el html interno esta vacio
+    //caso si activo es otro num sustituir grafico
+    //si activo es el mismo id, esconder grafico
+    var activo = 0; 
+    function click_callback(id){
+        $.getJSON('/grafo/fincas/' + id, function(data) {
+            if (activo!= id){
+                $("#grafo").html('<img src="' + data.url + '" />');
+                activo = id;
+            }else{
+                $("#grafo").html('');
+                activo = 0;
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('.grafo').click(function(){
+        $('.grafo').each(function(){
+            $(this).removeClass('grafohover');
+        });
+       $(this).addClass('grafohover');
+    });
+});
+</script>
+{%endblock%}
+{% block barra %}
+<div class="indicadores">
+	{% include "nav_tierra.html" %}
+</div>
+{% endblock %}
+{% block content%}
+{% include "filtros.html" %}
+<div class="sidebar">
+    <div class="subindicador">Gráficos</a></div>
+        <a href="#" id="grafico3" onclick="Grafo5();" class="grafo">Labores</a>
+        <a href="#" id="grafico2" onclick="Grafo6();" class="grafo">Beneficios</a>
+        <a href="#" id="grafico2" onclick="Grafo7();" class="grafo">Toma de decisión</a>
+        
+<div id="grafo"></div>
+</div>
+
+<div class="contenido mediatabla">
+<div class="subindicador">>>Participacion de la familia en labores<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+    <caption>Labores</caption>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Hijas</th>
+                <th>Hijos</th>
+                <th>Mujeres</th>
+                <th>Hombres</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in labores.items%}
+            <tr>
+                <td>{{key}}</td>
+                {%for k,v in value.items%}
+                <td>{{v}}</td>
+                {%endfor%}            
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+  <br>
+  <table style="width:100%;">
+    <caption>Beneficios</caption>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Hijas</th>
+                <th>Hijos</th>
+                <th>Mujeres</th>
+                <th>Hombres</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in beneficio.items%}
+            <tr>
+                <td>{{key}}</td>
+                {%for k,v in value.items%}
+                <td>{{v}}</td>
+                {%endfor%}            
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <br>
+    <table style="width:100%;">
+    <caption>Toma de decision</caption>
+        <thead>
+            <tr>
+               <th></th>
+                <th>Hijas</th>
+                <th>Hijos</th>
+                <th>Mujeres</th>
+                <th>Hombres</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in deciciones.items%}
+            <tr>
+                <td>{{key}}</td>
+                {%for k,v in value.items%}
+                <td>{{v}}</td>
+                {%endfor%}            
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{% endblock %}

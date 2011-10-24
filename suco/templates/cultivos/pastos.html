@@ -1,0 +1,81 @@
+{% extends "basenueva.html"%}
+{%load unslugify %}
+{% block extra_header %}
+<script type="text/javascript">
+var chart;
+$(document).ready(function() {
+   chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'grafos',
+         defaultSeriesType: 'pie',
+      },
+      title: {
+         text: 'Areas en los tipos de pastos'
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+         }
+      },
+      plotOptions: {
+	          pie: {
+	              allowPointSelect: true,
+	              cursor: 'pointer',
+	              dataLabels: {
+	                 enabled: false
+	              },
+	              showInLegend: true
+	           },
+	           series: {
+	              dataLabels: {
+	                  enabled: true,
+	                  align: "center",
+	                  formatter: function() {
+	                      return ''+ this.percentage.toFixed(1) + ' %';
+	                  },
+	                  color: '#000',
+	                  style: {
+	                      font: '12px Trebuchet MS, Verdana, sans-serif'
+	                  }
+	              }
+	          }
+	      },
+       series: [{
+         name: 'Browser share',
+         data: [
+            {%for k,v in tabla.items%}
+            ['{{k|unslugify}}',   {{v.frecuencia}}],
+            {%endfor%}
+         ]
+      }]
+   });
+});
+</script>
+{% endblock %}
+
+{%block content%}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+	<div class="subindicador">>>Los cultivos de pastos<a href="#" class="exportar"></a></div>
+    <table style="width:100%;">
+        <thead>
+            <tr>
+                <th>Tipos de pastos</th>
+                <th>Conteo</th>
+                <th>Sumas de Areas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia}}</td>
+                <td>{{value.area|floatformat:2}}</td>
+            </tr>
+            {%endfor%}
+        <tbody>
+    </table>
+    <div id="grafos"></div>
+</div>
+<div class="clean"></div>
+{%endblock%}

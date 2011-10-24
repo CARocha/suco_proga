@@ -966,46 +966,16 @@ def arboles(request):
 def animales(request):
     '''Los animales y la produccion'''
     consulta = _queryset_filtrado(request)
-    tabla = []
-    tabla_produccion = []
-    totales = {}
-
-    totales['numero'] = consulta.count() 
-    totales['porcentaje_num'] = 100
-    totales['animales'] = consulta.aggregate(cantidad=Sum('animalesfinca__cantidad'))['cantidad']
-    totales['porcentaje_animal'] = 100
-
+    num_familias = consulta.count()
+    tabla_animales = []
+    #tabla_produccion = []
+    
     for animal in Animales.objects.all():
         query = consulta.filter(animalesfinca__animales = animal)
-        numero = query.distinct().count()
-        try:
-            producto = AnimalesFinca.objects.filter(animales = animal)[0].produccion
-        except:
-            #el animal no tiene producto aún
-            continue
+        numero = query.count()
+        porcentaje_num = saca_porcentajes(numero, num_familias, False)
+        tabla_animales.append([animal.nombre,numero,porcentaje_num])
 
-        porcentaje_num = saca_porcentajes(numero, totales['numero'], False)
-        animales = query.aggregate(cantidad = Sum('animalesfinca__cantidad'),
-                                   venta_libre = Sum('animalesfinca__venta_libre'),
-                                   venta_organizada = Sum('animalesfinca__venta_organizada'),
-                                   total_produccion = Sum('animalesfinca__total_produccion'),
-                                   consumo = Sum('animalesfinca__consumo'))
-        try:
-            animal_familia = float(animales['cantidad'])/float(numero) 
-        except:
-            animal_familia = 0
-        animal_familia = "%.2f" % animal_familia
-        tabla.append([animal.nombre, numero, porcentaje_num,
-                      animales['cantidad'], animal_familia])
-        try:
-            tabla_produccion.append([animal.nombre, animales['cantidad'], 
-                                 producto.nombre, producto.unidad,
-                                 animales['total_produccion'],
-                                 animales['consumo'], 
-                                 animales['venta_libre'], 
-                                 animales['venta_organizada']])
-        except:
-            pass
 
     return render_to_response('animales/animales.html', 
                               locals(),
@@ -1021,20 +991,55 @@ def cultivos(request):
     #******************************
     #**********calculosdelasvariables*****
     tabla = {} 
-    for i in Cultivos.objects.all():
-        key = slugify(i.cultivo).replace('-', '_')
-        key2 = slugify(i.cultivo.unidad).replace('-', '_')
+    for i in TipoCultivos.objects.all():
+        key = slugify(i.nombre).replace('-', '_')
+        key2 = slugify(i.unidad).replace('-', '_')
         query = a.filter(cultivos__cultivo = i)
-        #totales = query.aggregate(total=Sum('cultivosfinca__total'))['total']
+        area = query.aggregate(area=Sum('cultivos__area'))['area']
+        totales = query.aggregate(total=Sum('cultivos__total'))['total']
         consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
-        #libre = query.aggregate(libre=Sum('cultivos__venta_libre'))['libre']
-        #organizada =query.aggregate(organizada=Sum('cultivos__venta_organizada'))['organizada']
-        tabla[key] = {'key2':key2,'consumo':consumo,'libre':libre,'organizada':organizada}
+        precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+        if totales > 0:
+            tabla[key] = {'key2':key2,'area':area,'totales':totales,
+                          'consumo':consumo,'precio':precio}
+                      
+    tabla_patio = {}
+    for i in Patio.objects.all():
+        key = slugify(i.nombre).replace('-', '_')
+        query = a.filter(cultivos__cultivo = i)
+#        area = query.aggregate(area=Sum('cultivos__area'))['area']
+        totales = query.aggregate(total=Sum('cultivos__total'))['total']
+        consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+        precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+        if totales > 0:
+            tabla_patio[key] = {'totales':totales,
+                                'consumo':consumo,'precio':precio}
     
     return render_to_response('cultivos/cultivos.html',
-                             {'tabla':tabla,'num_familias':num_familias},
+                             locals(),
                              context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
+
+#tabla cultivos pastos
+@session_required
+def pastos(request):
+    ''' Cultivos de pastos '''
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familias = a.count()
+    #******************************************
+    tabla = {}
+    for pasto in Pastos.objects.all():
+        key = slugify(pasto.nombre).replace('-', '_')
+        query = a.filter(cultivopasto__tipo = pasto)
+        frecuencia = query.count()
+        area = query.aggregate(area=Sum('cultivopasto__area'))['area']
+        tabla[key] = {'frecuencia':frecuencia,'area':area}
+         
+    return render_to_response('cultivos/pastos.html', locals(), 
+                               context_instance=RequestContext(request))
+    
+
 #tabla opciones de manejo                               
 @session_required                               
 def opcionesmanejo(request):
@@ -1098,6 +1103,15 @@ def opcionesmanejo(request):
                               'num_familias':num_familia,'tabla_escala':tabla_escala},
                                context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
+#tabla procesamiento y comercializacion de la produccion
+@session_required
+def procesamiento(request):
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familias = a.count()
+    #******************************************
+    
+
 #Tabla Ahorro
 @session_required
 def ahorro_credito(request):
@@ -1319,6 +1333,36 @@ def manejosuelo(request):
                                context_instance=RequestContext(request))  
 #-------------------------------------------------------------------------------
 #Tabla Ingreso familiar y otros ingresos
+
+#--------------------calculo de los ingresos
+def calculo_cultivo(request,tipo):
+    #******Variables***************
+    a = _queryset_filtrado(request)
+    num_familias = a.count()
+    #******************************
+    #********** calculos de los ingreso de los productos de los animales ************
+    tabla = {}
+    for producto in ProductoAnimal.objects.all():
+        key = slugify(producto.nombre).replace('-','_')
+        key2 = slugify(producto.unidad).replace('-','_')
+        consulta = a.filter(produccionconsumo__producto = producto)
+        numero = consulta.count()
+        total = consulta.aggregate(total=Sum('produccionconsumo__total_produccion'))['total'] 
+        consumo = consulta.aggregate(consumo=Sum('produccionconsumo__consumo'))['consumo']
+        try:
+            vende = total - consumo
+        except:
+            pass
+        precio = consulta.aggregate(precio=Avg('produccionconsumo__precio'))['precio']
+        try:
+            ingreso = precio * vende
+        except:
+            ingreso = 0
+        if ingreso > 0:
+            tabla[key] = {'key2':key2,'numero':numero,'ingreso':ingreso,
+                          'precio':precio}
+    return tabla
+    
 @session_required
 def ingresos(request):
     '''tabla de ingresos'''
@@ -1327,48 +1371,98 @@ def ingresos(request):
     num_familias = a.count()
     #******************************
     #*******calculos de las variables ingreso************
-    tabla = {}
     respuesta = {}
-    respuesta['bruto']=[]
-    respuesta['ingreso']=0
-    respuesta['ingreso_total']=0
-    respuesta['ingreso_otro']=0
-    respuesta['brutoo'] = 0
+    respuesta['bruto'] = 0
+    respuesta['ingreso_otro'] = 0
     respuesta['total_neto'] = 0
-    for i in Rubros.objects.all():
-        key = slugify(i.nombre).replace('-','_')
-        key2 = slugify(i.unidad).replace('-','_')
-        query = a.filter(ingresofamiliar__rubro = i)
-        numero = query.count()
-        cantidad = query.aggregate(cantidad=Sum('ingresofamiliar__cantidad'))['cantidad']
-        precio = query.aggregate(precio=Avg('ingresofamiliar__precio'))['precio']
-        ingreso = cantidad * precio if cantidad != None and precio != None else 0
-        respuesta['ingreso']= round(query.aggregate(cantidad=Sum('ingresofamiliar__cantidad'))['cantidad'] * query.aggregate(precio=Avg('ingresofamiliar__precio'))['precio'],) if cantidad != None and precio != None else 0
-        respuesta['ingreso_total'] +=  respuesta['ingreso']
-        
-        tabla[key] = {'key2':key2,'numero':numero,'cantidad':cantidad,
-                      'precio':precio,'ingreso':ingreso}
+    #******** cultivos finca 
+    agro = calculo_cultivo(request,1)
+    forestal = calculo_cultivo(request,2)
+    grano_basico = calculo_cultivo(request,3)
+    patio = calculo_cultivo(request,5)
+    frutas = calculo_cultivo(request,6)
+    musaceas = calculo_cultivo(request,7)
+    raices = calculo_cultivo(request,8)
+    
+    total_agro = 0
+    c_agro = 0
+    for k,v in agro.items():
+        total_agro += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_agro += 1
+    total_forestal = 0
+    c_forestal = 0
+    for k,v in forestal.items():
+        total_forestal += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_forestal += 1
+    total_basico = 0
+    c_basico = 0
+    for k,v in grano_basico.items():
+        total_basico += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_basico += 1
+    total_patio = 0
+    c_patio = 0
+    for k,v in patio.items():
+        total_patio += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_patio += 1
+    total_fruta = 0
+    c_fruta = 0
+    for k,v in frutas.items():
+        total_fruta += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_fruta += 1
+    total_musaceas = 0
+    c_musaceas = 0
+    for k,v in musaceas.items():
+        total_musaceas += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_musaceas += 1
+    total_raices = 0
+    c_raices = 0
+    for k,v in raices.items():
+        total_raices += round(v['ingreso'],1)
+        if v['numero'] > 0:
+            c_raices += 1
+
+    respuesta['ingreso'] = total_agro + total_forestal + total_basico + total_patio + total_fruta + total_musaceas + total_raices
+    grafo = []
+    grafo.append({'Agroforestales':int(total_agro),'Forestales':int(total_forestal),
+                  'Granos_basicos':int(total_basico),
+                  'Animales_de_patio':int(total_patio),'Hortalizas_y_frutas':int(total_fruta),
+                  'Musaceas':int(total_musaceas),'Tuberculos_y_raices':int(total_raices)
+                 })
+                 
+    cuantos = []
+    cuantos.append({'Agroforestales':c_agro,'Forestales':c_forestal,'Granos_basicos':c_basico,
+                  'Animales_de_patio':c_patio,
+                  'Hortalizas_y_frutas':c_fruta,'Musaceas':c_musaceas,
+                  'Tuberculos_y_raices':c_raices})
+   
         
     #********* calculos de las variables de otros ingresos******
     matriz = {}
-    for j in Fuentes.objects.all():
+    for j in Fuente.objects.all():
         key = slugify(j.nombre).replace('-','_')
-        consulta = a.filter(otrosingresos__fuente = j)
+        consulta = a.filter(otrosingresos__trabajo = j)
         frecuencia = consulta.count()
         meses = consulta.aggregate(meses=Avg('otrosingresos__meses'))['meses']
-        ingreso = consulta.aggregate(ingreso=Avg('otrosingresos__ingreso'))['ingreso']
-        ingresototal = consulta.aggregate(meses=Avg('otrosingresos__meses'))['meses'] * consulta.aggregate(ingreso=Avg('otrosingresos__ingreso'))['ingreso'] if meses != None and ingreso != None else 0
+        ingreso = consulta.aggregate(ingreso=Avg('otrosingresos__Ingreso'))['ingreso']
+        ingresototal = meses * ingreso
         respuesta['ingreso_otro'] +=  ingresototal
-        #ingresototal = consulta.aggregate(total=Avg('otrosingresos__ingreso_total'))['total']
         matriz[key] = {'frecuencia':frecuencia,'meses':meses,
                        'ingreso':ingreso,'ingresototal':ingresototal}
                        
-    respuesta['brutoo'] = round((respuesta['ingreso_total'] + respuesta['ingreso_otro']) / num_familias,2)
-    respuesta['total_neto'] = round(respuesta['brutoo'] * 0.6,2)
+    try:
+        respuesta['bruto'] = round((respuesta['ingreso'] + respuesta['ingreso_otro']) / num_familias,2)
+    except:
+        pass
+    respuesta['total_neto'] = round(respuesta['bruto'] * 0.6,2)
         
     return render_to_response('ingresos/ingreso.html',
-                              {'tabla':tabla,'num_familias':num_familias,'matriz':matriz,
-                              'respuesta':respuesta},
+                              locals(),
                               context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
                          #bienes
@@ -1693,7 +1787,38 @@ def mitigariesgos(request):
                               'num_familias':num_familia},
                                context_instance=RequestContext(request)) 
 #-------------------------------------------------------------------------------
-
+#tabla participacion de la familia en labores, beneficios y toma de decisiones
+def participacion(request):
+    #********variables globales****************
+    a = _queryset_filtrado(request)
+    num_familias = a.count()
+    #******************************************    
+    labores = {}
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        labores[key] = {}
+        for decide in Decision.objects.all():
+            cuanto = a.filter(participasion__rubro=especie, participasion__labores=decide).count()
+            labores[key][decide.nombre] = cuanto
+            
+    beneficio = {}
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        beneficio[key] = {}
+        for decide in Decision.objects.all():
+            cuanto = a.filter(participasion__rubro=especie, participasion__beneficios=decide).count()
+            beneficio[key][decide.nombre] = cuanto
+            
+    deciciones = {}
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        deciciones[key] = {}
+        for decide in Decision.objects.all():
+            cuanto = a.filter(participasion__rubro=especie, participasion__decision=decide).count()
+            deciciones[key][decide.nombre] = cuanto
+            
+    return render_to_response('participacion/participa.html', locals(),
+                               context_instance=RequestContext(request))    
 
     
 #-------------------------------------------------------------------------------    
@@ -1779,6 +1904,7 @@ VALID_VIEWS = {
         'salud': salud,
         'luz':luz,
         'agua': agua,
+        'pastos': pastos,
         'fincas':fincas,
         'arboles': arboles,
         'animales': animales,
@@ -1801,6 +1927,7 @@ VALID_VIEWS = {
         'ahorro_credito': ahorro_credito,
         'opcionesmanejo': opcionesmanejo,
         'seguridad': seguridad_alimentaria,
+        'participacion': participacion,
         'general': generales,
          
   }

@@ -7,50 +7,17 @@
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
 	<div class="subindicador">Los Animales<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
-        <caption></caption>
+    <table>
+        <caption>Los Animales</caption>
         <thead>
             <tr>
-                <th></th>
-                <th>Número</th>
-                <th>%</th>
-                <th>cantidad</th>
-                <th>Cantidad/Familia</th>
-            </tr>
-        </thead>
-        <tbody>
-<!--            <tr>-->
-<!--                <td>TOTAL</td>-->
-<!--                <td>{{totales.numero}}</td>-->
-<!--                <td>{{totales.porcentaje_num}}</td>-->
-<!--                <td>{{totales.animales}}</td>-->
-<!--                <td>{{totales.porcentaje_animal}}</td>-->
-<!--            </tr>-->
-            {%for fila in tabla%}
-            <tr>
-                {%for celda in fila%}
-                <td>{{celda}}</td>
-                {%endfor%}
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
-	<div class="subindicador">Los Animales y la Producción<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
-        <thead>
-            <tr>
-                <th>Animal</th>
+                <th>Animales</th>
                 <th>Cantidad</th>
-                <th>Producto</th>
-                <th>Unidad</th>
-                <th>Cantidad Producida</th>
-                <th>Consumo</th>
-                <th>Venta Libre</th>
-                <th>Venta organizada</th>
+                <th>%</th>
             </tr>
         </thead>
         <tbody>
-            {%for fila in tabla_produccion%}
+            {%for fila in tabla_animales%}
             <tr>
                 {%for celda in fila%}
                 <td>{{celda}}</td>
