@@ -39,6 +39,7 @@ class TipoCultivos(models.Model):
         return self.nombre
     class Meta:
         verbose_name_plural = "Tipos cultivos en la finca"
+        ordering = ['nombre']
         
 class Cultivos(models.Model):
     cultivo = models.ForeignKey(TipoCultivos, verbose_name="Cultivos")
@@ -58,6 +59,9 @@ class Patio(models.Model):
     
     def __unicode__(self):
         return self.nombre
+    class Meta:
+        verbose_name_plural = "Cultivos de patio"
+        ordering = ['nombre']
         
 class CultivosPatio(models.Model):
     cultivo = models.ForeignKey(Patio, verbose_name="Cultivos")
