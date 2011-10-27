@@ -1,0 +1,41 @@
+{% extends "basenueva.html"%}
+{%load unslugify %}
+{%block extra_header%}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".suelo").addClass("activa");
+    });
+</script>
+{%endblock%}
+{% block barra %}
+
+<div class="indicadores">
+	{% include "nav_suelo.html" %}
+</div>
+{% endblock %}
+
+{% block content %}
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+ <div class="subindicador">Restrinción de agua<a href="#" class="exportar"></a></div>
+    <table  style="width:100%;">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Número</th>
+                <th>%</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for key, value in tabla.items%}
+            <tr>
+                <td>{{key|unslugify}}</td>
+                <td>{{value.frecuencia|floatformat}}</td>
+                <td>{{value.por_frecuencia|floatformat}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+<div class="clean"></div>
+{% endblock %}

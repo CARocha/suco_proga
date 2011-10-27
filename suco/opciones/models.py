@@ -242,7 +242,7 @@ CHOICE_EMPAQUE = (  (1,'Biodegradable'),
                  
 class Procesamiento(models.Model):
     producto = models.ForeignKey(Procesado, verbose_name="Producto Procesado")
-    cantidad = models.FloatField()
+    cantidad = models.FloatField('Cantidad producida')
     aditivos = models.IntegerField('Uso de aditivos', choices=CHOICE_OPCION)
     empaque = models.IntegerField('Tipo de empaque', choices=CHOICE_EMPAQUE)
     comercializada = models.FloatField('Cantidad comercializada')

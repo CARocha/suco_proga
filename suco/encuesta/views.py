@@ -867,6 +867,41 @@ def fincas(request):
                               context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 @session_required
+def agua_restrincion(request):
+    #--- variables ---
+    consulta = _queryset_filtrado(request)
+    num_familias = consulta.count()
+    #------------------------------
+    tabla = {}
+    for agua in AguaAcceso.objects.all():
+        key = slugify(agua.nombre).replace('-','_')
+        query = consulta.filter(accesoagua__nombre = agua)
+        frecuencia = query.count()
+        por_frecuencia = saca_porcentajes(frecuencia,num_familias)
+        tabla[key] = {'frecuencia':frecuencia, 'por_frecuencia':por_frecuencia}
+        
+    return render_to_response('tierra/accesoagua.html', locals(),
+                               context_instance=RequestContext(request))
+
+@session_required
+def sistematizacion(request):
+    #--- variables ---
+    consulta = _queryset_filtrado(request)
+    num_familias = consulta.count()
+    #------------------------------
+    tabla = {}
+    for observaciones in Observacion.objects.all():
+        key = slugify(observaciones.nombre).replace('-','_')
+        query = consulta.filter(accesoagua__nombre = observaciones)
+        frecuencia = query.count()
+        por_frecuencia = saca_porcentajes(frecuencia,num_familias)
+        tabla[key] = {'frecuencia':frecuencia, 'por_frecuencia':por_frecuencia}
+        
+    return render_to_response('agroecologico/sistematizacion.html', locals(),
+                               context_instance=RequestContext(request))      
+        
+        
+@session_required
 def arboles_grafos(request, tipo):
     ''' graficos para los distintos tipos de arboles en las fincas
         Maderables, Forrajero, Energetico y Frutal
@@ -1106,10 +1141,23 @@ def opcionesmanejo(request):
 #tabla procesamiento y comercializacion de la produccion
 @session_required
 def procesamiento(request):
-    #********variables globales****************
-    a = _queryset_filtrado(request)
-    num_familias = a.count()
-    #******************************************
+    #--- variables ---
+    consulta = _queryset_filtrado(request)
+    num_familias = consulta.count()
+    #------------------------------
+    tabla = {}
+    for pro in Procesado.objects.all():
+        key = slugify(pro.nombre).replace('-','_')
+        query = consulta.filter(procesamiento__producto = pro)
+        frecuencia = query.count()
+        por_frecuencia = saca_porcentajes(frecuencia,num_familias)
+        cantidad = query.aggregate(cantidad=Sum('procesamiento__cantidad'))['cantidad']
+        comer = query.aggregate(comer=Sum('procesamiento__comercializada'))['comer']
+        tabla[key] = {'frecuencia':frecuencia, 'por_frecuencia':por_frecuencia,
+                      'cantidad':cantidad, 'comer':comer}
+        
+    return render_to_response('suelo/procesamiento.html', locals(),
+                               context_instance=RequestContext(request))
     
 
 #Tabla Ahorro
@@ -1960,6 +2008,9 @@ VALID_VIEWS = {
         'opcionesmanejo': opcionesmanejo,
         'seguridad': seguridad_alimentaria,
         'participacion': participacion,
+        'restrincion': agua_restrincion,
+        'sistematizacion': sistematizacion,
+        'procesamiento': procesamiento,
         'general': generales,
          
   }
