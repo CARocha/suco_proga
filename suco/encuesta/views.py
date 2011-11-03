@@ -584,52 +584,57 @@ def grafos_ingreso(request, tipo):
                 'Quien tiene los ingresos', return_json=True,
                 type=grafos.PIE_CHART_2D)
     elif tipo == 'salario':
-        for opcion in TipoTrabajo.objects.all()[:4]:
-            data.append(consulta.filter(otrosingresos__fuente__nombre__icontains="Salarios",
-                                        otrosingresos__tipo=opcion).count())
-            legends.append(opcion)
+        for opcion in TipoTrabajo.objects.all():
+            sal = consulta.filter(otrosingresos__trabajo__fuente__nombre__icontains="Salarios",
+                                        otrosingresos__trabajo=opcion).count()
+            if sal > 0:
+                data.append(sal)
+                legends.append(opcion)
         return grafos.make_graph(data, legends,
                 'Tipos de salarios', return_json=True,
                 type=grafos.PIE_CHART_2D)
+    elif tipo == 'alquiler':
+        for opcion in TipoTrabajo.objects.all():
+            alqui = consulta.filter(otrosingresos__trabajo__fuente__nombre__icontains="Alquiler",
+                                        otrosingresos__trabajo=opcion).count()
+            if alqui > 0:
+                data.append(alqui)
+                legends.append(opcion)
+        return grafos.make_graph(data, legends,
+                'Tipos de alquileres', return_json=True,
+                type=grafos.PIE_CHART_2D)
     elif tipo == 'negocio':
-        for opcion in TipoTrabajo.objects.all()[4:8]:
-            data.append(consulta.filter(otrosingresos__fuente__nombre__icontains="Negocios",
-                                        otrosingresos__tipo=opcion).count())
-            legends.append(opcion)
+        for opcion in TipoTrabajo.objects.all():
+            nego = consulta.filter(otrosingresos__trabajo__fuente__nombre__icontains="Negocios",
+                                        otrosingresos__trabajo=opcion).count()
+            if nego > 0:
+                data.append(nego)
+                legends.append(opcion)
         return grafos.make_graph(data, legends,
                 'Tipos de Negocios', return_json=True,
                 type=grafos.PIE_CHART_2D)
     elif tipo == 'remesa':
-        #for opcion in TipoTrabajo.objects.all()[9:9]:
-        nacional = consulta.filter(otrosingresos__fuente__nombre__icontains="Remesas",
-                                    otrosingresos__tipo=16).count()
-        extran = consulta.filter(otrosingresos__fuente__nombre__icontains="Remesas",
-                                    otrosingresos__tipo=9).count()
-        data = (nacional,extran)
-        legends = ('Nacional','Extranjero')
+        for opcion in TipoTrabajo.objects.all():
+            reme = consulta.filter(otrosingresos__trabajo__fuente__nombre__icontains="Remesas",
+                                        otrosingresos__trabajo=opcion).count()
+            if reme > 0:
+                data.append(reme)
+                legends.append(opcion)
         return grafos.make_graph(data, legends,
-                'Tipos de Remesas', return_json=True,
+                'Remesas', return_json=True,
                 type=grafos.PIE_CHART_2D)
-    elif tipo == 'alquiler':
-        for opcion in TipoTrabajo.objects.all()[10:13]:
-            data.append(consulta.filter(otrosingresos__fuente__nombre__icontains="Alquiler",
-                                        otrosingresos__tipo=opcion).count())
-            legends.append(opcion)
-        return grafos.make_graph(data, legends,
-                'Tipos de Alquiler', return_json=True,
-                type=grafos.PIE_CHART_2D)
-    elif tipo == 'aportar':
-        #data.append[(consulta.filter(aporte__persona=opcion[0]).count())]
-        uno = consulta.filter(aporte__persona=1).count()
-        dos = consulta.filter(aporte__persona=2).count()
-        tres = consulta.filter(aporte__persona=3).count()
-        cuatro = consulta.filter(aporte__persona=4).count()
-        
-        data = [[uno],[dos],[tres],[cuatro]]
-        legends = ['2-3','4-5','6-7','mas de 8']
-        message = "Aporte en la finca"
-        return grafos.make_graph(data, legends, message, multiline = True,
-                return_json = True, type = grafos.GROUPED_BAR_CHART_V)
+    elif tipo == 'libre':
+        for opcion in AquienVende.objects.all():
+            data.append(consulta.filter(cultivos__venta_libre=opcion).count())
+            legends.append(opcion.nombre)
+        return grafos.make_graph(data, legends, 'Venta libre por año', multiline = True,
+                return_json = True, type = grafos.PIE_CHART_2D)
+    elif tipo == 'organizada':
+        for opcion in CHOICE_OPCION:
+            data.append(consulta.filter(cultivos__venta_organizada=opcion[0]).count())
+            legends.append(opcion[1])
+        return grafos.make_graph(data, legends, 'Venta organizada por año', multiline = True,
+                return_json = True, type = grafos.PIE_CHART_2D)
     else:
         raise Http404
         
@@ -716,42 +721,11 @@ def gremial(request):
         porcentaje = saca_porcentajes(frecuencia,divisor1)
         tabla_desde[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
      
-    #miembro
-#    tabla_miembro = {}
-#    divisor2  = a.filter(organizaciongremial__miembro_gremial__in=(1,2,3)).count()
-#                                         
-#    for p in CHOICE_MIEMBRO_GREMIAL:
-#        key = slugify(p[1]).replace('-','_')
-#        query = a.filter(organizaciongremial__miembro_gremial = p[0])
-#        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__miembro_gremial'))['frecuencia']
-#        porcentaje = saca_porcentajes(frecuencia,divisor2)
-#        tabla_miembro[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
-    
-#    #desde miembro
-#    tabla_desde_miembro = {}
-#    divisor3 = a.aggregate(divisor3=Count('organizaciongremial__desde_miembro'))['divisor3']    
-#    for k in CHOICE_DESDE:
-#        key = slugify(k[1]).replace('-','_')
-#        query = a.filter(organizaciongremial__desde_miembro = k[0])
-#        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__desde_miembro'))['frecuencia']
-#        porcentaje = saca_porcentajes(frecuencia,divisor3)
-#        tabla_desde_miembro[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
-        
-    #capacitación
-#    tabla_capacitacion = {}
-#    divisor4 = a.filter(organizaciongremial__capacitacion__in=[1,2]).count()    
-#    for t in CHOICE_OPCION:
-#        key = slugify(t[1]).replace('-','_')
-#        query = a.filter(organizaciongremial__capacitacion = t[0])
-#        frecuencia = query.aggregate(frecuencia=Count('organizaciongremial__capacitacion'))['frecuencia']
-#        porcentaje = saca_porcentajes(frecuencia,divisor4)
-#        tabla_capacitacion[key] = {'frecuencia':frecuencia, 'porcentaje':porcentaje}
+ 
         
     return render_to_response('organizacion/gremial.html', 
                                  {'tabla_gremial': tabla_gremial, 'tabla_desde':tabla_desde,
                                  'num_familias': num_familias,'divisor':divisor,'divisor1':divisor1
-                                 #'tabla_miembro':tabla_miembro, 'divisor2':divisor2,
-                                 #'tabla_capacitacion':tabla_capacitacion, 'divisor4':divisor4
                                  },
                                  context_instance=RequestContext(request))
                                  

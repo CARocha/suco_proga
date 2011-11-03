@@ -14,20 +14,6 @@
 </script>
 
 <script type="text/javascript">
-    var activo = 0; 
-    function click_callback(id){
-        $.getJSON('/grafo/organizacion/' + id, function(data) {
-            if (activo!= id){
-                $("#grafo").html('<img src="' + data.url + '" />');
-                activo = id;
-            }else{
-                $("#grafo").html('');
-                activo = 0;
-            }
-        });
-    }
-</script>
-<script type="text/javascript">
 $(document).ready(function () {
     $('.grafo').click(function(){
         $('.grafo').each(function(){
@@ -36,6 +22,73 @@ $(document).ready(function () {
         $(this).addClass('grafohover');
     });
 });
+
+function Grafo1(){
+       var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'grafo',
+                defaultSeriesType: 'column'
+            },
+            title: {
+                text: 'Es socio de una organización Gremial'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: [
+                    'Opciones'   
+                ]
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentajes (%)'
+                }
+            },
+            
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'';
+                }
+            },
+            plotOptions: {
+                column: {
+                    groupPadding: 0,
+                    pointPadding: 0.9,
+                    borderWidth: 0
+                },
+                series: {
+                    pointWidth: 33,
+                    minPointLength : 1
+                }
+            },
+            series: [
+            {%for k,v in tabla_gremial.items%}
+                {   
+                    name: '{{k|unslugify}}',
+                    data: [{{v.porcentaje|floatformat:2}}],
+                    dataLabels: {
+                        enabled: true,
+                        rotation: 0,
+                        color: '#632D00',
+                        align: 'center',
+                        x: -3,
+                        y: 0,
+                            formatter: function() {
+                                return this.y + '%';
+                                                  },
+                        style: {
+                            font: 'normal 10px Verdana, sans-serif'
+                                }
+                                }
+                     
+                },
+           {%endfor%}
+                ]
+        });
+    }
 </script>
 {%endblock%}
 
@@ -43,8 +96,8 @@ $(document).ready(function () {
 {% include "filtros.html" %}
 <div class="sidebar">
     
-        <div class="subindicador">Gráficos</a></div>
-<!--        <a id="grafico2" href="#" onCLick="click_callback('beneficio')" class="grafo">Beneficio de ser Socio/a</a>-->
+<div class="subindicador">Gráficos</a></div>
+       <a id="grafico1" href="#" onCLick="Grafo1();" class="grafo">Organización Gremial</a>
         
  <div id="grafo"></div>
 </div> 
