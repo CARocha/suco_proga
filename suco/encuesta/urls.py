@@ -7,7 +7,7 @@ urlpatterns = patterns('suco.encuesta.views',
     #(r'^index/$', 'inicio'),
     (r'^menu/$', 'menu'),
     (r'^general/$', 'generales'),
-#    (r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
+    #(r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),
     (r'^ajax/municipio/(?P<departamento>\d+)/$', 'get_municipios'),
     (r'^ajax/comunidad/(?P<municipio>\d+)/$', 'get_comunidad'),
     #graficas para los indicadores
@@ -20,7 +20,7 @@ urlpatterns = patterns('suco.encuesta.views',
     (r'^grafo/bienes/(?P<tipo>\w+)/$', 'grafos_bienes'),
     (r'^grafo/ahorro-credito/(?P<tipo>\w+)/$', 'ahorro_credito_grafos'),
     (r'^mapa/$', 'obtener_lista'),
-#    (r'^ayuda/$',   direct_to_template,{'template': 'acerca.html'}),
+    #(r'^ayuda/$',   direct_to_template,{'template': 'acerca.html'}),
     (r'^(?P<vista>\w+)/$', '_get_view'),
       
 )
