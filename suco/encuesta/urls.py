@@ -20,7 +20,10 @@ urlpatterns = patterns('suco.encuesta.views',
     (r'^grafo/bienes/(?P<tipo>\w+)/$', 'grafos_bienes'),
     (r'^grafo/ahorro-credito/(?P<tipo>\w+)/$', 'ahorro_credito_grafos'),
     (r'^mapa/$', 'obtener_lista'),
+
     #(r'^ayuda/$',   direct_to_template,{'template': 'acerca.html'}),
+    (r'^acerca/$',   direct_to_template,{'template': 'acerca.html'}),
+
     (r'^(?P<vista>\w+)/$', '_get_view'),
       
 )
