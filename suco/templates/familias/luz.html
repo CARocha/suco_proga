@@ -139,21 +139,18 @@ var chart;
     });
 </script>    
 {%endblock%}
-{% block barra %}
-<div class="indicadores">
-	{% include "nav_familia.html" %}
-</div>
-{% endblock %}
 
 {% block content %}
-
+{% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
 
 <div class="contenido fulltabla">
-	<div class="subindicador">FAMILIA &raquo; Energía Eléctrica<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
-	
-<div id="modalidad">
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>FAMILIA &raquo; Energía <div class="secciones"><a href="/educacion" class="optionsbutton">Educacion</a><a href="/salud" class="optionsbutton">Salud</a><a href="/luz"class="optionsbutton selected">Luz</a><a href="/agua"class="optionsbutton">Agua</a></div></div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('luz'); return false;"></a>
+	<div class="clean"></div>
+<div id="luz">	
     <table style="width:100%;">
+        <caption>Uso energía eléctrica</caption>
         <thead>
             <tr>
                 <th>Fuente</th>

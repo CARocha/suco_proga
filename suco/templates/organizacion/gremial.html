@@ -1,11 +1,5 @@
 {% extends "basenueva.html" %}
 {%load unslugify %}
-{% block barra %}
-<div class="indicadores">
-	{% include "nav_org.html" %}
-</div>
-{% endblock %}
-
 {%block extra_header%}
 <script type="text/javascript">
     $(document).ready(function() {
@@ -93,19 +87,24 @@ function Grafo1(){
 {%endblock%}
 
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ORGANIZACIÓN &raquo; Gremial <div class="secciones"><a href="/gremial" class="optionsbutton selected">Gremial</a><a href="/comunitario" class="optionsbutton">Comunitaria</a></div></div>
+
 <div class="sidebar">
     
 <div class="subindicador">Gráficos</a></div>
        <a id="grafico1" href="#" onCLick="Grafo1();" class="grafo">Organización Gremial</a>
-        
+        <div class="clean"></div>
  <div id="grafo"></div>
 </div> 
-
 <div class="contenido mediatabla">
- 
-<div class="subindicador">Es socio/a de organización Gremial <a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+
+    <a href="#" class="exportar guardarXLS" onclick="exportarXLS('gremial'); return false;"></a>
+	<div class="clean"></div>
+<div id="gremial">	 
+    <table style="width:430px; margin:5px;">
+        <caption>Es socio/a de organización Gremial</caption>
         <thead>
             <tr>
                 <th>Categoria</th>
@@ -131,8 +130,12 @@ function Grafo1(){
        <tbody>
     </table>
 <br>
-<div class="subindicador">Desde cuando socios <a href="#" class="exportar"></a></div>
-     <table  width="100%">
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('socios'); return false;"></a>
+	<div class="clean"></div>
+<div id="socios">
+     <table  style="width:430px; margin:5px;">
+         <caption>Desde cuando socios</caption>
         <thead>
             <tr>
                 <th>Categoria</th>
@@ -158,7 +161,7 @@ function Grafo1(){
        </tbody>
     </table>
 <br>
-
+</div>
 </div>
 <div class="clean"></div>
 {% endblock %}
