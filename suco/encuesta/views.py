@@ -967,8 +967,8 @@ def arboles(request):
         
     
     return  render_to_response('reforestacion/arboles.html',
-                              locals(),
-                                context_instance=RequestContext(request))
+                               locals(),
+                               context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #Tabla Animales en la finca
 @session_required
@@ -997,7 +997,7 @@ def cultivos(request):
     #******Variables***************
     a = _queryset_filtrado(request)
     num_familias = a.count()
-    #******************************
+
     #**********calculosdelasvariables*****
     tabla = {} 
     for i in TipoCultivos.objects.all():
