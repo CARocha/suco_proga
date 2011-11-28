@@ -1,4 +1,5 @@
 <div id="filtroslaterales">
+    <a href="/menu" id="volver"></a>
     <div class="nombrefiltro">Encuestas</div>
     <div class="filtrovalor">{{num_familias}}</div>
     
@@ -17,3 +18,13 @@
                    {%if request.session.duenio%}
                    <div class="filtrovalor"><b>Tipo Dueño:</b><br>{{ request.session.duenio.nombre}}</div>{%endif%}
 </div>
+<script type="text/javascript">
+$(window).load(function(){
+        adjustAlto();
+});
+function adjustAlto(){
+        var a = $('#filtroslaterales').height();
+        var b = $('.contenido').height();
+        if(a<b){$('#filtroslaterales').height(b);}
+}
+</script>

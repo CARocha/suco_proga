@@ -229,10 +229,15 @@ Subindicador Salud
 <div class="cambiar_indicador"><a href="#" id="mas">Cambiar Indicador</a> <span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></div>
 {%endblock%}
 {% block content %}
-   
-<div class="contenido">
-    <table>
-    <caption>Tiene Buena Salud?</caption>
+{% include "encuestas/navegacion_superior.html" %} 
+{% include "filtros.html" %}
+<div class="contenido fulltabla">
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>FAMILIA &raquo; Salud <div class="secciones"><a href="/educacion" class="optionsbutton">Educacion</a><a href="/salud" class="optionsbutton selected">Salud</a><a href="/luz"class="optionsbutton">Luz</a><a href="/agua"class="optionsbutton">Agua</a></div></div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('salud'); return false;"></a>
+	<div class="clean"></div>
+<div id="salud">	
+    <table style="width:100%;">
+    <caption>Estado de Salud</caption>
         <thead>
             <tr>
                 <th></th>
@@ -252,12 +257,16 @@ Subindicador Salud
             {%endfor%}
         <tbody>
     </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container"></div>
 </div>
-<br></br>
-    <table>
+<br>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('centros'); return false;"></a>
+	<div class="clean"></div>
+<div id="centros">	
+    <table style="width:100%;">
     <caption>Visita centros de salud</caption>
         <thead>
             <tr>
@@ -279,10 +288,12 @@ Subindicador Salud
             {%endfor%}
         </tbody>
     </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container1"></div>
 </div>
 </div>
-<br></br>
+<div class="clean"></div>
+
 {% endblock %}

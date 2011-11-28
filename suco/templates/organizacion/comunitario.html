@@ -1,9 +1,6 @@
 {% extends "basenueva.html"%}
 {%load unslugify %}
 {% block barra %}
-<div class="indicadores">
-	{% include "nav_org.html" %}
-</div>
 {% endblock %}
 
 {%block extra_header%}
@@ -39,20 +36,28 @@ $(document).ready(function () {
 {%endblock%}
 
 {%block content%}
+{% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ORGANIZACIÓN &raquo; Comunitaria <div class="secciones"><a href="/gremial" class="optionsbutton">Gremial</a><a href="/comunitario" class="optionsbutton  selected">Comunitaria</a></div></div>
+
 <div class="sidebar">
         <div class="subindicador">Gráficos</div>
         <a id="grafico1" href="#" onCLick="onCLick=click_callback('beneficiorganizado')" class="grafo">¿Beneficios de estar organizado</a>
         <a id="grafico2" href="#" onCLick="click_callback('comunitario')" class="grafo">¿Organización comunitaria?</a>
         <a id="grafico2" href="#" onCLick="click_callback('norganizado')" class="grafo">¿Porque no esta organizado?</a>
+        <div class="clean"></div>
          <div id="grafo"></div>
+         <br><br><br>
 </div>
 
 <div class="contenido mediatabla">
 
+    <a href="#" class="exportar guardarXLS" onclick="exportarXLS('comunidad'); return false;"></a>
+	<div class="clean"></div>
+<div id="comunidad">	 
 
-<div class="subindicador">ORGANIZACIÓN &raquo; ¿Cuántas organizaciones están activas en la localidad o comunidad?<a href="#" class="exportar"></a></div>
-<table style="width:100%;">
+<table style="width:430px; margin:5px;">
+    <caption>Organizaciones activas en la comunidad</caption>
         <thead>
             <tr>
                 <th>Organizaciones</th>
@@ -76,10 +81,12 @@ $(document).ready(function () {
        
        </tbody>
     </table>
-
-
-<div class="subindicador">ORGANIZACIÓN &raquo; ¿Pertenece a algunas organizaciones?<a href="#" class="exportar"></a></div>
-<table style="width:100%;">
+</div>
+    <a href="#" class="exportar guardarXLS" onclick="exportarXLS('pertenece'); return false;"></a>
+	<div class="clean"></div>
+<div id="pertenece">	 
+<table style="width:430px; margin:5px;">
+    <caption>¿Pertenece a algunas organizaciones?</caption>
         <thead>
             <tr>
                 <th>Categoria</th>
@@ -104,7 +111,8 @@ $(document).ready(function () {
        
        </tbody>
     </table>
-    <br><br><br>
+</div>
+    <br><br><br><br><br><br><br><br><br>
 </div>
 <div class="clean"></div>
 {% endblock %}

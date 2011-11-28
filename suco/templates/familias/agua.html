@@ -43,30 +43,14 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block content %}
-
+{% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
-<!-- Me dijeron que no lleva graficos
-<div class="sidebar">   
-   <div class="subindicador">GRAFICOS</div>
-   <a id="1" href="#" class="grafo">Río</a>
-   <a id="2" href="#" class="grafo">Ojo de Agua</a>
-   <a id="3" href="#"  class="grafo">Pozo Comunitario</a>
-   <a id="4" href="#" class="grafo">Pozo Propio</a>
-   <a id="5" href="#" class="grafo">Agua comunitaria</a>
-   <a id="6" href="#"  class="grafo">Agua en casa</a>    
-    <div class="separador"></div>
-    <div id="grafo"></div>
-</div>
--->
-
 
 <div class="contenido fulltabla">
-
-    <div class="subindicador">FAMILIA &raquo; Agua para consumo humano<a href="#" class="exportar guardarXLS" onclick="exportarXLS('modalidad'); return false;"></a></div>
- 
-<div id="modalidad">
-    <h1>Agua para consumo humano</h1>
-    
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>FAMILIA &raquo; Agua para consumo humano <div class="secciones"><a href="/educacion" class="optionsbutton">Educacion</a><a href="/salud" class="optionsbutton">Salud</a><a href="/luz"class="optionsbutton">Luz</a><a href="/agua"class="optionsbutton selected">Agua</a></div></div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('agua'); return false;"></a>
+	<div class="clean"></div>
+<div id="agua">	 
 		<table style="width:100%;">
 		<caption>Fuentes de consumo de agua </caption>
 			<thead>
@@ -84,7 +68,10 @@ $(document).ready(function () {
 			</tr>
 			{%endfor%}
 		</table>
-		
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('beber'); return false;"></a>
+	<div class="clean"></div>
+<div id="beber">	 
 	    <table style="width:100%;">
 	    <caption>Como trata agua para beber y cocinar</caption>
 			<thead>
@@ -102,7 +89,10 @@ $(document).ready(function () {
 			</tr>
 			{%endfor%}
 		</table>
-		
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('disponibilidad'); return false;"></a>
+	<div class="clean"></div>
+<div id="disponibilidad">
 		<table style="width:100%;">
 		<caption>Disponibilidad de agua para uso domestico</caption>
 			<thead>
@@ -121,7 +111,10 @@ $(document).ready(function () {
 			{%endfor%}
 		</table>
 		<br>
-		<h1>Agua para la producción</h1>
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('fuente'); return false;"></a>
+	<div class="clean"></div>
+<div id="fuente">
 		<table style="width:100%;">
 		<caption>Fuente de agua</caption>
 			<thead>
@@ -139,6 +132,11 @@ $(document).ready(function () {
 			</tr>
 			{%endfor%}
 		</table>
+
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('bombeo'); return false;"></a>
+	<div class="clean"></div>
+<div id="bombeo">
 		<table style="width:100%;">
 		<caption>Equipos para bombeo</caption>
 			<thead>
@@ -156,6 +154,10 @@ $(document).ready(function () {
 			</tr>
 			{%endfor%}
 		</table>
+</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('energia'); return false;"></a>
+	<div class="clean"></div>
+<div id="energia">
 		<table style="width:100%;">
 		<caption>Energia utilizada</caption>
 			<thead>
@@ -177,7 +179,5 @@ $(document).ready(function () {
 
 </div>
 	<div class="clean"></div>
-    {{fuentes}}<br>
-    {{equipo}}<br>
-    {{energia}}
+
 {% endblock %}
