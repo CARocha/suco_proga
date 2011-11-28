@@ -28,6 +28,8 @@ $(document).ready(function () {
 </script>
 {% endblock %}
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>BIENES</div>
 {% include "filtros.html" %}
         <div class="sidebar">
             <div class="subindicador">Gráficos de bienes</a></div>
@@ -41,9 +43,10 @@ $(document).ready(function () {
         </div>
         
   <div class="contenido mediatabla">
-    
-    <div class="subindicador">Los Equipos <a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('equipos'); return false;"></a>
+<div id="equipos">
+    <table style="width:430px; margin:5px;">
+        <caption>Los Equipos</caption>
         <thead>
             <tr>
                 <th>EQUIPOS</th>
@@ -65,9 +68,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-<div class="subindicador">Las Infraestructuras <a href="#" class="exportar"></a></div>
-    <table id="table_example" class="tablesorter" style="font-size:90%">
-
+</div>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('infra'); return false;"></a>
+<div id="infra">
+    <table style="width:430px; margin:5px;">
+    <caption>Las Infraestructuras </caption>
         <thead>
             <tr>
                 <th>INFRAESTRUCTURA</th>
@@ -89,8 +94,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-<div class="subindicador">Las Herramientas<a href="#" class="exportar"></a></div>
-    <table id="table_example" class="tablesorter" style="font-size:90%">
+    </div>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('herramientas'); return false;"></a>
+<div id="herramientas">
+    <table style="width:430px; margin:5px;">
+        <caption>Herramientas</caption>
         <thead>
             <tr>
                 <th>HERRAMIENTAS</th>
@@ -112,8 +120,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-<div class="subindicador">Los Transportes<a href="#" class="exportar"></a></div>
-    <table id="table_example" class="tablesorter" style="font-size:90%">
+</div>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('transporte'); return false;"></a>
+<div id="transporte">
+    <table style="width:430px; margin:5px;">
+        <caption>Los Transportes</caption>
         <thead>
             <tr>
                 <th>TRANSPORTE</th>
@@ -135,9 +146,12 @@ $(document).ready(function () {
             {%endfor%}
         <tbody>
     </table>
+</div>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('elect'); return false;"></a>
+<div id="elect">
 
-<div class="subindicador">Los Electrodomésticos<a href="#" class="exportar"></a></div>
-    <table id="table_example" class="tablesorter" style="font-size:90%">
+    <table style="width:430px; margin:5px;">
+        <caption>Los Electrodomésticos</caption>
         <thead>
             <tr>
                 <th>electrodomesticos</th>
@@ -159,9 +173,11 @@ $(document).ready(function () {
             {%endfor%}
         <tbody>
     </table>
-    
-    <div class="subindicador">Los equipos de sanamiento ambiental<a href="#" class="exportar"></a></div>
-    <table id="table_example" class="tablesorter" style="font-size:90%">
+    </div>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('sani'); return false;"></a>
+<div id="sani">
+    <table style="width:430px; margin:5px;">
+        <caption>Los equipos de sanamiento ambiental</caption>
         <thead>
             <tr>
                 <th>Equipos</th>
@@ -183,6 +199,7 @@ $(document).ready(function () {
             {%endfor%}
         <tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {% endblock %}
