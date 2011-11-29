@@ -7,18 +7,15 @@
     });
 </script>
 {%endblock%}
-{% block barra %}
-
-<div class="indicadores">
-	{% include "nav_suelo.html" %}
-</div>
-{% endblock %}
-
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>SUELO</div>
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
- <div class="subindicador">¿Cúal es el tipo de textura del suelo?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('textura'); return false;"></a>
+<div id="textura">
+    <table  style="width:100%;margin:5px;">
+        <caption>¿Cúal es el tipo de textura del suelo?</caption>
         <thead>
             <tr>
                 <th>Texturas</th>
@@ -36,9 +33,12 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cúal es la profundidad del suelo?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
-        <caption></caption>
+</div>
+
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('profundidad'); return false;"></a>
+<div id="profundiad">
+    <table style="width:100%;margin:5px;">
+        <caption>¿Cúal es la profundidad del suelo?</caption>
         <thead>
             <tr>
                 <th>Profundidad</th>
@@ -56,8 +56,11 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cómo es la presencia de lombrice en el suelo?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
+    </div>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('presencia'); return false;"></a>
+<div id="presencia">
+    <table  style="width:100%;margin:5px;">
+        <caption>¿Cómo es la presencia de lombrice en el suelo?</caption>
         <thead>
             <tr>
                 <th>Presencia de Lombrices</th>
@@ -75,8 +78,11 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cómo es la densidad de raiz en la capa productiva de suelo?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
+    </div>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('densidad'); return false;"></a>
+<div id="densidad">
+    <table  style="width:100%;margin:5px;">
+        <caption>¿Cómo es la densidad de raiz en la capa productiva de suelo?</caption>
         <thead>
             <tr>
                 <th>Densidad</th>
@@ -94,9 +100,11 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cúal es la pendiente del terrreno?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
-        <caption></caption>
+    </div>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('terreno'); return false;"></a>
+<div id="terreno">
+    <table  style="width:100%;margin:5px;">
+        <caption>¿Cúal es la pendiente del terreno?</caption>
         <thead>
             <tr>
                 <th>Pendientes</th>
@@ -114,8 +122,11 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cómo es el drenaje del suelo?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
+    </div>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('drenaje'); return false;"></a>
+<div id="drenaje">
+    <table style="width:100%;margin:5px;">
+        <caption>¿Cómo es el drenaje del suelo?</caption>
         <thead>
             <tr>
                 <th>Drenaje</th>
@@ -133,9 +144,11 @@
             {%endfor%}
         </tbody>
     </table>
- <div class="subindicador">¿Cómo es el contenido de materia orgánica?<a href="#" class="exportar"></a></div>
-    <table  style="width:100%;">
-
+</div>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('materia'); return false;"></a>
+<div id="materia">
+    <table style="width:100%;margin:5px;">
+    <caption>¿Cómo es el contenido de materia orgánica?</caption>
         <thead>
             <tr>
                 <th>Contenido</th>
@@ -153,7 +166,7 @@
             {%endfor%}
         </tbody>
     </table>
-
+</div>
 </div>
 <div class="clean"></div>
 {% endblock %}

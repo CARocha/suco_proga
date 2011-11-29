@@ -288,26 +288,24 @@ $(document).ready(function () {
 });
 </script>
 {%endblock%}
-{% block barra %}
-<div class="indicadores">
-	{% include "nav_tierra.html" %}
-</div>
-{% endblock %}
 {% block content%}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>PARTICIPACIÓN DE LA FAMILIA</div>
 {% include "filtros.html" %}
 <div class="sidebar">
     <div class="subindicador">Gráficos</a></div>
         <a href="#" id="grafico3" onclick="Grafo5();" class="grafo">Labores</a>
         <a href="#" id="grafico2" onclick="Grafo6();" class="grafo">Beneficios</a>
         <a href="#" id="grafico2" onclick="Grafo7();" class="grafo">Toma de decisión</a>
-        
+        <div class="clean"></div>
 <div id="grafo"></div>
 </div>
 
 <div class="contenido mediatabla">
-<div class="subindicador">>>Participacion de la familia en labores<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
-    <caption>Labores</caption>
+             <a href="#" class="exportar guardarXLS" onclick="exportarXLS('labores'); return false;"></a>
+<div id="labores">
+    <table style="width:430px; margin:5px;">
+    <caption>Participacion de la familia en labores</caption>
         <thead>
             <tr>
                 <th></th>
@@ -328,8 +326,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
+    </div>
   <br>
-  <table style="width:100%;">
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('beneficios'); return false;"></a>
+<div id="beneficios">
+  <table style="width:430px; margin:5px;;">
     <caption>Beneficios</caption>
         <thead>
             <tr>
@@ -351,8 +352,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
+    </div>
     <br>
-    <table style="width:100%;">
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('decision'); return false;"></a>
+<div id="decision">
+    <table style="width:430px; margin:5px;">
     <caption>Toma de decision</caption>
         <thead>
             <tr>
@@ -374,6 +378,7 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {% endblock %}

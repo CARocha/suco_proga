@@ -14,12 +14,15 @@
 {% endblock %}
 
 {% block content %}
-
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>MITIGACIÓN DE LOS RIESGOS </div>
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-<div class="subindicador">RIESGO &raquo; Mitigación de los Riesgos<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
-        <caption></caption>
+
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('riesgos'); return false;"></a>
+<div id="riesgos">
+    <table style="width:100%;margin:5px;">
+        <caption>Mitigación de los riesgos</caption>
         <thead>
             <tr>
                 <th>Preguntas</th>
@@ -37,6 +40,7 @@
             {%endfor%}
         </tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {% endblock %}

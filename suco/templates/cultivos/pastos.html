@@ -54,10 +54,15 @@ $(document).ready(function() {
 {% endblock %}
 
 {%block content%}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>CULTIVO DE PASTOS</div>
 {% include "filtros.html" %}
+
 <div class="contenido fulltabla">
-	<div class="subindicador">>>Los cultivos de pastos<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+             <a href="#" class="exportar guardarXLS" onclick="exportarXLS('pastos'); return false;"></a>
+<div id="pastos">
+    <table style="width:100%;margin:5px;">
+        <caption>Los cultivos de pastos</caption>
         <thead>
             <tr>
                 <th>Tipos de pastos</th>
@@ -75,6 +80,7 @@ $(document).ready(function() {
             {%endfor%}
         <tbody>
     </table>
+    </div>
     <div id="grafos"></div>
 </div>
 <div class="clean"></div>

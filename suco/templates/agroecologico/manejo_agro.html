@@ -2,11 +2,15 @@
 {%load unslugify %}
 
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>OPCIONES DE MANEJO</div>
 {% include "filtros.html" %}
 
 <div class="contenido fulltabla">
-<div class="subindicador">Nivel de conocimiento<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('conocimiento'); return false;"></a>
+<div id="conocimiento">
+    <table style="width:100%;margin:5px;">
+        <caption>Nivel de conocimiento</caption>
         <thead>
             <tr>
                 <th>uso de manejo agro.</th>
@@ -36,9 +40,11 @@
             {%endfor%}
         </tbody>
     </table>
-    <br></br>
-    <div class="subindicador">Ha experimentadoo<a href="#" class="exportar"></a></div>
-     <table style="width:100%;">
+    </div><br>
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('expiremento'); return false;"></a>
+<div id="expiremento">
+     <table style="width:100%;margin:5px;">
+         <caption>Ha experimentado</caption>
         <thead>
             <tr>
                 <th>uso de manejo agro.</th>
@@ -60,6 +66,7 @@
             {%endfor%}
         </tbody>
     </table>
+    </div>
     <br></br><br></br>
 </div>
 <div class="clean"></div>

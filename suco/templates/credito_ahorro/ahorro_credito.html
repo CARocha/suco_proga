@@ -22,6 +22,8 @@ Ahorro y Credito
 </script>
 {%endblock%}
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>AHORRO Y CRÉDITO</div>
 {% include "filtros.html" %}
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>
@@ -32,8 +34,9 @@ Ahorro y Credito
 </div>
 
 <div class="contenido mediatabla">
-   
-    <table>
+                <a href="#" class="exportar guardarXLS" onclick="exportarXLS('ahorro'); return false;"></a>
+<div id="ahorro">
+    <table style="width:430px; margin:5px;">
         <caption>Los Ahorro</caption>
         <thead>
             <tr>
@@ -52,8 +55,10 @@ Ahorro y Credito
             {%endfor%}
         </tbody>
     </table>
-
-    <table>
+</div>
+                <a href="#" class="exportar guardarXLS" onclick="exportarXLS('credito'); return false;"></a>
+<div id="credito">
+    <table style="width:430px; margin:5px;">
         <caption>Los créditos</caption>
         <thead>
             <tr>
@@ -87,6 +92,7 @@ Ahorro y Credito
             {%endfor%}
         </tr>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {% endblock %}
