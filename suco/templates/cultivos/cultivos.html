@@ -4,10 +4,15 @@
 {% endblock %}
 
 {%block content%}
+{% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-	<div class="subindicador">>>Los cultivos en la finca<a href="#" class="exportar"></a></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>CULTIVOS</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('finca'); return false;"></a>
+	<div class="clean"></div>
+    <div id="finca">	
     <table style="width:100%;">
+        <caption>Los cultivos en la finca</caption>
         <thead>
             <tr>
                 <th>CULTIVOS</th>
@@ -31,8 +36,12 @@
             {%endfor%}
         <tbody>
     </table>
-    <div class="subindicador">>>Los cultivos en el patio<a href="#" class="exportar"></a></div>
+    </div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('patio'); return false;"></a>
+	<div class="clean"></div>
+    <div id="patio">	
     <table style="width:100%;">
+        <caption>Los cultivos en el patio</caption>
         <thead>
             <tr>
                 <th>CULTIVOS</th>
@@ -52,6 +61,7 @@
             {%endfor%}
         <tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {%endblock%}

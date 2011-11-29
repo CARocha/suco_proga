@@ -68,13 +68,17 @@
     });
 </script> 
 {%endblock%}
-{% block barra %}
-{% endblock %}
 
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-	<div class="subindicador">Los Animales<a href="#" class="exportar"></a></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ANIMALES</div>
+	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('animales'); return false;"></a>
+	<div class="clean"></div>
+
+
+    <div id="animales">	
     <table style="width:100%;">
         <caption>Los Animales</caption>
         <thead>
@@ -94,6 +98,7 @@
             {%endfor%}
         </tbody>
     </table>
+    </div>
     <div id="container"> </div>
 </div>
 <div class="clean"></div>

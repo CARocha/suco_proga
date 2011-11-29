@@ -37,22 +37,25 @@ $(document).ready(function () {
 </script>
 {% endblock %}
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ARBOLES Y REFORESTACION</div>
 {% include "filtros.html" %}
-<div class="sidebar">
-   <div class="subindicador">Gráficos</a></div>
-        <h1>Gráficos tipos de arboles</h1>
+<div class="sidebar"> 
+   <div class="subindicador">Gráficos tipo de arboles</a></div>
         <a id="grafico1" href="#" onCLick="click_callback('maderable')" class="grafo">Maderable</a>
         <a id="grafico2" href="#" onCLick="click_callback('forrajero')" class="grafo">Forrajero</a>
         <a id="grafico3" href="#" onCLick="click_callback('energetico')" class="grafo">Energetico</a>
         <a id="grafico4" href="#" onCLick="click_callback('frutal')" class="grafo">Frutal</a>
+
     <div id="grafo"></div>
 </div>
 
 <div class="contenido mediatabla">
     <br>
-    <div class="subindicador">Existencia de árboles<a href="#" class="exportar"></a></div>
-     <table>
-        <caption>Tabla Existencia de Arboles</caption>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('arboles'); return false;"></a>
+<div id="arboles">
+     <table style="width:430px; margin:5px;">
+        <caption>Existencia de Arboles</caption>
         <thead>
             <tr>
                 <th>TIPO</th>
@@ -88,10 +91,13 @@ $(document).ready(function () {
             </tr>
         </tbody>
     </table>
-    <br>
-    <table>
+    </div>
     
-    <table style="width:100%;">
+    <br>
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('reforest'); return false;"></a>
+<div id="reforest">
+    
+    <table style="width:430px; margin:5px;">
     <caption>Reforestación</caption>
         <thead>
             <tr>
@@ -114,6 +120,7 @@ $(document).ready(function () {
             {%endfor%}
         <tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
 {% endblock %}

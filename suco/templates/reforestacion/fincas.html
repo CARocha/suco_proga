@@ -174,12 +174,9 @@ $(document).ready(function () {
 });
 </script>
 {%endblock%}
-{% block barra %}
-<div class="indicadores">
-	{% include "nav_tierra.html" %}
-</div>
-{% endblock %}
 {% block content%}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>USO DE TIERRA</div>
 {% include "filtros.html" %}
 <div class="sidebar">
     <div class="subindicador">Gráficos</a></div>
@@ -189,12 +186,15 @@ $(document).ready(function () {
         <a href="#" id="grafico4" onCLick="click_callback('documento')"class="grafo">Documento legal de la propiedad, a nombre de quién</a>
         <a href="#" id="grafico4" onclick="Grafo4();" class="grafo">Rangos en Manzanas</a>
 	    <a href="#" id="grafico5" onclick="Grafo5();" class="grafo">Uso de tierra</a>
+        <div class="clean"></div>
 <div id="grafo"></div>
 </div>
 
 <div class="contenido mediatabla">
-<div class="subindicador">Uso de Tierra<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('tierra'); return false;"></a>
+<div id="tierra">
+    <table style="width:430px; margin:5px;">
+        <caption>Uso de Tierra</caption>
         <thead>
             <tr>
                 <th></th>
@@ -223,14 +223,18 @@ $(document).ready(function () {
                 </tr>
         </tbody>
     </table>
-    <table>
+    </div>
+    <table style="width:430px; margin:5px;">
     </br>
         <tr>
         <th>Promedio Mz: {{totales.promedio_manzana}}</th>
         </tr>
     </table>
   <br>
+           <a href="#" class="exportar guardarXLS" onclick="exportarXLS('rangos'); return false;"></a>
+<div id="rangos">
 <table style="width:100%;">
+    <caption>Tamaño de fincas</caption>
         <thead>
             <tr>
                 <th>Rangos</th>
@@ -276,9 +280,10 @@ $(document).ready(function () {
             </tr>
         </tbody>
     </table>
+    </div>
 </div>
 <div class="clean"></div>
-<div id="container" style="height:410px; width: 800px; margin: 0 auto; clear:both"></div>
+
 
 
 {% endblock %}

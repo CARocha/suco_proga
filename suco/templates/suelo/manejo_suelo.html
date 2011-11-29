@@ -42,6 +42,8 @@ $(document).ready(function () {
 </script>
 {%endblock%}
 {% block content %}
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>MANEJO DEL SUELO</div>
 {% include "filtros.html" %}
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>
@@ -51,9 +53,10 @@ $(document).ready(function () {
 </div>
 
 <div class="contenido mediatabla">
-    <div class="subindicador">¿Cómo preparan sus terrenos?<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
-
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('terreno'); return false;"></a>
+<div id="terreno">
+    <table style="width:430px; margin:5px;">
+        <caption>¿Cómo preparan sus terrenos?</caption>
         <thead>
             <tr>
                 <th>Terrenos</th>
@@ -71,11 +74,11 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-    
-    <div class="subindicador">¿Qué tipo de traccion utiliza para la preparación del suelo?<a href="#" class="exportar"></a></div>
-
-    <table style="width:100%;">
-
+</div>
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('traccion'); return false;"></a>
+<div id="traccion">
+    <table style="width:430px; margin:5px;">
+    <caption>Traccion para la preparación del suelo</caption>
         <thead>
             <tr>
                 <th>Tipo Tracción</th>
@@ -93,8 +96,12 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-    <div class="subindicador">¿Qué tipo de fertilización realiza?<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+</div>
+
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('fertiliza'); return false;"></a>
+<div id="fertiliza">
+    <table style="width:430px; margin:5px;">
+        <caption>¿Qué tipo de fertilización realiza?</caption>
         <thead>
             <tr>
                 <th>Tipos de Fertilización</th>
@@ -112,8 +119,12 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-    <div class="subindicador">¿Qué tipo de obra de conservación de suelo?<a href="#" class="exportar"></a></div>
-    <table style="width:100%;">
+</div>
+
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('conservacion'); return false;"></a>
+<div id="conservacion">
+    <table style="width:430px; margin:5px;">
+        <caption>¿Qué tipo de obra de conservación de suelo?</caption>
         <thead>
             <tr>
                 <th>Tipos de obras</th>
@@ -131,7 +142,7 @@ $(document).ready(function () {
             {%endfor%}
         </tbody>
     </table>
-
+</div>
 </div>
 <div class="clean"></div>
 {% endblock %}

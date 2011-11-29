@@ -30,13 +30,16 @@ $(document).ready(function () {
 </script>
 {% endblock %}
 {%block content%}
+{% include "encuestas/navegacion_superior.html" %}
+
 {% include "filtros.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>INGRESO</div>
     <div class="sidebar" style="width:500px; padding-bottom:13px;" >
         <div class="subindicador">Gráficos ingresos</div>
             
             <a href="#" id="grafico1" onCLick="click_callback('libre')"class="grafo">Venta libre</a>
             <a href="#" id="grafico2" onCLick="click_callback('organizada')"class="grafo">Venta organizada</a>
-            
+            <div class="clean"></div>
         <div class="subindicador">Gráficos Otros ingresos</div>
             
              <a href="#" id="grafico4" onCLick="click_callback('salario')"class="grafo">Tipos de Salarios</a>
@@ -46,12 +49,11 @@ $(document).ready(function () {
             
        <div id="grafo"  style="width:500px; overflow-y:auto"></div>
     </div>
- <div class="contenido" style="width:460px">
-<div class="subindicador">INGRESO  &raquo; Los Ingresos familiares <a class="exportar guardarXLS" href="#" onclick="exportarXLS('modalidad'); return false;"></a></div>
-
-<div id="modalidad">
-   <table id="sortTableExample" class="tablesorter">
-        <caption>Agroforestales</caption>
+ <div class="contenido mediatabla" style="width:480px">
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('agroforestal'); return false;"></a>
+<div id="agroforestal">
+   <table style="width:480px; margin:5px;">
+        <caption>Ingresos Agroforestales</caption>
         <thead>
             <tr>
                 <th style="font-size:9px;">RUBROS</th>
@@ -84,8 +86,12 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample2" class="tablesorter">
+</div>
+
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('forestales'); return false;"></a>
+<div id="forestales">
+    <table style="width:480px; margin:5px;">
         <caption>Forestales</caption>
         <thead>
             <tr>
@@ -119,8 +125,11 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+    </div>
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('granos'); return false;"></a>
+<div id="granos">
+    <table style="width:480px; margin:5px;">
         <caption>Granos básicos</caption>
         <thead>
             <tr>
@@ -154,8 +163,11 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+    </div>
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('ganado'); return false;"></a>
+<div id="ganado">
+    <table style="width:480px; margin:5px;">
         <caption>Ganado mayor</caption>
         <thead>
             <tr>
@@ -189,8 +201,12 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+
+</div>
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('animales'); return false;"></a>
+<div id="animales">
+    <table style="width:480px; margin:5px;">
         <caption>Animales de patio</caption>
         <thead>
             <tr>
@@ -224,8 +240,11 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+    </div>
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('frutas'); return false;"></a>
+<div id="frutas">
+    <table style="width:480px; margin:5px;">
         <caption>Hortalizas y frutas</caption>
         <thead>
             <tr>
@@ -259,8 +278,11 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+    </div>
+    <br>
+         <a href="#" class="exportar guardarXLS" onclick="exportarXLS('musaceas'); return false;"></a>
+<div id="musaceas">
+    <table style="width:480px; margin:5px;">
         <caption>Musaceas</caption>
         <thead>
             <tr>
@@ -294,8 +316,11 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table id="sortTableExample" class="tablesorter">
+    </div>
+    <br>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('tuberculo'); return false;"></a>
+<div id="tuberculo">
+    <table style="width:480px; margin:5px;">
         <caption>Raíces y tubérculos</caption>
         <thead>
             <tr>
@@ -329,21 +354,22 @@ $(document).ready(function () {
         </tr>
 
     </table>
-    <br></br>
-    <table>
+    </div>
+    <br>
+    <table style="width:480px; margin:5px;">
         <th>Ingreso agropecuario: {{respuesta.ingreso|intcomma}}</th>
     </table>
-
-    <br><div class="subindicador">INGRESO  &raquo; Los Otros Ingresos familiares <a href="#" class="exportar"></a></div><br>
-    <table id="sortTableExample" class="tablesorter">
-        <caption></caption>
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('otros'); return false;"></a>
+<div id="otros">
+    <table style="width:480px; margin:5px;">
+        <caption>Los Otros Ingresos familiares</caption>
         <thead>
             <tr>
-                <th>FUENTES</th>
-                <th>NÚMERO DE FAMILIAS</th>
-                <th>TOTAL MESES</th>
-                <th>INGRESO MENSUAL PROMEDIO</th>
-                <th>INGRESO TOTAL PROMEDIO</th>
+                <th>Fuentes</th>
+                <th>Numero de familias</th>
+                <th>Total meses</th>
+                <th>Ingreso mensual promedio</th>
+                <th>Ingreso total promedio</th>
             </tr>
         </thead>
         <tbody>
@@ -365,9 +391,10 @@ $(document).ready(function () {
             <th>{{respuesta.ingreso_otro|intcomma}}</th>
         </tr>
     </table>
+    </div>
     <br>
 <div class="subindicador">INGRESO  &raquo; Ingreso Bruto por familia</div>
-    <table>
+    <table style="width:480px; margin:5px;">
         <tr colspan="2">
             <th>INGRESO BRUTO</th>
 
@@ -375,13 +402,13 @@ $(document).ready(function () {
         </tr>
     </table>
     <div class="subindicador">INGRESO  &raquo; Ingreso Neto por familia</</a></div>
-    <table>
+    <table style="width:480px; margin:5px;">
         <tr colspan="2">
             <th>INGRESO NETO</th>
 
             <th>{{respuesta.total_neto|intcomma}}</th>
         </tr>
-    </table><br><br>
+    </table><br>
     </div>
 <script type="text/javascript">
   $(function() {

@@ -5,11 +5,15 @@ Uso de Semilla
 <div class="cambiar_indicador"><a href="#" id="mas">Cambiar Indicador <span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></a></div>
 {% endblock%}
 {% block content %}
-
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>SEMILLAS</div>
 {% include "filtros.html" %}
 
-<div class="contenido">   
-    <table>
+<div class="contenido fulltabla">
+     <a href="#" class="exportar guardarXLS" onclick="exportarXLS('semilla'); return false;"></a>
+     <div class="clean"></div>
+<div id="semilla">
+    <table style="width:100%;">
         <caption>Uso de semilla</caption>
         <thead>
             <tr>
@@ -38,7 +42,8 @@ Uso de Semilla
             {%endfor%}
         </tbody>
     </table>
+    </div>
     <br></br><br></br>
 </div>
-
+<div class="clean"></div>
 {% endblock %}

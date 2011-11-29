@@ -474,17 +474,17 @@ var chart;
     });
 </script>
 {%endblock%}
-{% block barra %}
-<div class="indicadores">
-	{% include "nav_riesgos.html" %}
-</div>
-{% endblock %}
+
 {% block content %}
 
+{% include "encuestas/navegacion_superior.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>RIESGOS QUE HACE A LA FINCA VULNERABLE </div>
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-	<div class="subindicador">RIESGO &raquo; Vulnerabilidades de las fincas<a href="#" class="exportar"></a></div>
-    <table width="100%">
+                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('fenomenos'); return false;"></a>
+<div id="fenomenos">
+    <table  style="width:100%;margin:5px;">
+
         <thead>
         <caption>Fenomenos naturales</caption>
             <tr>
@@ -536,12 +536,15 @@ var chart;
             </tr>
         </tbody>
 </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container"></div>
 </div>
 <br>
-<table width="100%">
+             <a href="#" class="exportar guardarXLS" onclick="exportarXLS('razones'); return false;"></a>
+<div id="razones">
+<table  style="width:100%;margin:5px;">
         <thead>
         <caption>Razones agrícolas</caption>
             <tr>
@@ -584,12 +587,15 @@ var chart;
             </tr>
         </tbody>
 </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container1"></div>
 </div>
 <br>
-<table width="100%">
+             <a href="#" class="exportar guardarXLS" onclick="exportarXLS('mercados'); return false;"></a>
+<div id="mercados">
+<table style="width:100%;margin:5px;">
         <thead>
         <caption>Razones de mercados</caption>
             <tr>
@@ -641,12 +647,15 @@ var chart;
             </tr>
         </tbody>
 </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container2"></div>
 </div>
 <br>
-<table width="100%">
+             <a href="#" class="exportar guardarXLS" onclick="exportarXLS('inversion'); return false;"></a>
+<div id="inversion">
+<table style="width:100%;margin:5px;">
         <thead>
         <caption>Inversión</caption>
             <tr>
@@ -680,11 +689,13 @@ var chart;
             </tr>
         </tbody>
 </table>
+</div>
 <div class="contenedor">
         <div class="grafico-title"></div>
         <div id="container3"></div>
 </div>
 </div>
+<div class="clean"></div>
 </div>
 <div class="clean"></div>
 <br></br>
