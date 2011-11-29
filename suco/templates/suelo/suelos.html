@@ -9,8 +9,9 @@
 {%endblock%}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>SUELO</div>
 {% include "filtros.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>SUELO <div class="secciones"><a href="/manejosuelo" class="optionsbutton">Manejo Suelo</a><a href="/suelos" class="optionsbutton selected">Suelo</a></div></div>
+
 <div class="contenido fulltabla">
                  <a href="#" class="exportar guardarXLS" onclick="exportarXLS('textura'); return false;"></a>
 <div id="textura">

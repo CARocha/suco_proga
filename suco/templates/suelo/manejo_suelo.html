@@ -43,8 +43,9 @@ $(document).ready(function () {
 {%endblock%}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>MANEJO DEL SUELO</div>
 {% include "filtros.html" %}
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>MANEJO DEL SUELO <div class="secciones"><a href="/manejosuelo" class="optionsbutton selected">Manejo Suelo</a><a href="/suelos" class="optionsbutton">Suelo</a></div></div>
+
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>
         <a href="#" id="grafico1" onCLick="click_callback('analisis')"class="grafo">Realiza analisis</a>
