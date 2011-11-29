@@ -467,8 +467,10 @@ def organizacion_grafos(request, tipo):
                 type = grafos.PIE_CHART_2D)
     elif tipo == 'comunitario':
         for opcion in OrgComunitarias.objects.all():
-            data.append(consulta.filter(organizacioncomunitaria__cual_organizacion=opcion).count())
-            legends.append(opcion.nombre)
+            comu = consulta.filter(organizacioncomunitaria__cual_organizacion=opcion).count()
+            if comu > 0:
+                data.append(comu)
+                legends.append(opcion.nombre)
         return grafos.make_graph(data, legends, 
                 '¿A cual organizacion comunitaria pertenece', return_json = True,
                 type = grafos.PIE_CHART_2D)
@@ -621,7 +623,7 @@ def grafos_ingreso(request, tipo):
                 data.append(reme)
                 legends.append(opcion)
         return grafos.make_graph(data, legends,
-                'Remesas', return_json=True,
+                'Origen de las remesas', return_json=True,
                 type=grafos.PIE_CHART_2D)
     elif tipo == 'libre':
         for opcion in AquienVende.objects.all():
