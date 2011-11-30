@@ -725,10 +725,7 @@ def gremial(request):
      
  
         
-    return render_to_response('organizacion/gremial.html', 
-                                 {'tabla_gremial': tabla_gremial, 'tabla_desde':tabla_desde,
-                                 'num_familias': num_familias,'divisor':divisor,'divisor1':divisor1
-                                 },
+    return render_to_response('organizacion/gremial.html', locals(),
                                  context_instance=RequestContext(request))
                                  
 #-------------------------------------------------------------------------------
@@ -757,12 +754,10 @@ def comunitario(request):
     
     
         
-    return render_to_response('organizacion/comunitario.html', {'tabla_pertenece':tabla_pertenece, 
-                              'divisor':divisor, 'num_familias': num_familias,
-                              'uno':uno,'dos':dos,'tres':tres},
+    return render_to_response('organizacion/comunitario.html', locals(),
                                 context_instance=RequestContext(request) )
 #-------------------------------------------------------------------------------
-                          #aca van grafos de tenencia
+#aca van grafos de tenencia
                           
 #Tabla Uso Tierra
 @session_required
@@ -790,7 +785,10 @@ def fincas(request):
 
     totales['numero'] = suma
     totales['manzanas'] = round(total_manzana,0)
-    totales['promedio_manzana'] = round(totales['manzanas'] / consulta.count(),2)
+    try:
+        totales['promedio_manzana'] = round(totales['manzanas'] / consulta.count(),2)
+    except:
+        pass
 
     for uso in Uso.objects.exclude(id=1):
         key = slugify(uso.nombre).replace('-', '_')
@@ -1058,6 +1056,7 @@ def opcionesmanejo(request):
     #********variables globales****************
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #******************************************
     tabla = {}
     
@@ -1110,8 +1109,7 @@ def opcionesmanejo(request):
                              'por_menor_escala':por_menor_escala,'por_mayor_escala':por_mayor_escala}
                              
                                           
-    return render_to_response('agroecologico/manejo_agro.html',{'tabla':tabla,
-                              'num_familias':num_familia,'tabla_escala':tabla_escala},
+    return render_to_response('agroecologico/manejo_agro.html',locals(),
                                context_instance=RequestContext(request))
 #-------------------------------------------------------------------------------
 #tabla procesamiento y comercializacion de la produccion
@@ -1142,6 +1140,7 @@ def ahorro_credito(request):
     ''' ahorro y credito'''
     #ahorro
     consulta = _queryset_filtrado(request)
+    num_familias = consulta.count()
     tabla_ahorro = []
     totales_ahorro = {}
 
@@ -1173,7 +1172,7 @@ def ahorro_credito(request):
             'totales_ahorro': totales_ahorro, 'tabla_credito': tabla_credito,
             'num_familias': consulta.count()}
 
-    return render_to_response('credito_ahorro/ahorro_credito.html', dicc,
+    return render_to_response('credito_ahorro/ahorro_credito.html', locals(),
                               context_instance=RequestContext(request))
 #ahorro y credito
 @session_required
@@ -1222,6 +1221,7 @@ def suelos(request):
     #********variables globales****************
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #******************************************
     tabla_textura = {}
     
@@ -1310,6 +1310,7 @@ def manejosuelo(request):
     #********variables globales****************
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #******************************************
     
     #Terrenos
@@ -1530,6 +1531,7 @@ def equipos(request):
     #******** variables globales***********
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #*************************************
     
     #********** tabla de equipos *************
@@ -1706,6 +1708,7 @@ def usosemilla(request):
     #********variables globales****************
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #******************************************
     tabla = {}
     lista = []
@@ -1728,8 +1731,7 @@ def usosemilla(request):
         tabla[key] = {'key2':key2,'frec':frec,'porce':porce,'nativos':nativos,'introducidos':introducidos,
                       'por_nativos':por_nativos,'por_introducidos':por_introducidos}
 
-    return render_to_response('cultivos/semilla.html',{'tabla':tabla,'lista':lista,
-                              'num_familias':num_familia},
+    return render_to_response('cultivos/semilla.html',locals(),
                               context_instance=RequestContext(request))
 
 
@@ -1830,6 +1832,7 @@ def mitigariesgos(request):
     #********variables globales****************
     a = _queryset_filtrado(request)
     num_familia = a.count()
+    num_familias = num_familia
     #******************************************
     tabla = {}
     for j in PreguntaRiesgo.objects.all():
@@ -1839,8 +1842,7 @@ def mitigariesgos(request):
         por_mitigacion = saca_porcentajes(mitigacion, num_familia)
         tabla[key] = {'mitigacion':mitigacion,'por_mitigacion':por_mitigacion}
         
-    return render_to_response('riesgos/mitigacion.html',{'tabla':tabla,
-                              'num_familias':num_familia},
+    return render_to_response('riesgos/mitigacion.html',locals(),
                                context_instance=RequestContext(request)) 
 #-------------------------------------------------------------------------------
 #tabla participacion de la familia en labores, beneficios y toma de decisiones
