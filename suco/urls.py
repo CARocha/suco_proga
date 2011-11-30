@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('suco.smart_selects.urls')),
-    #(r'^xls/$', 'monitoreo.utils.save_as_xls'),
+    (r'^xls/$', 'suco.utils.save_as_xls'),
     (r'^$', 'suco.encuesta.views.index'),
     (r'^', include('suco.encuesta.urls')),
 )
