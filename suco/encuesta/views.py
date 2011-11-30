@@ -887,29 +887,37 @@ def arboles_grafos(request, tipo):
     #-----------------
     if tipo == 'maderable':
         for opcion in Maderable.objects.all():
-            data.append(consulta.filter(existenciaarboles__maderable=opcion).count())
-            legends.append(opcion.nombre)
+            madera = consulta.filter(existenciaarboles__maderable=opcion).count()
+            if madera > 1:
+                data.append(madera)
+                legends.append(opcion.nombre)
         return grafos.make_graph(data, legends,
                 'Tipo Maderable', return_json = True,
                 type = grafos.PIE_CHART_3D)
     elif tipo == 'forrajero':
         for opcion in Forrajero.objects.all():
-            data.append(consulta.filter(existenciaarboles__forrajero=opcion).count())
-            legends.append(opcion.nombre)
+            forrajero = consulta.filter(existenciaarboles__forrajero=opcion).count()
+            if forrajero > 1:
+                data.append(forrajero)
+                legends.append(opcion.nombre)
         return grafos.make_graph(data, legends,
                 'Tipo Forrajero', return_json = True,
                 type = grafos.PIE_CHART_3D)
     elif tipo == 'energetico':
         for opcion in Energetico.objects.all():
-            data.append(consulta.filter(existenciaarboles__energetico=opcion).count())
-            legends.append(opcion.nombre)
+            energia = consulta.filter(existenciaarboles__energetico=opcion).count()
+            if energia > 1:
+                data.append(energia)
+                legends.append(opcion.nombre)
         return grafos.make_graph(data, legends,
                'Tipo Energetico', return_json = True,
                type = grafos.PIE_CHART_3D)
     elif tipo == 'frutal':
         for opcion in Frutal.objects.all():
-            data.append(consulta.filter(existenciaarboles__frutal=opcion).count())
-            legends.append(opcion.nombre)
+            frutal = consulta.filter(existenciaarboles__frutal=opcion).count()
+            if frutal > 1:
+                data.append(frutal)
+                legends.append(opcion.nombre)
         return grafos.make_graph(data, legends,
                'Tipo Frutal', return_json = True,
                type = grafos.PIE_CHART_3D)
