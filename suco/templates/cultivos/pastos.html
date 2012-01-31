@@ -10,7 +10,7 @@ $(document).ready(function() {
          defaultSeriesType: 'pie',
       },
       title: {
-         text: 'Areas en los tipos de pastos'
+         text: 'Área de tipos de pasto'
       },
       tooltip: {
          formatter: function() {
@@ -56,19 +56,19 @@ $(document).ready(function() {
 {%block content%}
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>CULTIVO DE PASTOS  <div class="secciones"><a href="/cultivos" class="optionsbutton ">Cultivos de Finca</a><a href="/pastos" class="optionsbutton selected">Cultivos de Pastos</a></div></div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>CULTIVO DE PASTOS  <div class="secciones"><a href="/cultivos" class="optionsbutton ">Cultivos de finca</a><a href="/pastos" class="optionsbutton selected">Cultivo de pastos</a></div></div>
 
 
 <div class="contenido fulltabla">
              <a href="#" class="exportar guardarXLS" onclick="exportarXLS('pastos'); return false;"></a>
 <div id="pastos">
     <table style="width:100%;margin:5px;">
-        <caption>Los cultivos de pastos</caption>
+        <caption> Cultivo de pastos</caption>
         <thead>
             <tr>
                 <th>Tipos de pastos</th>
                 <th>Conteo</th>
-                <th>Sumas de Areas</th>
+                <th>Suma de áreas</th>
             </tr>
         </thead>
         <tbody>

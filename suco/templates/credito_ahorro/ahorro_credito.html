@@ -1,8 +1,8 @@
 {% extends "basenueva.html" %}
 {%load unslugify %}
 {%block titulo %}
-Ahorro y Credito
-<div class="cambiar_indicador"><a href="#" id="mas">Cambiar Indicador<span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></a> </div>
+Ahorro y crédito
+<div class="cambiar_indicador"><a href="#" id="mas">Cambiar indicador<span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></a> </div>
 {%endblock%}
 {%block extra_header%}
 <script type="text/javascript">
@@ -23,12 +23,12 @@ Ahorro y Credito
 {%endblock%}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>AHORRO Y CRÉDITO</div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>AHORRO Y CRÉDITO</div>
 {% include "filtros.html" %}
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>
-        <a id="grafico2" href="#" onCLick="click_callback('origen')" class="grafo">Origen del Crédito</a>
-        <a id="grafico3" href="#" onCLick="click_callback('satisfaccion')" class="grafo">Satisfacción con el crédito</a>
+        <a id="grafico2" href="#" onCLick="click_callback('origen')" class="grafo">Origen del crédito</a>
+        <a id="grafico3" href="#" onCLick="click_callback('satisfaccion')" class="grafo">Satisfacción del crédito</a>
         <a id="grafico4" href="#" onCLick="click_callback('uso')" class="grafo">Uso del crédito</a>
     <div id="grafo"></div>
 </div>
@@ -37,7 +37,7 @@ Ahorro y Credito
                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('ahorro'); return false;"></a>
 <div id="ahorro">
     <table style="width:430px; margin:5px;">
-        <caption>Los Ahorro</caption>
+        <caption>Ahorros</caption>
         <thead>
             <tr>
                 <th>Pregunta</th>
@@ -59,7 +59,7 @@ Ahorro y Credito
                 <a href="#" class="exportar guardarXLS" onclick="exportarXLS('credito'); return false;"></a>
 <div id="credito">
     <table style="width:430px; margin:5px;">
-        <caption>Los créditos</caption>
+        <caption> Créditos</caption>
         <thead>
             <tr>
                 <th></th>
@@ -68,19 +68,19 @@ Ahorro y Credito
             </tr>
         </thead>
         <tr>
-            <td>Recibe Crédito</td>
+            <td>Recibe crédito</td>
             {%for celda in tabla_credito.recibe%}
             <td>{{celda|floatformat}}</td>
             {%endfor%}
         </tr>
         <tr>
-            <td>Recibe Crédito hace menos de 5 años</td>
+            <td>Recibe crédito hace menos de 5 años</td>
             {%for celda in tabla_credito.menos%}
             <td>{{celda|floatformat}}</td>
             {%endfor%}
         </tr>
         <tr>
-            <td>Recibe Crédito hace más de 5 años</td>
+            <td>Recibe crédito hace más de 5 años</td>
             {%for celda in tabla_credito.mas%}
             <td>{{celda|floatformat}}</td>
             {%endfor%}

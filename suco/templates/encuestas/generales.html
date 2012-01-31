@@ -15,7 +15,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Hombres y Mujeres'
+         text: 'Mujeres y hombres'
       },
       tooltip: {
          formatter: function() {
@@ -58,7 +58,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Números de personas entrevistadas'
+         text: 'Número de personas entrevistadas'
       },
       tooltip: {
          formatter: function() {
@@ -100,7 +100,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Departamentos encuestado'
+         text: 'Departamentos encuestados'
       },
       tooltip: {
          formatter: function() {
@@ -177,13 +177,13 @@ $(document).ready(function() {
 
 {% block content %}
 <br>
-<h1>Datos Generales de todas las encuestas</h1>
+<h1>Datos generales de todas las encuestas</h1>
 </br>
 <table style="width:100%;" >
-        <caption class="caption2">Hombre y mujeres</caption>
+        <caption class="caption2">Mujeres y hombres</caption>
         <thead>
             <tr>
-                <th>Categoria</th>
+                <th>Categoría</th>
                 <th>Frecuencia</th>
                 <th>Porcentajes</th>
             </tr>
@@ -202,11 +202,11 @@ $(document).ready(function() {
     <div class="clean"></div>
     <div id="container"></div>
 <table style="width:100%;">
-        <caption>Número de personas en {{numero}} Familias entrevistadas</caption>
+        <caption>Número de personas en {{numero}} familias entrevistadas</caption>
         <thead>
             <tr>
-                <th>sexo</th>
-                <th>numeros</th>
+                <th>Sexo</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
@@ -227,7 +227,7 @@ $(document).ready(function() {
         <thead>
             <tr>
                 <th>Departamentos</th>
-                <th>numeros</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
@@ -245,11 +245,11 @@ $(document).ready(function() {
  
 <br></br>
 <table style="width:100%;">
-        <caption>Municipio entrevistados</caption>
+        <caption>Municipios entrevistados</caption>
         <thead>
             <tr>
                 <th>Municipios</th>
-                <th>numeros</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
