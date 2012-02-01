@@ -68,7 +68,7 @@ $(document).ready(function () {
                 text: 'Producto: {{key}}'
             },
             subtitle: {
-                text: 'A quien vende.'
+                text: 'A quién vende.'
             },                                
             tooltip: tooltip,
             plotOptions: plotOptions,
@@ -87,7 +87,7 @@ $(document).ready(function () {
                 text: 'Producto: {{key}}'
             },
             subtitle: {
-                text: 'Donde lo vende'
+                text: 'Dónde lo vende'
             },                                
             tooltip: tooltip,
             plotOptions: plotOptions,
@@ -117,13 +117,13 @@ $(document).ready(function () {
                 <thead>
                     <tr>
                         <th>Productos</th>
-                        <th>unidad</th>
+                        <th>Unidad</th>
                         <th>Frecuencia</th>
                         <th>Porcentajes(%)</th>
                         <th>Volumen auto-consumo</th>
                         <th>Volumen venta</th>
                         <th>Precio</th>
-                        <th>Ingreso</th>
+                        <th>Ingresos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,17 +147,17 @@ $(document).ready(function () {
 </div>
 <div id="tablatab3" class="escondete">
     <div class="subindicador">Capacitaciones en tema social recibidas<a href="#" class="exportar"></a></div>
-    {% with tabla=dicc1 titulo='' primer_td='Acciones' colspan=7 titulo_combinado='¿Quiénes de la familia de usted han recibido capacitaciones en temas sociales en los ultimos 2 años' percent=1 %}
+    {% with tabla=dicc1 titulo='' primer_td='Acciones' colspan=7 titulo_combinado='¿Quiénes de la familia de usted han recibido capacitaciones en temas sociales en los últimos 2 años' percent=1 %}
     {% include "comercializacion/tabla_generica.html" %}
     {% endwith %}
 </div>
 <div id="tablatab4" class="escondete">
-	<div class="subindicador">A quien vende sus productos</div>
+	<div class="subindicador">A quién vende sus productos</div>
 	{% for key in lista_vende.keys %}
 	<div id="{{key|slugify}}" class="comer-graph"></div>
 	{% endfor %}
 	<div class="clean"></div>
-	<div class="subindicador">Donde vende sus productos</div>	
+	<div class="subindicador">Dónde vende sus productos</div>	
 	{% for key in lista_donde.keys %}
 	<div id="{{key|slugify}}_1" class="comer-graph"></div>
 	{% endfor %}

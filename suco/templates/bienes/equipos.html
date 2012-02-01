@@ -29,13 +29,13 @@ $(document).ready(function () {
 {% endblock %}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>BIENES</div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>BIENES</div>
 {% include "filtros.html" %}
         <div class="sidebar">
             <div class="subindicador">Gráficos de bienes</a></div>
-            <a id="grafico1" href="#" onCLick="click_callback('tipocasa')"class="grafo">Tipo Casa</a></a>
-            <a id="grafico2" href="#" onCLick="click_callback('tipopiso')"class="grafo">Tipo Piso</a>
-            <a id="grafico3" href="#" onCLick="click_callback('tipotecho')"class="grafo">Tipo Techo</a>
+            <a id="grafico1" href="#" onCLick="click_callback('tipocasa')"class="grafo">Tipo de casa</a></a>
+            <a id="grafico2" href="#" onCLick="click_callback('tipopiso')"class="grafo">Tipo de piso</a>
+            <a id="grafico3" href="#" onCLick="click_callback('tipotecho')"class="grafo">Tipo de techo</a>
             <a id="grafico4" href="#" onCLick="click_callback('ambiente')"class="grafo">Ambientes</a>
             <a id="grafico5" href="#" onCLick="click_callback('letrina')"class="grafo">Letrina</a>
             <a id="grafico6" href="#" onCLick="click_callback('lavadero')"class="grafo">Lavadero</a>
@@ -46,7 +46,7 @@ $(document).ready(function () {
      <a href="#" class="exportar guardarXLS" onclick="exportarXLS('equipos'); return false;"></a>
 <div id="equipos">
     <table style="width:430px; margin:5px;">
-        <caption>Los Equipos</caption>
+        <caption>Los equipos</caption>
         <thead>
             <tr>
                 <th>EQUIPOS</th>
@@ -72,7 +72,7 @@ $(document).ready(function () {
      <a href="#" class="exportar guardarXLS" onclick="exportarXLS('infra'); return false;"></a>
 <div id="infra">
     <table style="width:430px; margin:5px;">
-    <caption>Las Infraestructuras </caption>
+    <caption> Infraestructuras </caption>
         <thead>
             <tr>
                 <th>INFRAESTRUCTURA</th>
@@ -124,7 +124,7 @@ $(document).ready(function () {
      <a href="#" class="exportar guardarXLS" onclick="exportarXLS('transporte'); return false;"></a>
 <div id="transporte">
     <table style="width:430px; margin:5px;">
-        <caption>Los Transportes</caption>
+        <caption>Medios de transporte</caption>
         <thead>
             <tr>
                 <th>TRANSPORTE</th>
@@ -151,10 +151,10 @@ $(document).ready(function () {
 <div id="elect">
 
     <table style="width:430px; margin:5px;">
-        <caption>Los Electrodomésticos</caption>
+        <caption> Electrodomésticos</caption>
         <thead>
             <tr>
-                <th>electrodomesticos</th>
+                <th>ELECTRODOMÉSTICOS</th>
                 <th>FRECUENCIA</th>
                 <th>%</th>
                 <th>CANTIDAD</th>
@@ -177,10 +177,10 @@ $(document).ready(function () {
      <a href="#" class="exportar guardarXLS" onclick="exportarXLS('sani'); return false;"></a>
 <div id="sani">
     <table style="width:430px; margin:5px;">
-        <caption>Los equipos de sanamiento ambiental</caption>
+        <caption> Equipos de saneamiento ambiental</caption>
         <thead>
             <tr>
-                <th>Equipos</th>
+                <th>EQUIPOS</th>
                 <th>FRECUENCIA</th>
                 <th>%</th>
                 <th>CANTIDAD</th>

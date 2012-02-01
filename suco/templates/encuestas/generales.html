@@ -15,7 +15,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Hombres y Mujeres'
+         text: 'Mujeres y hombres'
       },
       tooltip: {
          formatter: function() {
@@ -58,7 +58,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Números de personas entrevistadas'
+         text: 'Número de personas entrevistadas'
       },
       tooltip: {
          formatter: function() {
@@ -100,7 +100,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'Departamentos encuestado'
+         text: 'Departamentos encuestados'
       },
       tooltip: {
          formatter: function() {
@@ -176,11 +176,15 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
+
 {% include "encuestas/navegacion_superior.html" %}
 
 <div class="nuevotitulo"> <a href="/" id="volver">&#9668; INICIO </a>| Datos Generales de todas las encuestas </div>
+<br>
+<h1>Datos generales de todas las encuestas</h1>
+</br>
 <table style="width:100%;" >
-        <caption class="caption2">Hombre y mujeres</caption>
+        <caption class="caption2">Mujeres y hombres</caption>
         <thead>
             <tr>
                 <th>Categoría</th>
@@ -202,7 +206,7 @@ $(document).ready(function() {
     <div class="clean"></div>
     <div id="container"></div>
 <table style="width:100%;">
-        <caption>Número de personas en {{numero}} Familias entrevistadas</caption>
+        <caption>Número de personas en {{numero}} familias entrevistadas</caption>
         <thead>
             <tr>
                 <th>Sexo</th>
@@ -245,7 +249,7 @@ $(document).ready(function() {
  
 <br></br>
 <table style="width:100%;">
-        <caption>Municipio entrevistados</caption>
+        <caption>Municipios entrevistados</caption>
         <thead>
             <tr>
                 <th>Municipios</th>
