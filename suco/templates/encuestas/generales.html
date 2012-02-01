@@ -46,49 +46,6 @@ $(document).ready(function() {
       }]
    });
 });
-
-var chart;
-$(document).ready(function() {
-   chart = new Highcharts.Chart({
-      chart: {
-         renderTo: 'container1',
-         defaultSeriesType: 'pie',
-         plotBackgroundColor: null,
-         plotBorderWidth: null,
-         plotShadow: false
-      },
-      title: {
-         text: 'Número de personas entrevistadas'
-      },
-      tooltip: {
-         formatter: function() {
-            return '<b>'+ this.point.name +'</b>: '+ this.y +'%';
-         }
-      },
-      plotOptions: {
-         pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-               enabled: true,
-               //color: Highcharts.theme.textColor || '#000000',
-               //connectorColor: Highcharts.theme.textColor || '#000000',
-               formatter: function() {
-                  return '<b>'+ this.point.name +'</b>: '+ this.y +'%';
-               }
-            },
-            showInLegend: true
-         }
-      },
-       series: [{data: [{% for value in escolaridad %}
-                    ['{{value.0}}',
-                    {{value.2}}],
-                {% endfor %}]
-                
-                }]
-   });
-});
-
 var chart;
 $(document).ready(function() {
    chart = new Highcharts.Chart({
@@ -205,26 +162,6 @@ $(document).ready(function() {
     </table>
     <div class="clean"></div>
     <div id="container"></div>
-<table style="width:100%;">
-        <caption>Número de personas en {{numero}} familias entrevistadas</caption>
-        <thead>
-            <tr>
-                <th>Sexo</th>
-                <th>Números</th>
-                <th>Porcentaje</th>
-            </tr>
-        </thead>
-        <tbody>
-            {%for fila in escolaridad%}
-            <tr>
-                {%for celda in fila %}
-                <td>{{celda}}</td>
-                {%endfor%}
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
-    <div id="container1"></div>
 <br></br>
 <table style="width:100%;">
         <caption>Departamentos entrevistados</caption>

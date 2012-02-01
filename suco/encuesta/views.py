@@ -176,16 +176,10 @@ def generales(request):
     
     #Educacion
     escolaridad = []
-    valores_e = []
-    leyenda_e = []
     for escuela in CHOICE_EDUCACION:
         conteo = Encuesta.objects.filter(educacion__sexo=escuela[0]).aggregate(conteo=Count('educacion__sexo'))['conteo']
         porcentaje = round(saca_porcentajes(conteo,numero),2)
         escolaridad.append([escuela[1],conteo,porcentaje])
-        valores_e.append(conteo)
-        leyenda_e.append(escuela[1])
-        
-    grafo_url = grafos.make_graph(valores_e, leyenda_e, 'Tipos de escolaridad', return_json=False ,type=grafos.PIE_CHART_2D)
         
         
     #Departamentos   
