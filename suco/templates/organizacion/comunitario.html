@@ -38,13 +38,13 @@ $(document).ready(function () {
 {%block content%}
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
-    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ORGANIZACIÓN &raquo; Comunitaria <div class="secciones"><a href="/gremial" class="optionsbutton">Gremial</a><a href="/comunitario" class="optionsbutton  selected">Comunitaria</a></div></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>ORGANIZACIÓN &raquo; Comunitaria <div class="secciones"><a href="/gremial" class="optionsbutton">Gremial</a><a href="/comunitario" class="optionsbutton  selected">Comunitaria</a></div></div>
 
 <div class="sidebar">
         <div class="subindicador">Gráficos</div>
-        <a id="grafico1" href="#" onCLick="onCLick=click_callback('beneficiorganizado')" class="grafo">¿Beneficios de estar organizado</a>
-        <a id="grafico2" href="#" onCLick="click_callback('comunitario')" class="grafo">¿Organización comunitaria?</a>
-        <a id="grafico2" href="#" onCLick="click_callback('norganizado')" class="grafo">¿Porque no esta organizado?</a>
+        <a id="grafico1" href="#" onCLick="onCLick=click_callback('beneficiorganizado')" class="grafo">Beneficios de estar organizado</a>
+        <a id="grafico2" href="#" onCLick="click_callback('comunitario')" class="grafo">Organización comunitaria</a>
+        <a id="grafico2" href="#" onCLick="click_callback('norganizado')" class="grafo">¿Porqué no está organizado/a?</a>
         <div class="clean"></div>
          <div id="grafo"></div>
          <br><br><br>
@@ -61,7 +61,7 @@ $(document).ready(function () {
         <thead>
             <tr>
                 <th>Organizaciones</th>
-                <th>Cuantas</th>
+                <th>Cuántas</th>
             </tr>
         </thead>
         <tbody>
@@ -89,9 +89,9 @@ $(document).ready(function () {
     <caption>¿Pertenece a alguna organización?</caption>
         <thead>
             <tr>
-                <th>Categoria</th>
+                <th>Categoría</th>
                 <th>Frecuencia</th>
-                <th>porcentaje %</th>
+                <th>Porcentaje %</th>
             </tr>
         </thead>
         <tbody>

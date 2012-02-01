@@ -226,7 +226,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: '¿Usted está informado sobre las actividades o decisiones de las organizaciones comunitarias?'
+         text: '¿Usted se informa sobre las actividades o decisiones de las organizaciones comunitarias?'
       },
       tooltip: {
          formatter: function() {
@@ -352,7 +352,7 @@ $(document).ready(function() {
          plotShadow: false
       },
       title: {
-         text: 'En caso de Si, qué tipo de organización'
+         text: 'Si dice sí, qué tipo de organización'
       },
       tooltip: {
          formatter: function() {
@@ -389,7 +389,7 @@ $(document).ready(function() {
 {% block barra %}
 <div class="indicadores">
     <div id="contenedor_igual">
-        <a href="#" class="tab" id="1" >Mujer hogar y finca</a>   
+        <a href="#" class="tab" id="1" >Mujer en hogar y finca</a>   
         <a href="#" class="tab"  id="2">Mujer en las organizaciones</a>      
     </div>
 </div>
@@ -398,7 +398,7 @@ $(document).ready(function() {
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
 <div id="tablatab1" class="escondete">
-    <div class="subindicador">GENERO &raquo; Participación de la mujer en las actividades del hogar<a href="#" class="exportar"></a></div>
+    <div class="subindicador">GÉNERO &raquo; Participación de la mujer en las actividades del hogar<a href="#" class="exportar"></a></div>
     <table style="width:100%;">
             <thead>
                 <tr>
@@ -418,7 +418,7 @@ $(document).ready(function() {
             </tbody>
     </table>
 
-    <div class="subindicador">GENERO &raquo; Participación de la mujer en las actividades en la finca<a href="#" class="exportar"></a></div>
+    <div class="subindicador">GÉNERO &raquo; Participación de la mujer en las actividades de la finca<a href="#" class="exportar"></a></div>
         <table style="width:100%;">
                 <thead>
                     <tr>
@@ -443,7 +443,7 @@ $(document).ready(function() {
         <table>
         <thead>
         <tr>
-            <th>Número de mujeres que tienen ingreso</th>
+            <th>Número de mujeres que tienen ingresos</th>
             <th> {{conteo_mujer}}</th>
         </tr>
         <tr>
@@ -462,7 +462,7 @@ $(document).ready(function() {
 </style>
 
 <div id="tablatab2" class="escondete">
- <div class="subindicador">GENERO &raquo; Graficos de mujeres en las organizaciones</div>
+ <div class="subindicador">GÉNERO &raquo; Gráfico de mujeres en las organizaciones</div>
     <br>
         <div id="container2" class="grafo"></div>
     <br>

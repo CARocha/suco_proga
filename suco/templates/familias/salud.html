@@ -10,7 +10,7 @@ $(document).ready(function() {
          defaultSeriesType: 'column'
       },
       title: {
-         text: 'Tiene Buena Salud?'
+         text: '¿Tiene buena salud?'
       },
       subtitle: {
          text: ''
@@ -80,7 +80,7 @@ $(document).ready(function() {
                                 }
    
       }, {
-         name: 'Enfermedades cronicas',
+         name: 'Enfermedades crónicas',
          data: [{{tabla_estado.0.4}},{{tabla_estado.1.4}}],
           dataLabels: {
                         enabled: true,
@@ -163,7 +163,7 @@ $(document).ready(function() {
                                 }
    
       }, {
-         name: 'Visita medico privado',
+         name: 'Visita médico privado',
          data: [{{tabla_sitio.0.3}},{{tabla_sitio.1.3}}],
           dataLabels: {
                         enabled: true,
@@ -181,7 +181,7 @@ $(document).ready(function() {
                                 }
    
       }, {
-         name: 'Visita medico naturista',
+         name: 'Visita médico naturista',
          data: [{{tabla_sitio.0.4}},{{tabla_sitio.1.4}}],
           dataLabels: {
                         enabled: true,
@@ -226,25 +226,25 @@ $(document).ready(function() {
 {%endblock%}
 {% block titulo %}
 Subindicador Salud
-<div class="cambiar_indicador"><a href="#" id="mas">Cambiar Indicador</a> <span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></div>
+<div class="cambiar_indicador"><a href="#" id="mas">Cambiar indicador</a> <span id="estado" class="estadouno"><img src="/archivos/imagen/menos.png"/></span></div>
 {%endblock%}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>FAMILIA &raquo; Salud <div class="secciones"><a href="/educacion" class="optionsbutton">Educacion</a><a href="/salud" class="optionsbutton selected">Salud</a><a href="/luz"class="optionsbutton">Luz</a><a href="/agua"class="optionsbutton">Agua</a></div></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>FAMILIA &raquo; Salud <div class="secciones"><a href="/educacion" class="optionsbutton">Educación</a><a href="/salud" class="optionsbutton selected">Salud</a><a href="/luz"class="optionsbutton">Luz</a><a href="/agua"class="optionsbutton">Agua</a></div></div>
 	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('salud'); return false;"></a>
 	<div class="clean"></div>
 <div id="salud">	
     <table style="width:100%;">
-    <caption>Estado de Salud</caption>
+    <caption>Estado de salud</caption>
         <thead>
             <tr>
                 <th></th>
                 <th>Frecuencia de consulta por edad</th>
-                <th>%Buena Salud</th>
-                <th>%Salud Delicada</th>
-                <th>%Enfermedades Crónica</th>
+                <th>%Buena salud</th>
+                <th>%Salud delicada</th>
+                <th>%Enfermedades crónicas</th>
             </tr>
         </thead>
         <tbody>
@@ -272,9 +272,9 @@ Subindicador Salud
             <tr>
                 <th></th>
                 <th>Frecuencia de consulta por edad</th>
-                <th>%Visita Centro de Salud</th>
-                <th>%Visita Médico Privado</th>
-                <th>%Visita Médico naturista</th>
+                <th>%Visita centro de salud</th>
+                <th>%Visita médico privado</th>
+                <th>%Visita médico naturista</th>
                 <th>%Se automedica</th>
             </tr>
         </thead>

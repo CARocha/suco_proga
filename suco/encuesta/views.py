@@ -1704,7 +1704,7 @@ def seguridad_alimentaria(request):
     for k,v in proteinas.items():
         if v['producen'] > 0:
             prot += 1
-    lista.append({'Carbohidrato':carbo,'Grasa':gra,'Minerales/Vitamina':mine,'Proteinas':prot})
+    lista.append({'Carbohidratos':carbo,'Grasas':gra,'Minerales/Vitaminas':mine,'Proteínas':prot})
 
     return render_to_response('seguridad/seguridad.html',locals(),
                                context_instance=RequestContext(request))

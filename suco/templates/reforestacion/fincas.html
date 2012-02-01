@@ -12,7 +12,7 @@ function Grafo4(){
              width: 520
 	      },
 	      title: {
-	         text: 'Rangos de Manzanas'
+	         text: 'Rango de manzanas'
 	      },
 	      tooltip: {
 	         formatter: function() {
@@ -43,7 +43,7 @@ function Grafo4(){
 	          }
 	      },
 	       series: [{
-	         name: 'Rangos de manzanas',
+	         name: 'Rango de manzanas',
 	         data: [
 	            ['0 Mz',   {{por_cero}}],
 	            ['1 - 10 Mz', {{por_rango1}}],
@@ -176,15 +176,15 @@ $(document).ready(function () {
 {%endblock%}
 {% block content%}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>USO DE TIERRA</div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>USO DE TIERRA</div>
 {% include "filtros.html" %}
 <div class="sidebar">
     <div class="subindicador">Gráficos</a></div>
-        <a href="#" id="grafico1" onCLick="click_callback('tenencia')"class="grafo">De quien es la tierra que trabaja</a>
+        <a href="#" id="grafico1" onCLick="click_callback('tenencia')"class="grafo">De quién es la tierra que trabaja</a>
         <a href="#" id="grafico3" onCLick="click_callback('propietario')"class="grafo">Documento de la parcela</a>
-        <a href="#" id="grafico4" onCLick="click_callback('casa')"class="grafo">Dueño de la casa donde vive</a>
-        <a href="#" id="grafico4" onCLick="click_callback('documento')"class="grafo">Documento legal de la propiedad, a nombre de quién</a>
-        <a href="#" id="grafico4" onclick="Grafo4();" class="grafo">Rangos en Manzanas</a>
+        <a href="#" id="grafico4" onCLick="click_callback('casa')"class="grafo">Dueña/o de la casa donde vive</a>
+        <a href="#" id="grafico4" onCLick="click_callback('documento')"class="grafo">Documento legal de la propiedad ¿a nombre de quién?</a>
+        <a href="#" id="grafico4" onclick="Grafo4();" class="grafo">Rangos en manzanas</a>
 	    <a href="#" id="grafico5" onclick="Grafo5();" class="grafo">Uso de tierra</a>
         <div class="clean"></div>
 <div id="grafo"></div>
@@ -194,7 +194,7 @@ $(document).ready(function () {
          <a href="#" class="exportar guardarXLS" onclick="exportarXLS('tierra'); return false;"></a>
 <div id="tierra">
     <table style="width:430px; margin:5px;">
-        <caption>Uso de Tierra</caption>
+        <caption>Uso de tierra</caption>
         <thead>
             <tr>
                 <th></th>
@@ -215,7 +215,7 @@ $(document).ready(function () {
             </tr>
             {%endfor%}
             <tr>
-                    <th>Area Total</th>
+                    <th>Área total</th>
                     <th></th>
                     <th></th>
                     <th>{{totales.manzanas}}</th>
@@ -238,7 +238,7 @@ $(document).ready(function () {
         <thead>
             <tr>
                 <th>Rangos</th>
-                <th>Frecuencias</th>
+                <th>Frecuencia</th>
                 <th>%</th>
             </tr>
         </thead>
@@ -274,7 +274,7 @@ $(document).ready(function () {
 
 		    </tr>
             <tr>
-                <th>Rangos Total</th>
+                <th>Total rangos</th>
                 <th>{{total_rangos}}</th>
                 <th>{{total_porcentajes}}</th>
             </tr>
