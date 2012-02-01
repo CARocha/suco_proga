@@ -176,14 +176,14 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
-<br>
-<h1>Datos Generales de todas las encuestas</h1>
-</br>
+{% include "encuestas/navegacion_superior.html" %}
+
+<div class="nuevotitulo"> <a href="/" id="volver">&#9668; INICIO </a>| Datos Generales de todas las encuestas </div>
 <table style="width:100%;" >
         <caption class="caption2">Hombre y mujeres</caption>
         <thead>
             <tr>
-                <th>Categoria</th>
+                <th>Categoría</th>
                 <th>Frecuencia</th>
                 <th>Porcentajes</th>
             </tr>
@@ -205,8 +205,8 @@ $(document).ready(function() {
         <caption>Número de personas en {{numero}} Familias entrevistadas</caption>
         <thead>
             <tr>
-                <th>sexo</th>
-                <th>numeros</th>
+                <th>Sexo</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
@@ -227,7 +227,7 @@ $(document).ready(function() {
         <thead>
             <tr>
                 <th>Departamentos</th>
-                <th>numeros</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
@@ -249,7 +249,7 @@ $(document).ready(function() {
         <thead>
             <tr>
                 <th>Municipios</th>
-                <th>numeros</th>
+                <th>Números</th>
                 <th>Porcentaje</th>
             </tr>
         </thead>
