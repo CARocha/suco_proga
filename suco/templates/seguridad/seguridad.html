@@ -12,25 +12,25 @@
                 defaultSeriesType: 'column'
             },
             title: {
-                text: '% que consumen suficiente en verano/invierno carbohidrátos'
+                text: '% que consumen suficiente en verano/invierno de carbohidratos'
             },
             subtitle: {
                 text: ''
             },
             xAxis: {
                 categories: [
-                    'Plantano',
+                    'Plátano',
                     'Avena',
                     'Miel',
                     'Guineo',
                     'Malanga',
-                    'Azucar',
+                    'Azúcar',
                     'Sorgo',
                     'Papa',
                     'Quequisque',
                     'Yuca',
-                    'Maiz',
-                    'Millon',
+                    'Maíz',
+                    'Millón',
                     'Arroz'
                     
                 ]
@@ -303,7 +303,7 @@ var chart;
                 defaultSeriesType: 'column'
             },
             title: {
-                text: '% que consumen suficiente en verano/invierno de proteinas'
+                text: '% que consumen suficiente en verano/invierno de proteínas'
             },
             subtitle: {
                 text: ''
@@ -401,7 +401,7 @@ var chart;
                 defaultSeriesType: 'column'
             },
             title: {
-                text: 'Cuanto tipo de alimentos producen por cada clase'
+                text: '¿Qué tipo de alimentos produce por cada clase?'
             },
             subtitle: {
                 text: ''
@@ -466,7 +466,7 @@ var chart;
 {%endblock%}
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>SEGURIDAD ALIMENTARIA</div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>SEGURIDAD ALIMENTARIA</div>
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
 <div class="contenedor">
@@ -477,7 +477,7 @@ var chart;
              <a href="#" class="exportar guardarXLS" onclick="exportarXLS('carbo'); return false;"></a>
 <div id="carbo">
 <table style="width:100%;">
-    <caption>Alimentos que contienen carbohidrátos</caption>
+    <caption>Alimentos que contienen carbohidratos</caption>
         <thead>
             <tr>
                 <th>ALIMENTOS</th>
@@ -485,9 +485,9 @@ var chart;
                 <th>%</th>
                 <th># de familias que compran</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente verano</th>
+                <th># de familias que consumen suficiente en verano</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente invierno</th>
+                <th># de familias que consumen suficiente en invierno</th>
                 <th>%</th>
             </tr>
         </thead>
@@ -524,9 +524,9 @@ var chart;
                 <th>%</th>
                 <th># de familias que compran</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente verano</th>
+                <th># de familias que consumen suficiente en verano</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente invierno</th>
+                <th># de familias que consumen suficiente en invierno</th>
                 <th>%</th>
             </tr>
         </thead>
@@ -563,9 +563,9 @@ var chart;
                 <th>%</th>
                 <th># de familias que compran</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente verano</th>
+                <th># de familias que consumen suficiente en verano</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente invierno</th>
+                <th># de familias que consumen suficiente en invierno</th>
                 <th>%</th>
             </tr>
         </thead>
@@ -594,7 +594,7 @@ var chart;
              <a href="#" class="exportar guardarXLS" onclick="exportarXLS('proteinas'); return false;"></a>
 <div id="proteinas">
 <table style="width:100%;">
-    <caption>Alimentos que contienen proteinas</caption>
+    <caption>Alimentos que contienen proteínas</caption>
         <thead>
             <tr>
                 <th>ALIMENTOS</th>
@@ -602,9 +602,9 @@ var chart;
                 <th>%</th>
                 <th># de familias que compran</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente verano</th>
+                <th># de familias que consumen suficiente en verano</th>
                 <th>%</th>
-                <th># de familias que consumen suficiente invierno</th>
+                <th># de familias que consumen suficiente en invierno</th>
                 <th>%</th>
             </tr>
         </thead>

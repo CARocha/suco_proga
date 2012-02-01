@@ -70,7 +70,7 @@ function Grafo5(){
                     {{labores.patio.Mujer}},{{labores.especies_menores.Mujer}}],
             },
             {
-                    name: 'Hombres',
+                    name: 'Hombre',
                     data: [{{labores.semilla.Hombre}},{{labores.parcela.Hombre}},
                     {{labores.especies_mayores.Hombre}},{{labores.reforestacion.Hombre}},
                     {{labores.patio.Hombre}},{{labores.especies_menores.Hombre}}],
@@ -148,7 +148,7 @@ function Grafo6(){
                     {{beneficio.patio.Mujer}},{{beneficio.especies_menores.Mujer}}],
             },
             {
-                    name: 'Hombres',
+                    name: 'Hombre',
                     data: [{{beneficio.semilla.Hombre}},{{beneficio.parcela.Hombre}},
                     {{beneficio.especies_mayores.Hombre}},{{beneficio.reforestacion.Hombre}},
                     {{beneficio.patio.Hombre}},{{beneficio.especies_menores.Hombre}}],
@@ -225,7 +225,7 @@ function Grafo7(){
                     {{deciciones.patio.Mujer}},{{deciciones.especies_menores.Mujer}}],
             },
             {
-                    name: 'Hombres',
+                    name: 'Hombre',
                     data: [{{deciciones.semilla.Hombre}},{{deciciones.parcela.Hombre}},
                     {{deciciones.especies_mayores.Hombre}},{{deciciones.reforestacion.Hombre}},
                     {{deciciones.patio.Hombre}},{{deciciones.especies_menores.Hombre}}],
@@ -290,7 +290,7 @@ $(document).ready(function () {
 {%endblock%}
 {% block content%}
 {% include "encuestas/navegacion_superior.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>PARTICIPACIÓN DE LA FAMILIA</div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>PARTICIPACIÓN DE LA FAMILIA</div>
 {% include "filtros.html" %}
 <div class="sidebar">
     <div class="subindicador">Gráficos</a></div>
@@ -305,14 +305,14 @@ $(document).ready(function () {
              <a href="#" class="exportar guardarXLS" onclick="exportarXLS('labores'); return false;"></a>
 <div id="labores">
     <table style="width:430px; margin:5px;">
-    <caption>Participacion de la familia en labores</caption>
+    <caption>Participación de la familia en labores</caption>
         <thead>
             <tr>
                 <th></th>
                 <th>Hijas</th>
                 <th>Hijos</th>
-                <th>Mujeres</th>
-                <th>Hombres</th> 
+                <th>Mujer</th>
+                <th>Hombre</th> 
             </tr>
         </thead>
         <tbody>
@@ -337,8 +337,8 @@ $(document).ready(function () {
                 <th></th>
                 <th>Hijas</th>
                 <th>Hijos</th>
-                <th>Mujeres</th>
-                <th>Hombres</th> 
+                <th>Mujer</th>
+                <th>Hombre</th> 
             </tr>
         </thead>
         <tbody>
@@ -357,14 +357,14 @@ $(document).ready(function () {
          <a href="#" class="exportar guardarXLS" onclick="exportarXLS('decision'); return false;"></a>
 <div id="decision">
     <table style="width:430px; margin:5px;">
-    <caption>Toma de decision</caption>
+    <caption>Toma de decisión</caption>
         <thead>
             <tr>
                <th></th>
                 <th>Hijas</th>
                 <th>Hijos</th>
-                <th>Mujeres</th>
-                <th>Hombres</th> 
+                <th>Mujer</th>
+                <th>Hombre</th> 
             </tr>
         </thead>
         <tbody>

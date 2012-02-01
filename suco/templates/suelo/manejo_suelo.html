@@ -44,12 +44,12 @@ $(document).ready(function () {
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>MANEJO DEL SUELO <div class="secciones"><a href="/manejosuelo" class="optionsbutton selected">Manejo Suelo</a><a href="/suelos" class="optionsbutton">Suelo</a></div></div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>MANEJO DEL SUELO <div class="secciones"><a href="/manejosuelo" class="optionsbutton selected">Manejo de suelo</a><a href="/suelos" class="optionsbutton">Suelo</a></div></div>
 
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>
-        <a href="#" id="grafico1" onCLick="click_callback('analisis')"class="grafo">Realiza analisis</a>
-        <a href="#" id="grafico2" onCLick="click_callback('practica')"class="grafo">Realiza practica</a>
+        <a href="#" id="grafico1" onCLick="click_callback('analisis')"class="grafo">Realiza análisis</a>
+        <a href="#" id="grafico2" onCLick="click_callback('practica')"class="grafo">Realiza prácticas</a>
    <div id="grafo"></div>
 </div>
 
@@ -79,10 +79,10 @@ $(document).ready(function () {
          <a href="#" class="exportar guardarXLS" onclick="exportarXLS('traccion'); return false;"></a>
 <div id="traccion">
     <table style="width:430px; margin:5px;">
-    <caption>Traccion para la preparación del suelo</caption>
+    <caption>Tracción para la preparación del suelo</caption>
         <thead>
             <tr>
-                <th>Tipo Tracción</th>
+                <th>Tipo de tracción</th>
                 <th>Número</th>
                 <th>%</th>
             </tr>
@@ -105,7 +105,7 @@ $(document).ready(function () {
         <caption>¿Qué tipo de fertilización realiza?</caption>
         <thead>
             <tr>
-                <th>Tipos de Fertilización</th>
+                <th>Tipos de fertilización</th>
                 <th>Número</th>
                 <th>%</th>
             </tr>
@@ -125,10 +125,10 @@ $(document).ready(function () {
          <a href="#" class="exportar guardarXLS" onclick="exportarXLS('conservacion'); return false;"></a>
 <div id="conservacion">
     <table style="width:430px; margin:5px;">
-        <caption>¿Qué tipo de obra de conservación de suelo?</caption>
+        <caption>¿Tipo de obra de conservación de suelo?</caption>
         <thead>
             <tr>
-                <th>Tipos de obras</th>
+                <th>Tipo de obra</th>
                 <th>Número</th>
                 <th>%</th>
             </tr>

@@ -40,7 +40,7 @@ $(document).ready(function () {
      <thead>
         <tr>
             <th></th>
-            <th colspan="2">¿Cuántos tienen?</th>
+            <th colspan="2">¿Cuántas tienen?</th>
             <th colspan="2">Área</th>
             <th colspan="2">Número de plantas</th>
             <th colspan="2">Número de plantas injertadas</th>
@@ -64,13 +64,13 @@ $(document).ready(function () {
             {%endfor%}
         </tr>
         <tr>
-            <td>Plantas en desarrollo menos 1 año</td>
+            <td>Plantas en desarrollo (menos de 1 año)</td>
             {%for dato in planta_menos%}
             <td>{{dato}}</td>
             {%endfor%}
         </tr>
         <tr>
-            <td>Plantas en desarrollo más 1 año</td>
+            <td>Plantas en desarrollo (más de 1 año)</td>
             {%for dato in planta_mas%}
             <td>{{dato}}</td>
             {%endfor%}
@@ -100,11 +100,11 @@ $(document).ready(function () {
             <th>%</th>
             <th>Producción total(qq seco)</th>
             <th>Promedio(qq seco)</th>
-            <th>% producción</th>
+            <th>% Producción</th>
         </tr>
      </thead>
         <tr>
-            <td>total</td>
+            <td>Total</td>
             {%for dato in lista_total%}
             <td>{{dato}}</td>
             {%endfor%}
@@ -122,7 +122,7 @@ $(document).ready(function () {
             {%endfor%}
         </tr>
         <tr>
-            <td>Fermentado organico</td>
+            <td>Fermentado orgánico</td>
             {%for dato in lista_organico%}
             <td>{{dato}}</td>
             {%endfor%}
@@ -161,7 +161,7 @@ $(document).ready(function () {
             {%endfor%}
         </tr>
         <tr>
-            <td>% de Gasto de cacao</td>
+            <td>% de gastos</td>
             <td>---</td>
             <td>{{porcentaje_cacao}}</td>
             <td>---</td>
