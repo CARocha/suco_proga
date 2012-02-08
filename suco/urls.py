@@ -23,10 +23,9 @@ urlpatterns = patterns('',
     (r'^', include('suco.encuesta.urls')),
 )
 
+handler404 = 'suco.views.file_not_found_404'
+
+handler500 = 'suco.views.file_not_found_500'
+
 urlpatterns += staticfiles_urlpatterns() 
 
-#if settings.DEBUG:
-#    urlpatterns += patterns('',
-#                            (r'^files/(.*)$', 'django.views.static.serve',
-#                             {'document_root': os_path.join(settings.MEDIA_ROOT)}),
-#                           )
