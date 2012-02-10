@@ -1370,7 +1370,7 @@ def calculo_cultivo(request,tipo):
     #********** calculos de los ingreso de los productos de los animales ************
     tabla = {}
     for cultivo in TipoCultivos.objects.filter(tipo=tipo):
-        key = slugify(cultivo.nombre).replace('-','_')
+        #key = slugify(cultivo.nombre).replace('-','_')
         key2 = slugify(cultivo.unidad).replace('-','_')
         consulta = a.filter(cultivos__cultivo = cultivo)
         numero = consulta.count()
@@ -1386,7 +1386,7 @@ def calculo_cultivo(request,tipo):
         except:
             ingreso = 0
         if ingreso > 0:
-            tabla[key] = {'key2':key2,'numero':numero,'cantidad':cantidad,
+            tabla[cultivo.nombre] = {'key2':key2,'numero':numero,'cantidad':cantidad,
                           'ingreso':ingreso,'precio':precio}
     return tabla
 
