@@ -22,3 +22,4 @@ settings_local.py
 *.tar.bz2
 *.tar.gz
 *.sql
+*.wsgi
