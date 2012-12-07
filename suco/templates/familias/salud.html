@@ -232,7 +232,7 @@ Subindicador Salud
 {% include "encuestas/navegacion_superior.html" %} 
 {% include "filtros.html" %}
 <div class="contenido fulltabla">
-    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>FAMILIA &raquo; Salud <div class="secciones"><a href="/educacion" class="optionsbutton">Educación</a><a href="/salud" class="optionsbutton selected">Salud</a><a href="/luz"class="optionsbutton">Luz</a><a href="/agua"class="optionsbutton">Agua</a></div></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>FAMILIA &raquo; Salud <div class="secciones"><a href="/educacion?v={{request.session.crce}}" class="optionsbutton">Educación</a><a href="/salud?v={{request.session.crce}}" class="optionsbutton selected">Salud</a><a href="/luz?v={{request.session.crce}}"class="optionsbutton">Luz</a><a href="/agua?v={{request.session.crce}}"class="optionsbutton">Agua</a></div></div>
 	<a href="#" class="exportar guardarXLS" onclick="exportarXLS('salud'); return false;"></a>
 	<div class="clean"></div>
 <div id="salud">	

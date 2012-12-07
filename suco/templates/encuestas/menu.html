@@ -7,41 +7,41 @@
 <div id="indicadores">
     <div id="contenedor_indicadores" class="familiagroup">
         <img src="{{STATIC_URL}}img/familia.jpg">
-        <a href="/educacion">Familias</a>
-        <a href="/gremial">Organización</a>
-        <a href="/vulnerable">Riesgos que hacen la finca vulnerable</a>
-        <a href="/mitigariesgos">Gestión de riesgos</a>
+        <a href="/educacion?v={{request.session.crce}}">Familias</a>
+        <a href="/gremial?v={{request.session.crce}}">Organización</a>
+        <a href="/vulnerable?v={{request.session.crce}}">Riesgos que hacen la finca vulnerable</a>
+        <a href="/mitigariesgos?v={{request.session.crce}}">Gestión de riesgos</a>
         <div class="clean"></div>
     </div>
     <div id="contenedor_indicadores" class="ingresogroup">
         <img src="{{STATIC_URL}}img/ingresos.jpg">
         
 
-        <a href="/ingresos">Ingresos</a>
-        <a href="/equipos">Bienes</a>
-        <a href="/ahorro_credito">Ahorro y créditos</a>
+        <a href="/ingresos?v={{request.session.crce}}">Ingresos</a>
+        <a href="/equipos?v={{request.session.crce}}">Bienes</a>
+        <a href="/ahorro_credito?v={{request.session.crce}}">Ahorro y créditos</a>
 
         <div class="clean"></div>
     </div>
     <div id="contenedor_indicadores" class="suelogroup" >
         <img src="{{STATIC_URL}}img/tierra.jpg">
-        <a href="/animales">Animales</a>
-        <a href="/fincas">Tierra</a>
-        <a href="/cultivos">Cultivos</a>
+        <a href="/animales?v={{request.session.crce}}">Animales</a>
+        <a href="/fincas?v={{request.session.crce}}">Tierra</a>
+        <a href="/cultivos?v={{request.session.crce}}">Cultivos</a>
 
-        <a href="/suelos">Suelo</a>
+        <a href="/suelos?v={{request.session.crce}}">Suelo</a>
 
-        <a href="/arboles">Árboles y reforestación</a>
-        <a href="/usosemilla">Uso de semilla</a>
+        <a href="/arboles?v={{request.session.crce}}">Árboles y reforestación</a>
+        <a href="/usosemilla?v={{request.session.crce}}">Uso de semilla</a>
         <div class="clean"></div>
     </div>
     <div id="contenedor_indicadores" class="comercializaciongroup" >
         <img src="{{STATIC_URL}}img/comercializacion2.jpg">
-               <a href="/opcionesmanejo">Opciones de manejo</a>
-                <a href="/participacion">Participación de la familia</a>
-        <a href="/seguridad">Seguridad alimentaria</a>
-        <a href="/sistematizacion">Observación sistemática</a>
-        <a href="/procesamiento">Procesamiento y comercialización</a>
+               <a href="/opcionesmanejo?v={{request.session.crce}}">Opciones de manejo</a>
+                <a href="/participacion?v={{request.session.crce}}">Participación de la familia</a>
+        <a href="/seguridad?v={{request.session.crce}}">Seguridad alimentaria</a>
+        <a href="/sistematizacion?v={{request.session.crce}}">Observación sistemática</a>
+        <a href="/procesamiento?v={{request.session.crce}}">Procesamiento y comercialización</a>
         
         <div class="clean"></div>
     </div>

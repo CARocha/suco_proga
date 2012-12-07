@@ -90,7 +90,7 @@ function Grafo1(){
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
 
-    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ORGANIZACIÓN &raquo; Gremial <div class="secciones"><a href="/gremial" class="optionsbutton selected">Gremial</a><a href="/comunitario" class="optionsbutton">Comunitaria</a></div></div>
+    <div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENU | </a>ORGANIZACIÓN &raquo; Gremial <div class="secciones"><a href="/gremial?v={{request.session.crce}}" class="optionsbutton selected">Gremial</a><a href="/comunitario?v={{request.session.crce}}" class="optionsbutton">Comunitaria</a></div></div>
 
 <div class="sidebar">
     

@@ -56,7 +56,7 @@ $(document).ready(function() {
 {%block content%}
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>CULTIVO DE PASTOS  <div class="secciones"><a href="/cultivos" class="optionsbutton ">Cultivos de finca</a><a href="/pastos" class="optionsbutton selected">Cultivo de pastos</a></div></div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>CULTIVO DE PASTOS  <div class="secciones"><a href="/cultivos?v={{request.session.crce}}" class="optionsbutton ">Cultivos de finca</a><a href="/pastos?v={{request.session.crce}}" class="optionsbutton selected">Cultivo de pastos</a></div></div>
 
 
 <div class="contenido fulltabla">

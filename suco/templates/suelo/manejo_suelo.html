@@ -44,7 +44,7 @@ $(document).ready(function () {
 {% block content %}
 {% include "encuestas/navegacion_superior.html" %}
 {% include "filtros.html" %}
-<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>MANEJO DEL SUELO <div class="secciones"><a href="/manejosuelo" class="optionsbutton selected">Manejo de suelo</a><a href="/suelos" class="optionsbutton">Suelo</a></div></div>
+<div class="nuevotitulo"><a href="/menu" id="volver">&#9668; MENÚ | </a>MANEJO DEL SUELO <div class="secciones"><a href="/manejosuelo?v={{request.session.crce}}" class="optionsbutton selected">Manejo de suelo</a><a href="/suelos?v={{request.session.crce}}" class="optionsbutton">Suelo</a></div></div>
 
 <div class="sidebar">
         <div class="subindicador">Gráficos</a></div>

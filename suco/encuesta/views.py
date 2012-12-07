@@ -25,6 +25,7 @@ from suco.seguridad.models import *
 
 from utils import grafos
 from utils import *
+import random
 
 # Create your views here.
 
@@ -147,6 +148,8 @@ def index(request):
 
             mensaje = "Todas las variables estan correctamente :)"
             request.session['activo'] = True
+            variablerandom = random.randrange(100,2250)
+            request.session['crce']  = variablerandom
             return HttpResponseRedirect('/menu') 
     else:
         form = MonitoreoForm()
