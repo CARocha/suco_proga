@@ -89,6 +89,11 @@ class EnergiaInline(admin.TabularInline):
     max_num = 5
     can_delete = False
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'respuesta':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(EnergiaInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class QueUtilizaInline(admin.TabularInline):
     model = QueUtiliza
     extra = 1
@@ -331,7 +336,7 @@ class RiesgosInline(admin.TabularInline):
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'respuesta':
             kwargs['widget'] = forms.RadioSelect()
-        return super(RiesgosInline, self).formfield_for_dbfield(db_field,**kwargs)
+        return super(RiesgosInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 class EncuestaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
