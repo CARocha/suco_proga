@@ -69,6 +69,7 @@ class Energia(models.Model):
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
+        ordering = ('pregunta',)
         verbose_name_plural = "Energia"
         
 class QueUtiliza(models.Model):

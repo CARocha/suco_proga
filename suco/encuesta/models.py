@@ -16,6 +16,7 @@ class Recolector(models.Model):
         return self.nombre
 
     class Meta:
+        ordering = ('nombre',)
         verbose_name_plural = "Recolector"
         
 class Escolaridad(models.Model):
@@ -25,6 +26,7 @@ class Escolaridad(models.Model):
         return self.nombre
 
     class Meta:
+        ordering = ('nombre',)
         verbose_name_plural = "Escolaridad"
         
 class Tecnica(models.Model):
@@ -34,6 +36,7 @@ class Tecnica(models.Model):
         return self.nombre
 
     class Meta:
+        ordering = ('nombre',)
         verbose_name_plural = "Formación técnica"
         
 class ParticipacionProyecto(models.Model):
@@ -41,6 +44,9 @@ class ParticipacionProyecto(models.Model):
 
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ('nombre',)
 
 CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplicacion que necesite si o no
 CHOICE_SEXO = ( (1,'Hombre'),

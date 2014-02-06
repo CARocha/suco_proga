@@ -21,6 +21,7 @@ class Municipio(models.Model):
         return self.nombre
 
     class Meta:
+        ordering = ('nombre',)
         verbose_name_plural = "Municipios"
 
 class Comunidad(models.Model):
@@ -28,6 +29,7 @@ class Comunidad(models.Model):
     nombre = models.CharField(max_length=40)
 
     class Meta:
+        ordering = ('nombre',)
         verbose_name_plural="Comunidad"
 
     def __unicode__(self):
