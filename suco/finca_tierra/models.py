@@ -9,22 +9,34 @@ class Acceso(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ('nombre',)
         
 class Parcela(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
 
+    class Meta:
+        ordering = ('nombre',)
+
 class Solar(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre   
+
+    class Meta:
+        ordering = ('nombre',)
 
 class Documento(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
  
+    class Meta:
+        ordering = ('nombre',)
+
 class AccesoTierra(models.Model):
     tierra = models.ForeignKey(Acceso, verbose_name="¿De quien es la tierra que usted va a trabajar")
     parcela = models.ForeignKey(Parcela, verbose_name="Parcela")
@@ -44,6 +56,7 @@ class Uso(models.Model):
 
     class Meta:
         verbose_name_plural = "Uso de tierra"
+        ordering = ('nombre',)
 
 class UsoTierra(models.Model):
     ''' Uso de tierra
@@ -60,8 +73,12 @@ class UsoTierra(models.Model):
 #Acceso al agua
 class AguaAcceso(models.Model):
     nombre = models.CharField(max_length=200)
+
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ('nombre',)
         
 class AccesoAgua(models.Model):
     nombre = models.ManyToManyField(AguaAcceso, verbose_name="Tiene acceso a agua", null=True, blank=True)
@@ -79,6 +96,7 @@ class Maderable(models.Model):
 
     class Meta:
         verbose_name_plural = "Arboles maderables"
+        ordering = ('nombre',)
 
 class Forrajero(models.Model):
     nombre = models.CharField(max_length=200)
@@ -87,6 +105,7 @@ class Forrajero(models.Model):
 
     class Meta:
         verbose_name_plural = "Arboles forrageros"
+        ordering = ('nombre',)
         
 class Energetico(models.Model):
     nombre = models.CharField(max_length=200)
@@ -95,6 +114,7 @@ class Energetico(models.Model):
 
     class Meta:
         verbose_name_plural = "Arboles energeticos"
+        ordering = ('nombre',)
 
 class Frutal(models.Model):
     nombre = models.CharField(max_length=200)
@@ -103,6 +123,7 @@ class Frutal(models.Model):
 
     class Meta:
         verbose_name_plural = "Arboles frutal"
+        ordering = ('nombre',)
 
 class ExistenciaArboles(models.Model):
     ''' Existencia de arboles en la finca
@@ -130,6 +151,7 @@ class Actividad(models.Model):
 
     class Meta:
         verbose_name_plural = "Actividades de reforestacion"
+        ordering = ('nombre',)
 
 class Reforestacion(models.Model):
     ''' reforestacion

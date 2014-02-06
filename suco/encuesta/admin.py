@@ -12,18 +12,25 @@ from suco.organizaciones.models import *
 from suco.propiedades.models import *
 from suco.seguridad.models import *
 from django.contrib.auth.models import User
+from django import forms
+from django.db.models import Max
 
 class AnimalesFincaInline(admin.TabularInline):
     model = AnimalesFinca
     extra = 1
     max_num = None
     can_delete = False
-    
+
 class ProduccionConsumoInline(admin.TabularInline):
     model = ProduccionConsumo
     extra = 1
     max_num = None
     can_delete = False
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'venta_organizada':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(ProduccionConsumoInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 class CultivoPastoInline(admin.TabularInline):
     model = CultivoPasto
@@ -43,30 +50,50 @@ class CultivosInline(admin.TabularInline):
     max_num = None
     #can_delete = False
     
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'venta_organizada':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(CultivosInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class CultivosPatioInline(admin.TabularInline):
     model = CultivosPatio
     extra = 1
     max_num = None
     #can_delete = False
     
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'venta_organizada':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(CultivosPatioInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class EducacionInline(admin.TabularInline):
     model = Educacion
     extra = 1
     max_num = 2
     can_delete = False
-    
+
 class SaludInline(admin.TabularInline):
     model = Salud
     extra = 1
     max_num = 2
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['v_centro', 'v_medico', 'v_naturista', 'automedica']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(SaludInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class EnergiaInline(admin.TabularInline):
     model = Energia
     extra = 1
     max_num = 5
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'respuesta':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(EnergiaInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class QueUtilizaInline(admin.TabularInline):
     model = QueUtiliza
     extra = 1
@@ -94,19 +121,19 @@ class AccesoTierraInline(admin.TabularInline):
 #                    "parcela": admin.VERTICAL,
 #                    "casa": admin.VERTICAL,
 #                    "documento": admin.HORIZONTAL}
-    
+
 class UsoTierraInline(admin.TabularInline):
     model = UsoTierra
     extra = 1
     max_num = None
     can_delete = False
-    
+
 class AccesoAguaInline(admin.TabularInline):
     model = AccesoAgua
     extra = 1
     max_num = 1
     can_delete = False
-    
+
 class ExistenciaArbolesInline(admin.TabularInline):
     model = ExistenciaArboles
     fields = ['maderable', 'cantidad_maderable', 'forrajero', 'cantidad_forrajero',
@@ -114,30 +141,44 @@ class ExistenciaArbolesInline(admin.TabularInline):
     extra = 1
     max_num = 1
     can_delete = False
-    
+
+    formfield_overrides = { models.ManyToManyField: {'widget': forms.SelectMultiple(attrs={'size':'30'})}, }
+
 class ReforestacionInline(admin.TabularInline):
     model = Reforestacion
     extra = 1
     max_num = 10
     can_delete = False
-    
+
 class OpcionesManejoInline(admin.TabularInline):
     model = OpcionesManejo
     extra = 1
     max_num = None
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['menor_escala', 'mayor_escala']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(OpcionesManejoInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class SistematicaInline(admin.TabularInline):
     model = Sistematica
     extra = 1
     max_num = 1
     can_delete = False
     
+    formfield_overrides = { models.ManyToManyField: {'widget': forms.SelectMultiple(attrs={'size':'15'})}, }
+
 class SemillaInline(admin.TabularInline):
     model = Semilla
     extra = 1
     max_num = None
     can_delete = False
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'origen':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(SemillaInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 class ParticipasionInline(admin.TabularInline):
     model = Participasion
@@ -157,13 +198,23 @@ class ManejoSueloInline(admin.TabularInline):
     extra = 1
     max_num = 1
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['analisis', 'practica']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(ManejoSueloInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class ProcesamientoInline(admin.TabularInline):
     model = Procesamiento
     extra = 1
     max_num = None
     can_delete = False
     
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'aditivos':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(ProcesamientoInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class OtrosIngresosInline(admin.TabularInline):
     model = OtrosIngresos
     extra = 1
@@ -182,7 +233,12 @@ class OrganizacionComunitariaInline(admin.TabularInline):
     extra = 1
     max_num = 1
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'pertence':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(OrganizacionComunitariaInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class TipoCasaInline(admin.TabularInline):
     model = TipoCasa
     extra = 1
@@ -195,6 +251,11 @@ class DetalleCasaInline(admin.TabularInline):
     max_num = 1
     can_delete = False
     
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['letrina', 'lavadero']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(DetalleCasaInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class PropiedadEquipoInline(admin.TabularInline):
     model = PropiedadEquipo
     extra = 1
@@ -244,12 +305,22 @@ class CreditoInline(admin.TabularInline):
     max_num = 1
     can_delete = False
     
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['recibe', 'dia']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(CreditoInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class SeguridadInline(admin.TabularInline):
     model = Seguridad
     extra = 1
     max_num = None
     can_delete = False
-    
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name in ['producen', 'compran', 'consumen', 'consumen_invierno']:
+            kwargs['widget'] = forms.RadioSelect()
+        return super(SeguridadInline, self).formfield_for_dbfield(db_field,**kwargs)
+
 class VulnerableInline(admin.TabularInline):
     model = Vulnerable
     extra = 1
@@ -261,7 +332,12 @@ class RiesgosInline(admin.TabularInline):
     extra = 1
     max_num = 6
     can_delete = False
-        
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'respuesta':
+            kwargs['widget'] = forms.RadioSelect()
+        return super(RiesgosInline, self).formfield_for_dbfield(db_field, **kwargs)
+
 class EncuestaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         #if getattr(obj, 'usuario', None) is None:

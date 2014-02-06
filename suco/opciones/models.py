@@ -13,6 +13,7 @@ class ManejoAgro(models.Model):
 
     class Meta:
         verbose_name_plural = "Uso opciones de manejo agroecologico"
+        ordering = ('nombre',)
     
 CHOICE_NIVEL_CONOCIMIENTO = ((1,'Nada'),(2,'Poco'),(3,'Algo'),(4,'Bastante'))
 
@@ -36,6 +37,9 @@ class Observacion(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ('nombre',)
         
 class Sistematica(models.Model):
     tipo = models.ManyToManyField(Observacion, verbose_name="Observaciones", null=True, blank=True)
@@ -53,7 +57,7 @@ class CultivosVariedad(models.Model):
 
     class Meta:
         verbose_name_plural = "Cultivos variedad"
-        ordering = ['cultivo']
+        ordering = ('cultivo',)
 
 class Variedades(models.Model):
     cultivo = models.ForeignKey(CultivosVariedad)
@@ -63,7 +67,7 @@ class Variedades(models.Model):
 
     class Meta:
         verbose_name_plural = "Variedades"
-        ordering = ['cultivo']
+        ordering = ('cultivo',)
         
 CHOICE_ORIGEN = ((1,'Nativo'), (2,'Introducido'))
 
@@ -113,6 +117,7 @@ class Textura(models.Model):
 
     class Meta:
         verbose_name_plural = "Suelo - Textura"
+        ordering = ('nombre',)
 
 class Profundidad(models.Model):
     nombre = models.CharField(max_length=200)
@@ -122,6 +127,7 @@ class Profundidad(models.Model):
 
     class Meta:
         verbose_name_plural = "Suelo - Profundidad"
+        ordering = ('nombre',)
 
 # Esta clase de va a ocupar en varias de los tipos de caraterización
 # ya que contendra las opciones Alta, Media y Baja
@@ -133,6 +139,7 @@ class Densidad(models.Model):
 
     class Meta:
         verbose_name_plural = "Suelo - Densidad"
+        ordering = ('nombre',)
 
 class Pendiente(models.Model):
     nombre = models.CharField(max_length=200)
@@ -142,6 +149,7 @@ class Pendiente(models.Model):
 
     class Meta:
         verbose_name_plural = "Suelo - Pendiente"
+        ordering = ('nombre',)
 
 class Drenaje(models.Model):
     nombre = models.CharField(max_length=200)
@@ -151,6 +159,7 @@ class Drenaje(models.Model):
 
     class Meta:
         verbose_name_plural = "Suelo - Drenaje"
+        ordering = ('nombre',)
         
 class Suelo(models.Model):
     ''' Caracterización de terreno
@@ -187,7 +196,8 @@ class Preparar(models.Model):
 
     class Meta:
         verbose_name_plural = "ManejoSuelo - preparar"
-       
+        ordering = ('nombre',)
+
 class Traccion(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -196,6 +206,7 @@ class Traccion(models.Model):
 
     class Meta:
         verbose_name_plural = "ManejoSuelo - tracción"
+        ordering = ('nombre',)
 
 class Fertilizacion(models.Model):
     nombre = models.CharField(max_length=200)
@@ -205,6 +216,7 @@ class Fertilizacion(models.Model):
 
     class Meta:
         verbose_name_plural = "ManejoSuelo - fertilizacion"
+        ordering = ('nombre',)
 
 class Conservacion(models.Model):
     nombre = models.CharField(max_length=200)
@@ -214,6 +226,7 @@ class Conservacion(models.Model):
 
     class Meta:
         verbose_name_plural = "ManejoSuelo - conservacion"
+        ordering = ('nombre',)
 
 class ManejoSuelo(models.Model):
     ''' 12.2 Manejo de suelo
@@ -234,12 +247,15 @@ class Procesado(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    class Meta:
+        ordering = ('nombre',)
         
 CHOICE_EMPAQUE = (  (1,'Biodegradable'),
                     (2,'Contaminante'),
                     (3,'Reutilisable')
                  )
-                 
+
 class Procesamiento(models.Model):
     producto = models.ForeignKey(Procesado, verbose_name="Producto Procesado")
     cantidad = models.FloatField('Cantidad producida')
@@ -257,12 +273,18 @@ class Fuente(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-        
+
+    class Meta:
+        ordering = ('nombre',)
+
 class TipoTrabajo(models.Model):
     fuente = models.ForeignKey(Fuente)
     nombre =  models.CharField(max_length=200)
     def __unicode__(self):
         return u'%s - %s' % (self.fuente.nombre, self.nombre)
+
+    class Meta:
+        ordering = ('fuente__nombre','nombre',)
 
 CHOICE_MANEJA = ((1,"Hombre"),(2,"Mujer"),(3,"Ambos"),(4,"Hijos/as"),
                  (5,'Hombre-Hijos'),(6,'Mujer-Hijos'),(7,'Todos'))

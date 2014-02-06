@@ -12,6 +12,7 @@ class Animales(models.Model):
 
     class Meta:
         verbose_name_plural = "Animales-Finca"
+        ordering = ('nombre',)
 
 class ProductoAnimal(models.Model):
     animal = models.ForeignKey(Animales)
@@ -22,6 +23,7 @@ class ProductoAnimal(models.Model):
 
     class Meta:
         verbose_name_plural = "Finca - Producto"
+        ordering = ('animal__nombre', 'nombre',)
 
 
 class AnimalesFinca(models.Model):
@@ -29,7 +31,7 @@ class AnimalesFinca(models.Model):
     '''
     animales = models.ForeignKey(Animales)
     cantidad = models.FloatField('Cantidad de animales')
-    valor = models.FloatField('Valor')
+    valor = models.FloatField('Valor total')
     encuesta = models.ForeignKey(Encuesta)
     
     def __unicode__(self):
@@ -47,7 +49,7 @@ class ProduccionConsumo(models.Model):
     producto = models.ForeignKey(ProductoAnimal)
     total_produccion = models.FloatField('Total producion por año')
     consumo = models.FloatField('Consumo familiar por año')
-    precio = models.FloatField('Precio de venta actual en mercado local')
+    precio = models.FloatField('Precio unitario de venta actual en mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)

@@ -7,8 +7,8 @@ from suco.organizaciones.models import *
 # Create your models here.
 
 CHOICE_AMBIENTE = ((1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"),(6,"6"),(7,"7"))
-CHOICE_TIPO_CASA = ((1,"Madera rolliza"),(2,"Adobe"),(3,"Tabla"),
-                    (4,"Minifalda"),(5,"Ladrillo o Bloque"),(6,"Taquezal"))
+CHOICE_TIPO_CASA = ((2,"Adobe"),(5,"Ladrillo o Bloque"),(1,"Madera rolliza"),
+                    (4,"Minifalda"),(3,"Tabla"),(6,"Taquezal"))
 
 class Piso(models.Model):
     nombre = models.CharField(max_length=100)
@@ -17,6 +17,7 @@ class Piso(models.Model):
         
     class Meta:
         verbose_name_plural = "Pisos"
+        ordering = ('nombre',)
 
 class Techo(models.Model):
     nombre = models.CharField(max_length=100)
@@ -25,6 +26,7 @@ class Techo(models.Model):
         
     class Meta:
         verbose_name_plural = "Techos"
+        ordering = ('nombre',)
 
 class TipoCasa(models.Model):
     '''Modelo tipos de casa
@@ -63,6 +65,7 @@ class Equipos(models.Model):
 
     class Meta:
         verbose_name_plural = "Equipos"
+        ordering = ('nombre',)
 
 
 class Infraestructuras(models.Model):
@@ -72,6 +75,7 @@ class Infraestructuras(models.Model):
 
     class Meta:
         verbose_name_plural = "Infraestructuras"
+        ordering = ('nombre',)
         
 class Electro(models.Model):
     nombre = models.CharField(max_length=100)
@@ -80,6 +84,8 @@ class Electro(models.Model):
 
     class Meta:
         verbose_name_plural = "Electrodomésticos"
+        ordering = ('nombre',)
+
         
 class Sanamiento(models.Model):
     nombre = models.CharField(max_length=100)
@@ -88,6 +94,7 @@ class Sanamiento(models.Model):
 
     class Meta:
         verbose_name_plural = "Equipos para seneamiento ambiental"
+        ordering = ('nombre',)
 
 class PropiedadEquipo(models.Model):
     '''Modelo propiedades
@@ -144,7 +151,7 @@ class NombreHerramienta(models.Model):
 
     class Meta:
         verbose_name_plural = "Herramientas-Nombres"
-
+        ordering = ('nombre',)
 
 class Herramientas(models.Model):
     '''Modelo herramientas
@@ -168,7 +175,7 @@ class NombreTransporte(models.Model):
 
     class Meta:
         verbose_name_plural = "Transporte-Nombre"
-
+        ordering = ('nombre',)
 
 class Transporte(models.Model):
     '''Modelo transporte
@@ -195,6 +202,7 @@ class AhorroPregunta(models.Model):
     nombre = models.CharField(max_length=200)
     class Meta:
         verbose_name_plural = "Ahorro-Preguntas"   
+        ordering = ('nombre',)
     def __unicode__(self):
         return self.nombre
     
@@ -221,7 +229,7 @@ class DaCredito(models.Model):
 
     class Meta:
         verbose_name_plural = "Credito-Dacredito"
-
+        ordering = ('nombre',)
 
 class OcupaCredito(models.Model):
     nombre = models.CharField(max_length=100)
@@ -230,7 +238,7 @@ class OcupaCredito(models.Model):
 
     class Meta:
         verbose_name_plural = "Credito-Ocupa"
-
+        ordering = ('nombre',)
 
 CHOICE_SATISFACCION = ( (1,"Menos de 25 % de las necesidades"),
                         (2,"Entre 25 y 50 % de las necesidades"),

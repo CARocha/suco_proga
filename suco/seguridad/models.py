@@ -18,6 +18,7 @@ class Alimentos(models.Model):
 
     class Meta:
         verbose_name_plural = "Alimentos"
+        ordering = ('nombre',)
 
 class Seguridad(models.Model):
     ''' Modelo Seguridad alimentaria
@@ -53,6 +54,7 @@ class Fenomeno(models.Model):
         
     class Meta:
         verbose_name_plural = "Vulnerable - causa + fenomeno"
+        ordering = ('causa__nombre', 'nombre',)
         
 class Graves(models.Model):
     nombre = models.CharField(max_length=100)
@@ -81,6 +83,7 @@ class PreguntaRiesgo(models.Model):
 
     class Meta:
         verbose_name_plural = "Riesgo - pregunta"
+        ordering = ('nombre',)
 
 class Riesgos(models.Model):
     ''' 20 mitigacion de los riesgos

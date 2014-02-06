@@ -33,6 +33,7 @@ class OrgComunitarias(models.Model):
 
     class Meta:
         verbose_name_plural = "Organizaciones comunitarias"
+        ordering = ('nombre',)
         
 class BeneficioOrgComunitaria(models.Model):
     nombre = models.CharField(max_length=200)
@@ -41,6 +42,7 @@ class BeneficioOrgComunitaria(models.Model):
 
     class Meta:
         verbose_name_plural = "Beneficios de estar organizado en comunidad"
+        ordering = ('nombre',)
         
 class NoOrganizado(models.Model):
     nombre = models.CharField(max_length=200)
@@ -49,6 +51,7 @@ class NoOrganizado(models.Model):
 
     class Meta:
         verbose_name_plural = "Porque No esta organizado"
+        ordering = ('nombre',)
         
 class OrganizacionComunitaria(models.Model):
     ''' 2.1 Organizacion comunitarias
