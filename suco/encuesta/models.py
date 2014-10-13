@@ -2,6 +2,7 @@
 
 from django.db import models
 from suco.lugar.models import *
+from suco.jovenes.models import *
 from django.contrib.auth.models import User
 import datetime
 from suco.smart_selects.db_fields import ChainedForeignKey 
@@ -52,7 +53,11 @@ CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplica
 CHOICE_SEXO = ( (1,'Hombre'),
                 (2,'Mujer')
               )
-        
+CHOICE_ENCUESTA_NUMERO = (
+    (1,'Primera encuesta'),
+    (2,'Segunda encuesta'),
+    (3,'Por determinar'),
+    )
 class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
     '''
@@ -62,6 +67,8 @@ class Encuesta(models.Model):
     cedula = models.CharField('cedula de entrevistado', max_length=200, null=True, blank=True)
     edad = models.IntegerField()
     sexo = models.IntegerField(choices=CHOICE_SEXO)
+    enquesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
+    joven = models.ForeignKey(Joven,null=True)
     escolaridad = models.ForeignKey(Escolaridad)
     formacion = models.ForeignKey(Tecnica)
     participacion = models.ManyToManyField(ParticipacionProyecto)

@@ -18,10 +18,15 @@ class ComunidadAdmin(admin.ModelAdmin):
     list_filter = ['municipio']
     search_fields = ['nombre']
 
+class CentroregionalAdmin(admin.ModelAdmin):
+    list_display = ['nombre']
+    list_filter = ['nombre']
+    search_fields = ['nombre']
+
 admin.site.register(Departamento,DepartamentoAdmin)
 admin.site.register(Municipio, MunicipioAdmin)
 admin.site.register(Comunidad, ComunidadAdmin)
-
+admin.site.register(Centroregional, CentroregionalAdmin)
 
 
 

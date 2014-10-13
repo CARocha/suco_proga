@@ -10,6 +10,14 @@ class Departamento(models.Model):
     class Meta:
         verbose_name_plural = "Departamentos"
 
+class Centroregional(models.Model):
+    nombre = models.CharField('Nombre del Centro', max_length=200)
+
+    def __unicode__(self):
+        return self.nombre
+    class Meta:
+        verbose_name_plural = "Centros regionales"
+
 class Municipio(models.Model):
     departamento = models.ForeignKey(Departamento)
     nombre = models.CharField(max_length=80, unique=True)
