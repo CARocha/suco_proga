@@ -13,13 +13,13 @@
         municipio.options[0].value = '';
         comunidad.options[0] = new Option("Comunidad");
         comunidad.options[0].value = '';
-        
+
         //municipios
         $("#id_departamento").change(function () {
             var index = departamento.options.selectedIndex;
             var id = departamento.options[index].value;
             if(id != ''){
-            	$.getJSON("ajax/municipio/" + id +"/", 
+            	$.getJSON("ajax/municipio/" + id +"/",
             			function(data){
                             municipio.options.length = 0;
                             comunidad.options.length = 0;
@@ -30,10 +30,10 @@
                             for(i=0; i< data.length; i++){
                                 municipio.options[i+1] = new Option(data[i][1], data[i][0]);
                         }
-                });            	
-            }            
+                });
+            }
         });
-        
+
         //organizacion
         //$("#id_departamento").change(function () {
         //    var index = departamento.options.selectedIndex;
@@ -43,15 +43,15 @@
         //                function(data){
         //                    organizacion.options.length = 0;
         //                    organizacion.options.length = 0;
-        //                    organizacion.options[0] = new Option("Organización");                
+        //                    organizacion.options[0] = new Option("Organización");
         //                    organizacion.options[0].value = '';
         //                    for(i=0; i< data.length; i++){
         //                        organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
         //                    }
         //     	});
-        //    }            
+        //    }
        // });
-        
+
         //comunidad
         $("#id_municipio").change(function () {
             var index = municipio.options.selectedIndex;
@@ -66,7 +66,7 @@
                 }
             });
         });
-        
+
     });
 </script>
 <style type="text/css">
@@ -84,47 +84,47 @@
     {% block filtros %}
     <div id="filtros">
         <div class="filtros_seleccion">
-            <div class="paso1"></div>	
+            <div class="paso1"></div>
             <div class="seleccion">SELECCI&Oacute;N<br><span>Filtros de encuestas</span></div>
         </div>
-        <div class="filtros_disponibles">	
+        <div class="filtros_disponibles">
             <form action="." method="POST">
             {% csrf_token %}
             <div class="formulario_consulta">
-           
+
                 <div class="columna_uno">
-                    <div class="form_widget date_widget"><img src="{{STATIC_URL}}img/fecha.png" alt=""> {{form.fecha}}<br>{{form.fecha.errors}}</div><br>                                            
+                    <div class="form_widget date_widget"><img src="{{STATIC_URL}}img/fecha.png" alt=""> {{form.fecha}}<br>{{form.fecha.errors}}</div><br>
                     <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.sexo}}</div>
                 </div>
-                <div class="columna_dos">                
+                <div class="columna_dos">
                     <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.departamento}}</div><br>
                     <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.dueno}}</div>
                 </div>
-                <div class="columna_tres">                
+                <div class="columna_tres">
                     <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.municipio}}</div>
-                    <div class="form_widget"><img src="{{STATIC_URL}}img/organizacion.png" alt=""> {{form.organizacion}}</div>                
+                    <div class="form_widget"><img src="{{STATIC_URL}}img/organizacion.png" alt=""> {{form.organizacion}}</div>
                 </div>
                 <div class="columna_cuatro">
-                <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.comunidad}}</div>            
+                <div class="form_widget"><img src="{{STATIC_URL}}img/ubicacion.png" alt=""> {{form.comunidad}}</div>
                 </div>
 
-                <div class="clean"></div>            
-                            <input type="submit" value="" class="consultar"/> 
-            </div>        
+                <div class="clean"></div>
+                            <input type="submit" value="" class="consultar"/>
+            </div>
             </form>
         </div>
-        <div class="clean"></div> 
+        <div class="clean"></div>
     </div>
     {% endblock %}
 
     {% block contenido %}
         {%if centinela = 1 %}
             <div class="selectos_seleccion">
-                    <div class="paso2"></div>	
+                    <div class="paso2"></div>
                     <div class="seleccion">SELECCI&Oacute;N<br><span>Indicadores del sistema</span></div>
             </div>
-            <div class="clean"></div> 
-            {% include "encuestas/menu.html" %}        
+            <div class="clean"></div>
+            {% include "encuestas/menu.html" %}
         {%else%}
         <div style="height: 300px;"></div>
         {%endif%}
