@@ -72,33 +72,6 @@
 {%endblock%}
 {%block content%}
 <div id="menu">
-    <script>
-        function show_informe_menu_de_tipo(tipo)
-        {
-            $('#formulario_nuevosinformes').hide();
-            $('#formulario_informes').hide();
-            $('.submit_button_wrapper').hide();
-
-            if (tipo  == "informes_originales")
-            {
-                $('#formulario_informes').show();
-                $('.submit_button_wrapper').show();
-            } else if (tipo == "informes_nuevos") {
-                $('#formulario_nuevosinformes').show();
-                $('.submit_button_wrapper').show();
-            }
-
-        }
-        $( document ).ready(function() {
-            show_informe_menu_de_tipo($("#id_informe_tipo").val())
-
-            //Cuando el usario cambia de tipo de informe.
-            $("#id_informe_tipo").change(function () {
-                show_informe_menu_de_tipo($(this).val())
-            });
-        });
-
-    </script>
             <div id="column1">
                 <img src="{{STATIC_URL}}img/logogrande.png">
             </div>
@@ -108,65 +81,30 @@
                     <a href="/general">Estadísticas generales</a>
                 </div>
                 <div id="formindex">
-
                     <form action="." method="POST">
-                        {% csrf_token %}
-                        <div style="margin:20px 0 14px 14px;">
-                            <div class="form_widget">{{form.informe_tipo}}<br>{{form.informe_tipo.errors}}</div>
+                    {% csrf_token %}
+                    <div class="formulario_consulta">
+                   
+                        <div class="columna_uno">
+                            <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>                                           
+                            <div class="form_widget">{{form.sexo}}</div>
                         </div>
-
-                        <div class="formulario_consulta" id="formulario_informes">
-                                <h2>Informes</h2>
-
-                                <div class="columna_uno">
-                                    <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.sexo}}</div>
-                                </div>
-                                <div class="columna_dos">
-                                    <div class="form_widget">{{form.departamento}}</div><br>
-                                    <div class="form_widget">{{form.municipio}}</div>
-                                    <div class="form_widget">{{form.comunidad}}</div>
-                                </div>
-                                <div class="columna_tres">
-        <!--                            <div class="form_widget">{{form.organizacion}}</div>-->
-                                    <div class="form_widget">{{form.dueno}}</div>
-                                </div>
-                                <div class="columna_cuatro">
-
-                                </div>
-                                <div class="clean"></div>
+                        <div class="columna_dos">                
+                            <div class="form_widget">{{form.departamento}}</div><br>
+                            <div class="form_widget">{{form.municipio}}</div>
+                            <div class="form_widget">{{form.comunidad}}</div>
                         </div>
-
-                        <div class="formulario_consulta"  id="formulario_nuevosinformes">
-                                <h2>Nuevos Informes 2014</h2>
-
-                                <div class="columna_uno">
-                                    <div class="form_widget">{{form.grupo}}<br>{{form.grupo.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.numero_encuesta}}<br>{{form.numero_encuesta.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.indicador}}<br>{{form.indicador.errors}}</div><br><br>
-                                    <div class="form_widget">Solo jovenes activados {{form.jovenes_activados_solo}}<br>{{form.jovenes_activados_solo.errors}}</div><br> <br>
-
-                                </div>
-                                <div class="columna_dos">
-
-                                </div>
-                                <div class="columna_tres">
-
-                                </div>
-                                <div class="columna_cuatro">
-
-                                </div>
-
-                                <div class="clean"></div>
-
+                        <div class="columna_tres">                
+<!--                            <div class="form_widget">{{form.organizacion}}</div>-->
+                            <div class="form_widget">{{form.dueno}}</div>                
                         </div>
-                        <div class="submit_button_wrapper">
-                            <input type="submit" value="" class="consultar"/>
+                        <div class="columna_cuatro">
+                                    
                         </div>
-
+                        <div class="clean"></div>            
+                                    <input type="submit" value="" class="consultar"/> 
+                    </div>        
                     </form>
-
-
                 </div>
                 <div class="clean"></div>
             </div>
@@ -179,6 +117,7 @@
                 <a href="#"><center><img src="{{STATIC_URL}}img/inatec.jpg"></center></a>
             </div>
             <div class="clean"></div>
+        
 </div>
 <img src="{{STATIC_URL}}img/barraazul.jpg">
 <div id="franjaverde">
