@@ -1,0 +1,30 @@
+[
+    {
+        "model": "lugar.centroregional",
+        "pk": "1",
+        "fields": {
+            "nombre": "INTECFOR"
+        }
+    },
+    {
+        "model": "lugar.centroregional",
+        "pk": "2",
+        "fields": {
+            "nombre": "INPRHU"
+        }
+    },
+    {
+        "model": "lugar.centroregional",
+        "pk": "3",
+        "fields": {
+            "nombre": "PCG"
+        }
+    },
+    {
+        "model": "lugar.centroregional",
+        "pk": "4",
+        "fields": {
+            "nombre": "CPPN"
+        }
+    }
+]
