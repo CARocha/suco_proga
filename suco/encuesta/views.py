@@ -175,10 +175,19 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         solo_jovenes_con_dos_name = "No. (Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber más producción en el primer año que el segundo.)"
 
     #conteo de jovenes y encuestas
-    numero_total_encuestas1 = return_dict['encuestas'][1].count()
-    numero_total_encuestas2 = return_dict['encuestas'][2].count()
-    numero_total_jovenes1 = return_dict['encuestas'][1].values_list('joven', flat=True).distinct().count()
-    numero_total_jovenes2 = return_dict['encuestas'][2].values_list('joven', flat=True).distinct().count()
+    if return_dict['encuestas'][1]:
+        numero_total_encuestas1 = return_dict['encuestas'][1].count()
+        numero_total_jovenes1 = return_dict['encuestas'][1].values_list('joven', flat=True).distinct().count()
+    else:
+        numero_total_encuestas1 = 0
+        numero_total_jovenes1 = 0
+    if return_dict['encuestas'][2]:
+        numero_total_encuestas2 = return_dict['encuestas'][2].count()
+        numero_total_jovenes2 = return_dict['encuestas'][2].values_list('joven', flat=True).distinct().count()
+    else:
+        numero_total_encuestas2 = 0
+        numero_total_jovenes2 = 0
+
 
     return_dict['strings'] = {
         'grupos_name': grupos_name,
