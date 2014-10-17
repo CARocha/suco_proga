@@ -1,77 +1,56 @@
-{% extends "basenueva.html" %}
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
 {%block extra_header%}
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        var departamento = document.getElementById("id_departamento");
-        //var organizacion = document.getElementById("id_organizacion");
-        var municipio = document.getElementById("id_municipio");
-        var comunidad= document.getElementById("id_comunidad");
-        //organizacion.options[0] = new Option("Organización");
-        //organizacion.options[0].value = '';
-        municipio.options[0] = new Option("Municipio");
-        municipio.options[0].value = '';
-        comunidad.options[0] = new Option("Comunidad");
-        comunidad.options[0].value = '';
-        
-        //municipios
-        $("#id_departamento").change(function () {
-            var index = departamento.options.selectedIndex;
-            var id = departamento.options[index].value;
-            if(id != ''){
-            	$.getJSON("ajax/municipio/" + id +"/", 
-            			function(data){
-                            municipio.options.length = 0;
-                            comunidad.options.length = 0;
-                            municipio.options[0] = new Option("Municipio");
-                            municipio.options[0].value = '';
-                            comunidad.options[0] = new Option("Comunidad");
-                            comunidad.options[0].value = '';
-                            for(i=0; i< data.length; i++){
-                                municipio.options[i+1] = new Option(data[i][1], data[i][0]);
-                        }
-                });            	
-            }            
-        });
-        
-        //organizacion
-        //$("#id_departamento").change(function () {
-        //    var index = departamento.options.selectedIndex;
-        //    var id = departamento.options[index].value;
-        //    if(id != ''){
-        //    	$.getJSON("ajax/organizaciones/" + id +"/",
-       //                 function(data){
-       //                     organizacion.options.length = 0;
-       //                     organizacion.options.length = 0;
-       //                     organizacion.options[0] = new Option("Organización");                
-       //                     organizacion.options[0].value = '';
-       //                     for(i=0; i< data.length; i++){
-       //                         organizacion.options[i+1] = new Option(data[i][1], data[i][0]);
-       //                     }
-       //      	});
-       //     }            
-       // });
-        
-        //comunidad
-        $("#id_municipio").change(function () {
-            var index = municipio.options.selectedIndex;
-            var id = municipio.options[index].value;
-            $.getJSON("ajax/comunidad/" + id +"/",
-            function(data){
-                comunidad.options.length = 0;
-                comunidad.options[0] = new Option("Comunidad");
-                comunidad.options[0].value = '';
-                for(i=0; i< data.length; i++){
-                    comunidad.options[i+1] = new Option(data[i][1], data[i][0]);
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var departamento = document.getElementById("id_departamento");
+            //var organizacion = document.getElementById("id_organizacion");
+            var municipio = document.getElementById("id_municipio");
+            var comunidad= document.getElementById("id_comunidad");
+            //organizacion.options[0] = new Option("Organización");
+            //organizacion.options[0].value = '';
+            municipio.options[0] = new Option("Municipio");
+            municipio.options[0].value = '';
+            comunidad.options[0] = new Option("Comunidad");
+            comunidad.options[0].value = '';
+
+            //municipios
+            $("#id_departamento").change(function () {
+                var index = departamento.options.selectedIndex;
+                var id = departamento.options[index].value;
+                if(id != ''){
+                    $.getJSON("ajax/municipio/" + id +"/",
+                            function(data){
+                                municipio.options.length = 0;
+                                comunidad.options.length = 0;
+                                municipio.options[0] = new Option("Municipio");
+                                municipio.options[0].value = '';
+                                comunidad.options[0] = new Option("Comunidad");
+                                comunidad.options[0].value = '';
+                                for(i=0; i< data.length; i++){
+                                    municipio.options[i+1] = new Option(data[i][1], data[i][0]);
+                            }
+                    });
                 }
             });
+
+            //comunidad
+            $("#id_municipio").change(function () {
+                var index = municipio.options.selectedIndex;
+                var id = municipio.options[index].value;
+                $.getJSON("ajax/comunidad/" + id +"/",
+                function(data){
+                    comunidad.options.length = 0;
+                    comunidad.options[0] = new Option("Comunidad");
+                    comunidad.options[0].value = '';
+                    for(i=0; i< data.length; i++){
+                        comunidad.options[i+1] = new Option(data[i][1], data[i][0]);
+                    }
+                });
+            });
+
         });
-        
-    });
-</script>
-{%endblock%}
-{%block content%}
-<div id="menu">
+    </script>
     <script>
         function show_informe_menu_de_tipo(tipo)
         {
@@ -87,131 +66,191 @@
                 $('#formulario_nuevosinformes').show();
                 $('.submit_button_wrapper').show();
             }
-
         }
+
+        function show_solo_jovenes_con_dos (numero_encuesta)
+        {
+            if (numero_encuesta == 3) {
+                $('#solo_jovenes_con_dos_wrapper').show();
+            } else {
+                $('#solo_jovenes_con_dos_wrapper').hide();
+            }
+        }
+
         $( document ).ready(function() {
+            $('.select2').select2();
+
             show_informe_menu_de_tipo($("#id_informe_tipo").val())
+            show_solo_jovenes_con_dos ($("#id_numero_encuesta").val())
+
 
             //Cuando el usario cambia de tipo de informe.
             $("#id_informe_tipo").change(function () {
                 show_informe_menu_de_tipo($(this).val())
             });
+
+            //Encuesta comparar(3): necesitamos saber si utilisamos solo jovenes que tienen 2 encuestas
+            $("#id_numero_encuesta").change(function () {
+                show_solo_jovenes_con_dos($(this).val())
+            });
         });
 
     </script>
-            <div id="column1">
-                <img src="{{STATIC_URL}}img/logogrande.png">
+{%endblock%}
+{% block content %}
+    <div class="page_header_wrapper">
+        <div id="menu" class="container-fluid">
+            <div class="row">
+                <div class="col-md-2 menu_logo_wrapper">
+                    <img src="{{STATIC_URL}}img/logogrande.png">
+                </div>
+                <div id="menu_form_wrapper" class="col-md-8">
+                    <div id="formindex">
+
+                        <form action="." method="POST" class="form">
+                            {% csrf_token %}
+                            <h3>Paso 1 - Qué tipo de informes?</h3>
+                            <div class="form_widget">{{form.informe_tipo}}<br>{{form.informe_tipo.errors}}</div>
+
+                            <div class="formulario_consulta" id="formulario_informes">
+                                    <h3>Paso 2 - Definir los parámetros</h3>
+                                   <table class="table table-bordered">
+                                       <tr>
+                                           <td>
+                                                <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div>
+                                                <div class="form_widget">{{form.sexo}}</div>
+                                           </td>
+                                           <td>
+                                                <div class="form_widget">{{form.departamento}}</div><br>
+                                                <div class="form_widget">{{form.municipio}}</div><br>
+                                                <div class="form_widget">{{form.comunidad}}</div>
+                                           </td>
+                                           <td>
+                    <!--                            <div class="form_widget">{{form.organizacion}}</div>-->
+                                                <div class="form_widget">{{form.dueno}}</div>
+                                           </td>
+                                       </tr>
+                                   </table>
+
+
+                            </div>
+
+                            <div class="formulario_consulta"  id="formulario_nuevosinformes">
+                                    <h3>Paso 2 - Definir los parámetros</h3>
+                                   <table class="table table-bordered">
+                                       <tr>
+                                           <td class="table_param_leftcol">Grupos</td>
+                                           <td>{{form.grupo}}<br>{{form.grupo.errors}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="table_param_leftcol">Centros regionales</td>
+                                           <td>{{form.centroregional}}<br>{{form.centroregional.errors}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="table_param_leftcol">Encuestas</td>
+                                           <td>{{form.numero_encuesta}}<br>{{form.numero_encuesta.errors}}
+                                               <div id="solo_jovenes_con_dos_wrapper">
+                                                   {{form.solo_jovenes_con_dos}} Utilizar solo los datos de jóvenes que tienen dos encuestas rellenadas?
+                                               </div>
+                                           </td>
+                                       </tr>
+                                       <tr>
+                                           <td class="table_param_leftcol">Indicador</td>
+                                           <td>{{form.indicador}}<br>{{form.indicador.errors}}</td>
+                                       </tr>
+                                       <tr>
+                                           <td class="table_param_leftcol">Solo jovenes activados?</td>
+                                           <td>{{form.jovenes_activados_solo}}<br>{{form.jovenes_activados_solo.errors}}</td>
+                                       </tr>
+                                   </table>
+
+
+
+                            </div>
+                            <div class="submit_button_wrapper">
+                                <input type="submit" value="Consultar" class="consultar btn btn-primary"/>
+                            </div>
+
+                        </form>
+
+
+                    </div>
+
+                </div>
+                <div id="encolaboracion_wrapper" class="col-md-2">
+                    <div id="home_logos">
+                        <div id="encolaboracion">En colaboración</div>
+                        <a href="#"><img src="{{STATIC_URL}}img/canadalogo.jpg"></a>
+                        <a href="#"><img src="{{STATIC_URL}}img/cooperacioncanadalogo.jpg"></a>
+                        <a href="#"><img src="{{STATIC_URL}}img/sucologo.jpg"></a>
+                        <a href="#"><img src="{{STATIC_URL}}img/inprhu.jpg"></a>
+                        <a href="#"><img src="{{STATIC_URL}}img/inatec.jpg"></a>
+                    </div>
+
+                </div>
+
             </div>
-            <div id="column2">
-                <div id ="menuformindex">
-<!--                    <a href="#">Consulta de indicadores</a>-->
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8 estadisticas_generales">
                     <a href="/general">Estadísticas generales</a>
                 </div>
-                <div id="formindex">
-
-                    <form action="." method="POST">
-                        {% csrf_token %}
-                        <div style="margin:20px 0 14px 14px;">
-                            <div class="form_widget">{{form.informe_tipo}}<br>{{form.informe_tipo.errors}}</div>
-                        </div>
-
-                        <div class="formulario_consulta" id="formulario_informes">
-                                <h2>Informes</h2>
-
-                                <div class="columna_uno">
-                                    <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.sexo}}</div>
-                                </div>
-                                <div class="columna_dos">
-                                    <div class="form_widget">{{form.departamento}}</div><br>
-                                    <div class="form_widget">{{form.municipio}}</div>
-                                    <div class="form_widget">{{form.comunidad}}</div>
-                                </div>
-                                <div class="columna_tres">
-        <!--                            <div class="form_widget">{{form.organizacion}}</div>-->
-                                    <div class="form_widget">{{form.dueno}}</div>
-                                </div>
-                                <div class="columna_cuatro">
-
-                                </div>
-                                <div class="clean"></div>
-                        </div>
-
-                        <div class="formulario_consulta"  id="formulario_nuevosinformes">
-                                <h2>Nuevos Informes 2014</h2>
-
-                                <div class="columna_uno">
-                                    <div class="form_widget">{{form.grupo}}<br>{{form.grupo.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.numero_encuesta}}<br>{{form.numero_encuesta.errors}}</div><br> <br>
-                                    <div class="form_widget">{{form.indicador}}<br>{{form.indicador.errors}}</div><br><br>
-                                    <div class="form_widget">Solo jovenes activados {{form.jovenes_activados_solo}}<br>{{form.jovenes_activados_solo.errors}}</div><br> <br>
-
-                                </div>
-                                <div class="columna_dos">
-
-                                </div>
-                                <div class="columna_tres">
-
-                                </div>
-                                <div class="columna_cuatro">
-
-                                </div>
-
-                                <div class="clean"></div>
-
-                        </div>
-                        <div class="submit_button_wrapper">
-                            <input type="submit" value="" class="consultar"/>
-                        </div>
-
-                    </form>
-
-
+                <div class="col-md-2">
                 </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="container-fluid" id="franjaverde">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="tituloverde">Acerca del sistema</div>
+            </div>
+            <div class="col-md-4">
+                <div id="acercade">
+                    Este sistema de información, se presenta como una herramienta del proyecto PROGA – Jóvenes, para
+            ayudarnos a entender la realidad social, económica y del medioambiente, en el que se desenvuelven las
+            familias, en el ámbito rural de la región de Las Segovias, Nicaragua. Los datos recogidos entre las y los
+            jóvenes participantes del proyecto, nos permitirán medir avances y cambios.<br> <a href="/acerca" class="btn btn-primary">leer más</a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="tituloverde">¿Cómo se usa?</div>
+            </div>
+            <div class="col-md-4">
+                <div id="ayuda">
+                    Esta guía le permitirá conocer el funcionamiento del sistema y poder obtener información de la línea de base del proyecto PROGA-Jóvenes, tales como: productividad, actividades agroecológicas, producción y comercialización, entre otras.
+                    <a href="{{STATIC_URL}}img/manualUsuarioSUCO.pdf"><img src="{{STATIC_URL}}img/descargar_ayuda.jpg" align="right" style="margin-top:10px;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            {%for lugar in depart%}
+            <div class="bloque_dept col-md-3">
+                <div class="nombre_dept">{{lugar.0}}</div>
+                <div class="circle_encuesta"> {{lugar.1}} <br> <span class="cantidad">Encuestas</span></div>
+                <img class="mapita"src="{{STATIC_URL}}img/{{lugar.0}}.jpg"  class="img-responsive">
+                <img src="{{STATIC_URL}}img/joven{{lugar.2}}.jpg" class="img-responsive">
                 <div class="clean"></div>
             </div>
-            <div id="column3">
-                <div id="encolaboracion">En colaboración</div>
-                <a href="#"><center><img src="{{STATIC_URL}}img/canadalogo.jpg"></center></a>
-                <a href="#"><center><img src="{{STATIC_URL}}img/cooperacioncanadalogo.jpg"></center></a>
-                <a href="#"><center><img src="{{STATIC_URL}}img/sucologo.jpg"></center></a>
-                <a href="#"><center><img src="{{STATIC_URL}}img/inprhu.jpg"></center></a>
-                <a href="#"><center><img src="{{STATIC_URL}}img/inatec.jpg"></center></a>
+            {%endfor%}
+            <div class="bloque_dept personas col-md-3">
+                <div class="nombre_dept">Sexo de encuestados</div>
+                <div class="clean"></div>
+                <div class="circle_encuesta_gen">{{mujeres}} <br> <span class="cantidad">Encuestas</span></div>
+                <div class="circle_encuesta_gen">{{hombres}} <br> <span class="cantidad">Encuestas</span></div>
+                <div class="clean"></div>
             </div>
-            <div class="clean"></div>
-</div>
-<img src="{{STATIC_URL}}img/barraazul.jpg">
-<div id="franjaverde">
-    <div id="acercade">
-        <div class="tituloverde">Acerca del sistema</div>Este sistema de información, se presenta como una herramienta del proyecto PROGA – Jóvenes, para
-ayudarnos a entender la realidad social, económica y del medioambiente, en el que se desenvuelven las
-familias, en el ámbito rural de la región de Las Segovias, Nicaragua. Los datos recogidos entre las y los
-jóvenes participantes del proyecto, nos permitirán medir avances y cambios.<br> <a style="font-weight:bold; color:#2D7839; float:right;margin-right:10px;margin-top:-10px;font-size:17px;"href="/acerca">leer más</a>
+        </div>
+
     </div>
-    <div id="ayuda">
-        <div class="tituloverde">¿Cómo se usa?</div>Esta guía le permitirá conocer el funcionamiento del sistema y poder obtener información de la línea de base del proyecto PROGA-Jóvenes, tales como: productividad, actividades agroecológicas, producción y comercialización, entre otras.
-        <a href="{{STATIC_URL}}img/manualUsuarioSUCO.pdf"><img src="{{STATIC_URL}}img/descargar_ayuda.jpg" align="right" style="margin-top:10px;"></a>
-    </div>
-    <div class="clean"></div>
-</div>
-<div>
-    {%for lugar in depart%}
-    <div class="bloque_dept">
-        <div class="nombre_dept">{{lugar.0}}</div>
-        <div class="circle_encuesta"> {{lugar.1}} <br> <span class="cantidad">Encuestas</span></div>
-        <img class="mapita"src="{{STATIC_URL}}img/{{lugar.0}}.jpg">
-        <center><img src="{{STATIC_URL}}img/joven{{lugar.2}}.jpg"></center>
-        <div class="clean"></div>
-    </div>
-    {%endfor%}
-    <div class="bloque_dept personas">
-        <div class="nombre_dept">Sexo de encuestados</div>
-        <div class="clean"></div>
-        <div class="circle_encuesta_gen">{{mujeres}} <br> <span class="cantidad">Encuestas</span></div>
-        <div class="circle_encuesta_gen">{{hombres}} <br> <span class="cantidad">Encuestas</span></div>
-        <div class="clean"></div>
-    </div>
-    <div class="clean"></div>
-</div>
-       
-{%endblock%}
+
+{% endblock %}
