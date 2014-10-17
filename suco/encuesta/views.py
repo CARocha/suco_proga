@@ -27,7 +27,7 @@ from suco.seguridad.models import *
 from utils import grafos
 from utils import *
 import random
-
+from django.db.models import Q
 
 '''
 
@@ -46,99 +46,249 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 
 
 
+
 #DISPATCHER -> manda la request a la buena methodo
-def nuevos_informes(request,grupo, numero_encuesta, indicador):
-
-
+def nuevos_informes(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos = 0):
     #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
     # especificados en forms.py/CHOICE_INFORME_INDICADOR.
     # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
-    return globals()[indicador](request,grupo, numero_encuesta, indicador) #
 
 
-#recupera las encuestas que se aplican a los parametros escojidos
-def get_encuestas (request, grupo, numero_encuesta, indicador):
+    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos)
 
-    return_vars = {}
 
-    jovenes_params = {}
-    encuestas_params = {}
 
-    '''
-    TROUVER COMMENT FAIRE DES AGREGATE AVEC KWARGS.
-    '''
-    #Comparar las dos encuestas : solo tomamos los jovenes con 2 encuestas
-    if numero_encuesta == "3":
-        jovenes_queryset.annotate(num_encuestas=Count('encuesta')).filter(num_encuestas=2)
+# Fonctions DEBUG & PRETTY : pour afficher une liste ou dict à l'écran.
+def pretty(value,htchar="    ",lfchar="<br/>",indent=0):
+  if type(value) in [dict]:
+    return "{%s%s%s}"%(",".join(["%s%s%s: %s"%(lfchar,htchar*(indent+1),repr(key),pretty(value[key],htchar,lfchar,indent+1))for key in value]),lfchar,(htchar*indent))
+  elif type(value) in [list,tuple]:
+    return (type(value)is list and"[%s%s%s]"or"(%s%s%s)")%(",".join(["%s%s%s"%(lfchar,htchar*(indent+1),pretty(item,htchar,lfchar,indent+1))for item in value]),lfchar,(htchar*indent))
+  else:
+    return repr(value)
 
-    #Busca los jovenes en el grupo escojido (o todos)
-    if grupo != "all":
-        jovenes_queryset.filter(grupo=grupo)
+#Eso sirve a mostrar un list or dict para debug. Utilisar asi: return HttpResponse (debug(xxx))
+def debug (output_src):
+    if type(output_src) is list:
+        output_str = ""
+        output_str = output_str+"<pre><h1>"+str(len(output_src))+" items</h1>"
+        for item in output_src:
+            output_str = output_str + str(item) + '<br>'
+        return output_str
+    elif output_src != False:
+        output_str = ""
+        #output_str = output_str+"<pre><h1>"+str(output_src.count())+" items</h1>"
+        for item in output_src.values():
+            output_str = output_str + pretty(item)
+        return output_str
 
-    jovenes_queryset = Joven.objects.filter(**jovenes_params)
 
-    #busca solo las primeras o secundas encuestas (o las dos)
-    if numero_encuesta == "3":
-        encuestas_params['joven__in'] = jovenes_queryset
+def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos):
+
+    #lo que sera retornado
+    return_dict = {
+        'encuestas': {},
+        'strings': {}
+    }
+
+    #Jovenes
+    jovenes = Joven.objects.all()
+
+    #Grupos
+    if grupos != "todoslosgrupos":
+        grupos_array = grupos.split('_')
+        grupos_object = Grupo.objects.filter(id__in=grupos_array)
+        jovenes = jovenes.filter(grupo__in=grupos_object)
     else:
-        encuestas_params['enquesta_numero'] = numero_encuesta
-        encuestas_params['joven__in'] = jovenes_queryset
+        grupos_object = Grupo.objects.all()
 
-    encuestas_queryset = Encuesta.objects.filter(**encuestas_params)
-
-    #Lo ponemos in las return_vars antes de contar los jovenes.
-    return_vars['encuestas_queryset'] = encuestas_queryset
-
-    #numero total de jovenes en este informe
-    return_vars['numero_total_jovenes'] = encuestas_queryset.distinct('joven').count()
-
-
-    return return_vars
-
-
-# % de aumento de la producción
-def aumento_de_la_produccion(request, grupo, numero_encuesta, indicador):
-
-    #return HttpResponse(grupo+numero_encuesta+indicador)
-    if grupo == "all":
-        grupo_name = "Todos los grupos"
+    #Centros regionales
+    if centroregional != "todosloscentros":
+        centroregional_array = centroregional.split('_')
+        centroregional_object = Centroregional.objects.filter(id__in=centroregional_array)
+        jovenes = jovenes.filter(centroregional__in=centroregional_object)
     else:
-        grupo_name = Grupo.objects.get(pk=grupo).nombre
+        centroregional_object = Centroregional.objects.all()
+
+    #Busca las encuestas
+
+    #La encuesta1, con todos los jovenes que tienen una.
+    if numero_encuesta == "1":
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=1))
+        return_dict['encuestas'][2] = False;
+
+    #La encuesta2, con todos los jovenes que tienen una.
+    if numero_encuesta == "2":
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=2))
+        return_dict['encuestas'][2] = False;
+
+    #La encuesta1, pero solo con jovenes que tienen tambien la segunda
+    if numero_encuesta == "3":
+        #no importa si los jovenes tienen 1 o 2 encuestas. Utilizamos todo.
+        if solo_jovenes_con_dos == "0":
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=1))
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=2))
+        #solo jovenes que tienen 2 encuestas
+        else:
+            encuesta1_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
+            jovenes_ids = []
+            for enc in encuesta1_dos_del_mismo_joven:
+                jovenes_ids.append(enc['joven'])
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(enquesta_numero=1))
+
+            #La encuesta2, pero solo con jovenes que tienen tambien la primera
+            encuesta2_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
+            jovenes_ids = []
+            for enc in encuesta2_dos_del_mismo_joven:
+                jovenes_ids.append(enc['joven'])
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(enquesta_numero=2))
+
+
+    #Nombre del (de los) grupos
+    if grupos == "todoslosgrupos" or grupos == "1_2_3_4":
+        grupos_name = "Todos los grupos"
+    else:
+        grupos_name = ""
+        for this_grupo in grupos_object:
+            grupos_name = grupos_name + str(this_grupo)+", "
+        if grupos_name != "":
+            grupos_name = grupos_name[:-2]
+
+    #Nombre del (de los) centros regionales
+    if centroregional == "todosloscentros" or centroregional == "1_2_3_4":
+        centroregional_name = "Todos los centros"
+    else:
+        centroregional_name = ""
+        for this_centroregional in centroregional_object:
+            centroregional_name = centroregional_name + str(this_centroregional)+", "
+        if centroregional_name != "":
+            centroregional_name = centroregional_name[:-2]
 
     indicador_name = dict(CHOICE_INFORME_INDICADOR)[indicador]
     numero_encuesta_name = dict(CHOICE_ENCUESTA_NUM)[str(numero_encuesta)]
 
 
-    db_data = get_encuestas(request, grupo, numero_encuesta, indicador)
-    encuesta1 = db_data['encuestas_queryset']
-    numero_total_encuestas = encuesta1.count()
-    numero_total_jovenes = db_data['numero_total_jovenes']
+    solo_jovenes_con_dos_name = ""
+    if solo_jovenes_con_dos == True:
+        solo_jovenes_con_dos_name = "Si"
+    else:
+        solo_jovenes_con_dos_name = "No. (Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber más producción en el primer año que el segundo.)"
 
-    tabla = {}
-    for i in TipoCultivos.objects.all():
-        key = slugify(i.nombre).replace('-', '_')
-        key2 = slugify(i.unidad).replace('-', '_')
-        query = encuesta1.filter(cultivos__cultivo = i)
-        area = query.aggregate(area=Sum('cultivos__area'))['area']
-        totales = query.aggregate(total=Sum('cultivos__total'))['total']
-        consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
-        precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
-        if totales > 0:
-            tabla[key] = {'key2':key2,'area':area,'totales':totales,
-                          'consumo':consumo,'precio':precio}
+    #conteo de jovenes y encuestas
+    numero_total_encuestas1 = return_dict['encuestas'][1].count()
+    numero_total_encuestas2 = return_dict['encuestas'][2].count()
+    numero_total_jovenes1 = return_dict['encuestas'][1].values_list('joven', flat=True).distinct().count()
+    numero_total_jovenes2 = return_dict['encuestas'][2].values_list('joven', flat=True).distinct().count()
 
-    tabla_patio = {}
+    return_dict['strings'] = {
+        'grupos_name': grupos_name,
+        'centroregional_name': centroregional_name,
+        'indicador_name': indicador_name,
+        'numero_encuesta_name': numero_encuesta_name,
+        'solo_jovenes_con_dos_name': solo_jovenes_con_dos_name,
+        'numero_total_encuestas1': numero_total_encuestas1,
+        'numero_total_encuestas2': numero_total_encuestas2,
+        'numero_total_jovenes1': numero_total_jovenes1,
+        'numero_total_jovenes2': numero_total_jovenes2
+    }
+
+    return return_dict
+
+# % de aumento de la producción
+def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos):
+
+    #TODO Para llenar el block del formulario a dentro de un informe.
+    '''
+    initial_form_data = {
+        'centroregional': centroregional,
+        'indicador': indicador,
+        'grupo': grupos,
+        'numero_encuesta': numero_encuesta,
+    }
+    form = MonitoreoForm(initial=initial_form_data)
+    '''
+
+
+    #return HttpResponse (debug(xxx))
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos)
+
+    encuestas = data['encuestas']
+    numero_total_encuestas = 0
+    numero_total_jovenes = 0
+
+
+
+
+    primera_encuesta = data['encuestas'][1]
+    segunda_encuesta = data['encuestas'][2]
+
+    data['tablas'] = {}
+
+
+    #CULTIVOS
+    data['tablas']['tabla_cultivos'] = {}
+    for i in TipoCultivos.objects.order_by('tipo').all():
+        key = slugify(i.nombre).replace('-', '_') #platano
+        key2 = slugify(i.unidad).replace('-', '_') #kg
+        #primera encuesta
+        query = primera_encuesta.filter(cultivos__cultivo = i)
+        area1 = query.aggregate(area=Sum('cultivos__area'))['area']
+        totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
+        consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+        precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+        #segunda encuesta (si hay)
+        if numero_encuesta == "3":
+            query2 = segunda_encuesta.filter(cultivos__cultivo = i)
+            area2 = query2.aggregate(area=Sum('cultivos__area'))['area']
+            totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
+            consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+            precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
+        else:
+            area2 = 0
+            totales2 = 0
+            consumo2 = 0
+            precio2 = 0
+
+
+        #para el template
+        data['tablas']['tabla_cultivos'][key] = {
+            'key2':key2,
+            'area1':area1,
+            'totales1':totales1,
+            'consumo1':consumo1,
+            'precio1':precio1,
+
+            'area2':area2,
+            'totales2':totales2,
+            'consumo2':consumo2,
+            'precio2':precio2
+        }
+
+
+    #CULTIVOS PATIO
+    '''
+    data['encuestas'][encuesta_key]['tablas']['tabla_patio'] = {}
     for i in Patio.objects.all():
         key = slugify(i.nombre).replace('-', '_')
-        query = encuesta1.filter(cultivos__cultivo = i)
+        query = this_encuesta.filter(cultivos__cultivo = i)
 #        area = query.aggregate(area=Sum('cultivos__area'))['area']
         totales = query.aggregate(total=Sum('cultivos__total'))['total']
         consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
         precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
         if totales > 0:
-            tabla_patio[key] = {'totales':totales,
+            data['encuestas'][encuesta_key]['tablas']['tabla_patio'][key] = {'totales':totales,
                                 'consumo':consumo,'precio':precio}
 
+    #ANIMALES
+    data['encuestas'][encuesta_key]['tablas']['tabla_animales'] = []
+    for animal in Animales.objects.all():
+        query = this_encuesta.filter(animalesfinca__animales = animal)
+        numero = query.count()
+        porcentaje_num = saca_porcentajes(numero, numero_total_jovenes, False)
+        data['encuestas'][encuesta_key]['tablas']['tabla_animales'].append([animal.nombre,numero,porcentaje_num])
+
+
+    '''
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 
@@ -244,15 +394,43 @@ def index(request):
 
             #nuevos informes - No utilisan las sessiones
             elif form.cleaned_data['informe_tipo'] == "informes_nuevos":
-                grupo = request.POST.get('grupo')
-                if str(grupo) == "" or str(grupo) == "None":
-                    grupo = "all"
+                grupos = request.POST.getlist('grupo')
+
+                grupos_string = ""
+                for grupo in grupos:
+                    grupos_string = grupos_string+str(grupo)+'_'
+                if grupos_string != "":
+                    grupos_string = grupos_string[:-1] #borra el ultimo _
+                else:
+                    grupos_string = "todoslosgrupos"
+
+
+
+
+                centrosregionales = request.POST.getlist('centroregional')
+
+                centrosregionales_string = ""
+                for centroregional in centrosregionales:
+                    centrosregionales_string = centrosregionales_string+str(centroregional)+'_'
+                if centrosregionales_string != "":
+                    centrosregionales_string = centrosregionales_string[:-1] #borra el ultimo _
+                else:
+                    centrosregionales_string = "todosloscentros"
+
+
                 numero_encuesta = str(form.cleaned_data['numero_encuesta'])
                 if numero_encuesta == "":
                     numero_encuesta = "3" #default : 3 => comparar las dosè
                 indicador =  str(form.cleaned_data['indicador'])
 
-                return HttpResponseRedirect('/nuevos_informes/'+grupo+'/'+numero_encuesta+'/'+indicador+'/')
+                if form.cleaned_data['solo_jovenes_con_dos'] == True:
+                    solo_jovenes_con_dos = "1"
+                else:
+                    solo_jovenes_con_dos = "0"
+
+
+
+                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/')
 
     else:
         form = MonitoreoForm()
