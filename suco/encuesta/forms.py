@@ -54,7 +54,6 @@ class MonitoreoForm(forms.Form):
     numero_encuesta = forms.ChoiceField(choices = CHOICE_ENCUESTA_NUM, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
     indicador = forms.ChoiceField(choices = CHOICE_INFORME_INDICADOR, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
     solo_jovenes_con_dos = forms.BooleanField(required=False)
-    jovenes_activados_solo = forms.BooleanField(required=False)
 
 
 

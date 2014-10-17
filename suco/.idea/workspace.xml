@@ -26,7 +26,7 @@
       <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="24" selection-start="2748" selection-end="2768" vertical-scroll-proportion="0.0" vertical-offset="387" max-vertical-offset="1088">
+            <state line="55" column="61" selection-start="2805" selection-end="2805" vertical-scroll-proportion="0.0" vertical-offset="370" max-vertical-offset="1071">
               <folding />
             </state>
           </provider>
@@ -41,19 +41,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="0.4352" vertical-offset="2244" max-vertical-offset="39644">
+            <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="-10.88" vertical-offset="2244" max-vertical-offset="39644">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aumento_de_la_produccion.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="aumento_de_la_produccion.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="27" selection-start="2026" selection-end="2026" vertical-scroll-proportion="-14.384615" vertical-offset="408" max-vertical-offset="3196">
+            <state line="55" column="19" selection-start="2305" selection-end="2305" vertical-scroll-proportion="0.80062795" vertical-offset="425" max-vertical-offset="3128">
               <folding />
             </state>
           </provider>
@@ -84,7 +84,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="152" column="81" selection-start="7303" selection-end="7374" vertical-scroll-proportion="-11.769231" vertical-offset="2278" max-vertical-offset="4437">
+            <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="-60.153847" vertical-offset="1139" max-vertical-offset="4369">
               <folding />
             </state>
           </provider>
@@ -100,13 +100,13 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/encuesta/forms.py" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/encuesta/urls.py" />
         <option value="$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css" />
-        <option value="$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html" />
         <option value="$PROJECT_DIR$/encuesta/templatetags/tools.py" />
         <option value="$PROJECT_DIR$/encuesta/views.py" />
+        <option value="$PROJECT_DIR$/encuesta/forms.py" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html" />
       </list>
     </option>
   </component>
@@ -613,20 +613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="24" selection-start="2748" selection-end="2768" vertical-scroll-proportion="0.0" vertical-offset="387" max-vertical-offset="1088">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="152" column="81" selection-start="7303" selection-end="7374" vertical-scroll-proportion="-11.769231" vertical-offset="2278" max-vertical-offset="4437">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="50" column="35" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2686">
@@ -643,13 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="27" selection-start="2026" selection-end="2026" vertical-scroll-proportion="-14.384615" vertical-offset="408" max-vertical-offset="3196">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/templatetags/tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="36" column="0" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="714">
@@ -661,7 +640,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="0.4352" vertical-offset="2244" max-vertical-offset="39644">
+        <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="-10.88" vertical-offset="2244" max-vertical-offset="39644">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="61" selection-start="2805" selection-end="2805" vertical-scroll-proportion="0.0" vertical-offset="370" max-vertical-offset="1071">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="-60.153847" vertical-offset="1139" max-vertical-offset="4369">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="19" selection-start="2305" selection-end="2305" vertical-scroll-proportion="0.80062795" vertical-offset="425" max-vertical-offset="3128">
           <folding />
         </state>
       </provider>
