@@ -363,9 +363,9 @@ class EncuestaAdmin(admin.ModelAdmin):
                ElectrodomesticoInline,SanaInline,HerramientasInline,TransporteInline,OtrosIngresosInline,
                AhorroInline, CreditoInline,SeguridadInline,VulnerableInline,RiesgosInline
               ]
-    list_display = ('nombre', 'fecha', 'formacion', 'comunidad', 'escolaridad','joven','enquesta_numero')
+    list_display = ('nombre', 'formacion', 'comunidad', 'escolaridad')
     list_filter = ['comunidad', 'formacion']
-    search_fields = ['nombre', 'comunidad__nombre', 'formacion__nombre', 'joven__nombre']
+    search_fields = ['nombre', 'comunidad__nombre', 'formacion__nombre']
     date_hierarchy = 'fecha'
                
 admin.site.register(Encuesta, EncuestaAdmin)

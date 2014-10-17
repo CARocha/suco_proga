@@ -5,13 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistema de Monitoreo PROGA | {%block title%}{%endblock%}</title>
-    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.1.11.1.min.js"></script>
 
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
     <link href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{STATIC_URL}}js/select2/select2.css" rel="stylesheet" type="text/css">
     <link href="{{STATIC_URL}}css/proga_bootstrap.css" rel="stylesheet" type="text/css">
 
-    <script type="text/javascript" src="{{STATIC_URL}}js/select2/select2.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,22 +21,6 @@
   </head>
   <body>
     <div class="container">
-        <div class="row header_row">
-            <div class="col-md-2 site_title">
-                Línea de base
-            </div>
-            <div class="col-md-2 ">
-                <div id ="navegacion" class="header">
-                    <div id ="botones-nav">
-                        <a href="/"><img src="{{STATIC_URL}}img/inicio_nav.png"></a>
-                        <a href="/admin"><img src="{{STATIC_URL}}img/admin_nav.png"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8 site_slogan">
-                Mejoramiento de la productividad y de la gestión agrícola de jóvenes productores y productoras
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-12">
             {%block content%}
@@ -48,19 +30,9 @@
     </div>
 
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 footer_logos">
-                <img src="{{STATIC_URL}}img/logogrande.png">
-                <img src="{{STATIC_URL}}img/logosuco_grande.jpg">
-
-            </div>
-        </div>
-    </div>
 
     <footer>
         <div class="container">
-
             <div class="row">
                 <div class="col-md-12">
                     Desarrollado por  <a href="http://www.simas.org.ni">SIMAS</a> y <a href="http://www.suco.org">SUCO</a>, bajo plataforma <a href="http://djangoproject.org">Django</a>
@@ -70,8 +42,8 @@
     </footer>
 
 
-
-
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{STATIC_URL}}js/highcharts.js"></script>

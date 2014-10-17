@@ -35,28 +35,26 @@ def get_anios():
 class MonitoreoForm(forms.Form):
 
     #escojer entre tipos de informes (originales y nuevos)
-    informe_tipo = forms.ChoiceField(choices = CHOICE_INFORME_TIPO, required=True,  widget=forms.Select(attrs={'class': 'form-control', 'style': 'max-width:200px'}))
+    informe_tipo = forms.ChoiceField(choices = CHOICE_INFORME_TIPO, required=True)
 
     #Informes originales
-    fecha = forms.ChoiceField(choices=get_anios(), label="Años", widget=forms.Select(attrs={'class': 'form-control'}))
+    fecha = forms.ChoiceField(choices=get_anios(), label="Años")
     departamento = forms.ModelChoiceField(queryset=Departamento.objects.all(), 
-            required=False, empty_label="Departamento", widget=forms.Select(attrs={'class': 'form-control'}))
-    municipio = forms.CharField(widget = forms.Select(attrs={'class': 'form-control'}), required=False)
-    comunidad = forms.CharField(widget = forms.Select(attrs={'class': 'form-control'}), required=False)
-    sexo = forms.ChoiceField(choices = CHOICE_SEXO, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+            required=False, empty_label="Departamento")
+    municipio = forms.CharField(widget = forms.Select, required=False)
+    comunidad = forms.CharField(widget = forms.Select, required=False)
+    sexo = forms.ChoiceField(choices = CHOICE_SEXO, required=False)
     dueno = forms.ModelChoiceField(queryset=Documento.objects.all(), 
-            required=False, empty_label="Dueños", widget = forms.Select(attrs={'class': 'form-control'}))
+            required=False, empty_label="Dueños")
 #    dueno = forms.ChoiceField(label = 'Dueño', choices = CHOICE_DUENO_F , required=False, initial=u"Dueño")
 
     #Nuevos informes - Octubre 2014
-    grupo = forms.ModelMultipleChoiceField(queryset=Grupo.objects.all(), required=False)
-    centroregional = forms.ModelMultipleChoiceField(queryset=Centroregional.objects.all(), required=False)
-    numero_encuesta = forms.ChoiceField(choices = CHOICE_ENCUESTA_NUM, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
-    indicador = forms.ChoiceField(choices = CHOICE_INFORME_INDICADOR, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
-    solo_jovenes_con_dos = forms.BooleanField(required=False)
+    grupo = forms.ModelChoiceField(queryset=Grupo.objects.all(),
+            required=False, empty_label="Todos los grupos")
+
+    numero_encuesta = forms.ChoiceField(choices = CHOICE_ENCUESTA_NUM, required=True)
+    indicador = forms.ChoiceField(choices = CHOICE_INFORME_INDICADOR, required=True)
     jovenes_activados_solo = forms.BooleanField(required=False)
-
-
 
 
 
