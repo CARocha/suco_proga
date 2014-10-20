@@ -19,7 +19,7 @@
     <h1>{{ indicador_name }}</h1>
     <table class="table table-condensed table-bordered table-striped">
         <tr>
-            <td>Grupo(s):</td>
+            <td style="width:65%">Grupo(s):</td>
             <td>{{ data.strings.grupos_name }}</td>
         </tr>
         <tr>
@@ -79,7 +79,8 @@
                         <th>Unidad</th>
                         <th>Áreas{% if numero_encuesta == "3" %}<br/>Primera encuesta{% endif %}</th>
                         {% if numero_encuesta == "3" %}
-                            <th class="last_datagroup_col">Áreas <br/>Segunda encuesta</th>
+                            <th>Áreas <br/>Segunda encuesta</th>
+                            <th class="last_datagroup_col">Áreas <br/>Diferencia</th>
                         {% endif %}
                         <th>Total producción por año{% if numero_encuesta == "3" %}<br/>Primera encuesta{% endif %}</th>
                         {% if numero_encuesta == "3" %}
@@ -102,8 +103,11 @@
                             {{key|unslugify}}
                         </td>
                         <td>{{value.key2|unslugify}}</td>
-                        <td>{{value.area1|floatformat:2}}</td>
-                        {% if numero_encuesta == "3" %}<td class="last_datagroup_col">{{value.area2|floatformat:2}}</td>{% endif %}
+                        <td>{{value.area1}}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{value.area2|floatformat:3}}</td>
+                            <td class="last_datagroup_col {% if value.area_diff > 0 and value.area_diff != "" and value.area_diff != 0 %}green_cell{% endif %} {% if value.area_diff < 0 %}red_cell{% endif %}">{{value.area_diff|floatformat:3}}</td>
+                        {% endif %}
                         <td>{{value.totales1|floatformat:2}}</td>
                         {% if numero_encuesta == "3" %}<td class="last_datagroup_col">{{value.totales2|floatformat:2}}</td>{% endif %}
                         <td>{{value.consumo1|floatformat:2}}</td>

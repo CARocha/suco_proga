@@ -169,7 +169,7 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
 
 
     solo_jovenes_con_dos_name = ""
-    if solo_jovenes_con_dos == True:
+    if solo_jovenes_con_dos == "1":
         solo_jovenes_con_dos_name = "Si"
     else:
         solo_jovenes_con_dos_name = "No. (Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber más producción en el primer año que el segundo.)"
@@ -252,12 +252,24 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
             consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
             precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
+
         else:
             area2 = 0
+            area_diff = 0
             totales2 = 0
             consumo2 = 0
             precio2 = 0
 
+        #formating - à finir pour les autres.
+        area1 = 0 if (area1 is None and area2 is not None) else area1
+        area1 = "" if (area1 is None and area2 is None) else area1
+
+
+        #diferencia entre los dos
+        if area2 is not None and area1 is not None:
+            area_diff = area2 - area1
+        else:
+            area_diff = ""
 
         #para el template
         data['tablas']['tabla_cultivos'][key] = {
@@ -270,7 +282,9 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             'area2':area2,
             'totales2':totales2,
             'consumo2':consumo2,
-            'precio2':precio2
+            'precio2':precio2,
+
+            'area_diff':area_diff,
         }
 
 
