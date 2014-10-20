@@ -35,6 +35,8 @@ class TipoCultivos(models.Model):
     tipo = models.ForeignKey(Componente)
     nombre = models.CharField(max_length=200)
     unidad = models.CharField(max_length=20)
+    conversion_kg = models.FloatField('Conversión a kilo (multiplicar con)', default=1)
+
     def __unicode__(self):
         return self.nombre
 

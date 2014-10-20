@@ -26,7 +26,7 @@
       <file leaf-file-name="forms.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="61" selection-start="2805" selection-end="2805" vertical-scroll-proportion="0.0" vertical-offset="370" max-vertical-offset="1071">
+            <state line="55" column="61" selection-start="2805" selection-end="2805" vertical-scroll-proportion="0.0" vertical-offset="935" max-vertical-offset="1156">
               <folding />
             </state>
           </provider>
@@ -35,7 +35,7 @@
       <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="132" selection-start="396" selection-end="396" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+            <state line="8" column="132" selection-start="396" selection-end="396" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="612">
               <folding />
             </state>
           </provider>
@@ -44,16 +44,25 @@
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="-10.88" vertical-offset="2244" max-vertical-offset="39644">
+            <state line="234" column="0" selection-start="8998" selection-end="8998" vertical-scroll-proportion="0.0" vertical-offset="3434" max-vertical-offset="39882">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="aumento_de_la_produccion.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/cultivos/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="86" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.41025642" vertical-offset="323" max-vertical-offset="1462">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aumento_de_la_produccion.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="19" selection-start="2305" selection-end="2305" vertical-scroll-proportion="0.80062795" vertical-offset="425" max-vertical-offset="3128">
+            <state line="55" column="19" selection-start="2323" selection-end="2323" vertical-scroll-proportion="-15.692307" vertical-offset="527" max-vertical-offset="3196">
               <folding />
             </state>
           </provider>
@@ -62,9 +71,9 @@
       <file leaf-file-name="proga_bootstrap.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="35" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2686">
+            <state line="52" column="35" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="2703">
               <folding>
-                <marker date="1413586758817" expanded="true" signature="3765:3804" placeholder="{...}" />
+                <marker date="1413814462237" expanded="true" signature="3877:3916" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -84,7 +93,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="-60.153847" vertical-offset="1139" max-vertical-offset="4369">
+            <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="4369">
               <folding />
             </state>
           </provider>
@@ -107,6 +116,7 @@
         <option value="$PROJECT_DIR$/encuesta/forms.py" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html" />
+        <option value="$PROJECT_DIR$/cultivos/models.py" />
       </list>
     </option>
   </component>
@@ -297,6 +307,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cultivos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -305,13 +329,13 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="Errors" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -403,27 +427,7 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="suco" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -449,7 +453,27 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="suco" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -557,7 +581,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22851562" sideWeight="0.9881129" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22851562" sideWeight="0.87518144" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.25689405" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -585,6 +609,38 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="19" selection-start="2305" selection-end="2305" vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="3128">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="35" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="850" max-vertical-offset="2686">
+          <folding>
+            <marker date="1413814462237" expanded="true" signature="3877:3916" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encuesta/templatetags/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="0" selection-start="1045" selection-end="1045" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="714">
+          <folding>
+            <marker date="1413586902567" expanded="true" signature="944:1044" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="4369">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="52" column="106" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1122">
@@ -615,9 +671,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="35" selection-start="1781" selection-end="1781" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2686">
+        <state line="52" column="35" selection-start="1910" selection-end="1910" vertical-scroll-proportion="0.0" vertical-offset="884" max-vertical-offset="2703">
           <folding>
-            <marker date="1413586758817" expanded="true" signature="3765:3804" placeholder="{...}" />
+            <marker date="1413814462237" expanded="true" signature="3877:3916" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -638,13 +694,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/encuesta/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="176" column="34" selection-start="7051" selection-end="7051" vertical-scroll-proportion="-10.88" vertical-offset="2244" max-vertical-offset="39644">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="55" column="61" selection-start="2805" selection-end="2805" vertical-scroll-proportion="0.0" vertical-offset="370" max-vertical-offset="1071">
@@ -654,14 +703,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="-60.153847" vertical-offset="1139" max-vertical-offset="4369">
+        <state line="159" column="44" selection-start="7801" selection-end="7801" vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="4369">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="19" selection-start="2305" selection-end="2305" vertical-scroll-proportion="0.80062795" vertical-offset="425" max-vertical-offset="3128">
+        <state line="55" column="19" selection-start="2323" selection-end="2323" vertical-scroll-proportion="-15.692307" vertical-offset="527" max-vertical-offset="3196">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encuesta/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="234" column="0" selection-start="8998" selection-end="8998" vertical-scroll-proportion="0.0" vertical-offset="3434" max-vertical-offset="39882">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cultivos/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="86" selection-start="1191" selection-end="1191" vertical-scroll-proportion="0.41025642" vertical-offset="323" max-vertical-offset="1462">
           <folding />
         </state>
       </provider>
