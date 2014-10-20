@@ -7,6 +7,10 @@ CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplica
 CHOICE_SEXO = ( (1,'Hombre'),
                 (2,'Mujer')
               )
+CHOICE_ACTIVO = (
+    (0, "No activo"),
+    (1, "Activo en SUCO")
+)
 
 class Grupo(models.Model):
     nombre = models.CharField('Nombre del grupo', max_length=200)
@@ -21,6 +25,7 @@ class Joven(models.Model):
     grupo = models.ForeignKey(Grupo)
     idseguimiento = models.IntegerField()
     centroregional = models.ForeignKey(Centroregional)
+    activo = models.IntegerField(choices=CHOICE_ACTIVO, verbose_name=u'Activo?', default=1)
 
     def __unicode__(self):
         return self.nombre

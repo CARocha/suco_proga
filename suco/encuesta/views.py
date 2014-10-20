@@ -48,13 +48,13 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 
 
 #DISPATCHER -> manda la request a la buena methodo
-def nuevos_informes(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos = 0):
+def nuevos_informes(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
     #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
     # especificados en forms.py/CHOICE_INFORME_INDICADOR.
     # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
 
 
-    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos)
+    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
 
 
 
@@ -83,7 +83,7 @@ def debug (output_src):
         return output_str
 
 
-def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos):
+def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
 
     #lo que sera retornado
     return_dict = {
@@ -91,8 +91,12 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         'strings': {}
     }
 
-    #Jovenes
-    jovenes = Joven.objects.all()
+
+    #Activo?
+    if activo == "1":
+        jovenes = Joven.objects.filter(activo=1)
+    else:
+        jovenes = Joven.objects.all()
 
     #Grupos
     if grupos != "todoslosgrupos":
@@ -111,7 +115,6 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         centroregional_object = Centroregional.objects.all()
 
     #Busca las encuestas
-
     #La encuesta1, con todos los jovenes que tienen una.
     if numero_encuesta == "1":
         return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=1))
@@ -174,6 +177,13 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     else:
         solo_jovenes_con_dos_name = "No. (Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber más producción en el primer año que el segundo.)"
 
+    activo_name = ""
+    if activo == "1":
+        activo_name = "Si"
+    else:
+        activo_name = "No"
+
+
     #conteo de jovenes y encuestas
     if return_dict['encuestas'][1]:
         numero_total_encuestas1 = return_dict['encuestas'][1].count()
@@ -195,31 +205,36 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         'indicador_name': indicador_name,
         'numero_encuesta_name': numero_encuesta_name,
         'solo_jovenes_con_dos_name': solo_jovenes_con_dos_name,
+        'activo_name':activo_name,
         'numero_total_encuestas1': numero_total_encuestas1,
         'numero_total_encuestas2': numero_total_encuestas2,
         'numero_total_jovenes1': numero_total_jovenes1,
-        'numero_total_jovenes2': numero_total_jovenes2
+        'numero_total_jovenes2': numero_total_jovenes2,
+
     }
 
     return return_dict
 
 # % de aumento de la producción
-def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos):
+def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
 
-    #TODO Para llenar el block del formulario a dentro de un informe.
-    '''
+
+    #TODO Para llenar el block del formulario a dentro de un informe
+
     initial_form_data = {
         'centroregional': centroregional,
         'indicador': indicador,
         'grupo': grupos,
         'numero_encuesta': numero_encuesta,
+        'solo_jovenes_con_dos': solo_jovenes_con_dos,
+        'activo': activo,
     }
+
     form = MonitoreoForm(initial=initial_form_data)
-    '''
 
 
     #return HttpResponse (debug(xxx))
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
 
     encuestas = data['encuestas']
     numero_total_encuestas = 0
@@ -239,31 +254,36 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     for i in TipoCultivos.objects.order_by('tipo').all():
         key = slugify(i.nombre).replace('-', '_') #platano
         key2 = slugify(i.unidad).replace('-', '_') #kg
+
         #primera encuesta
         query = primera_encuesta.filter(cultivos__cultivo = i)
         area1 = query.aggregate(area=Sum('cultivos__area'))['area']
         totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
+        totales1_kg = (totales1 * i.conversion_kg) if totales1 is not None else ""
         consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+        consumo1_kg = (consumo1 * i.conversion_kg) if consumo1 is not None  else ""
         precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+        valor1 = (totales1 * precio1) if (totales1 is not None and precio1 is not None) else ""
+
         #segunda encuesta (si hay)
         if numero_encuesta == "3":
             query2 = segunda_encuesta.filter(cultivos__cultivo = i)
             area2 = query2.aggregate(area=Sum('cultivos__area'))['area']
             totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
+            totales2_kg = (totales2 * i.conversion_kg) if totales2 is not None else ""
             consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+            consumo2_kg = (consumo2 * i.conversion_kg) if consumo2 is not None else ""
             precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
-
+            valor2 = (totales2 * precio2) if (totales2 is not None and precio2 is not None) else ""
         else:
             area2 = 0
             area_diff = 0
             totales2 = 0
+            totales2_kg = 0
             consumo2 = 0
+            consumo2_kg = 0
             precio2 = 0
-
-        #formating - à finir pour les autres.
-        area1 = 0 if (area1 is None and area2 is not None) else area1
-        area1 = "" if (area1 is None and area2 is None) else area1
-
+            valor2 = 0
 
         #diferencia entre los dos
         if area2 is not None and area1 is not None:
@@ -271,22 +291,47 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         else:
             area_diff = ""
 
+        area_diff = saca_aumento_regresso(area1, area2, False)
+        totales_diff = saca_aumento_regresso(totales1, totales2, False)
+        consumo_diff = saca_aumento_regresso(consumo1, consumo2, False)
+        precio_diff = saca_aumento_regresso(precio1, precio2, False)
+        valor_diff = saca_aumento_regresso(valor1, valor2, False)
+
+        #formating - à finir pour les autres.
+        area1 = 0 if (area1 is None and area2 is not None) else area1
+        area1 = "" if (area1 is None and area2 is None) else area1
+        area2 = 0 if (area2 is None and area1 is not None) else area2
+        area2 = "" if (area2 is None and area1 is None) else area2
+
         #para el template
-        data['tablas']['tabla_cultivos'][key] = {
-            'key2':key2,
-            'area1':area1,
-            'totales1':totales1,
-            'consumo1':consumo1,
-            'precio1':precio1,
+        if totales1 > 0 or totales2 > 0:
 
-            'area2':area2,
-            'totales2':totales2,
-            'consumo2':consumo2,
-            'precio2':precio2,
+            data['tablas']['tabla_cultivos'][key] = {
+                'id': i.id,
+                'key2':key2,
+                'area1':area1,
+                'conversion_kg': i.conversion_kg,
+                'totales1':totales1,
+                'totales1_kg':totales1_kg,
+                'consumo1':consumo1,
+                'consumo1_kg':consumo1_kg,
+                'precio1':precio1,
+                'valor1':valor1,
+                'area2':area2,
+                'totales2':totales2,
+                'totales2_kg':totales2_kg,
+                'totales_diff': totales_diff,
+                'consumo2':consumo2,
+                'consumo2_kg':consumo2_kg,
+                'consumo_diff': consumo_diff,
+                'precio_diff': precio_diff,
+                'valor_diff': valor_diff,
+                'precio2':precio2,
+                'valor2':valor2,
+                'area_diff':area_diff,
+            }
 
-            'area_diff':area_diff,
-        }
-
+    return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
     #CULTIVOS PATIO
     '''
@@ -312,7 +357,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
 
 
     '''
-    return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
+
 
 
 '''
@@ -451,9 +496,12 @@ def index(request):
                 else:
                     solo_jovenes_con_dos = "0"
 
+                if form.cleaned_data['activo'] == True:
+                    activo = "1"
+                else:
+                    activo = "0"
 
-
-                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/')
+                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/')
 
     else:
         form = MonitoreoForm()

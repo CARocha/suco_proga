@@ -15,6 +15,10 @@ h3 {margin-top:0;}
 
 .page_header_wrapper {background:#fff url(../img/menufondo.jpg) repeat-x; background-size:cover; height: auto; }
 
+/*Fix bootstrap responsive tables*/
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
 
 /**************************/
 /********* Menu ***********/
@@ -49,8 +53,10 @@ h3 {margin-top:0;}
 /**************************/
 
 .last_datagroup_col {border-right:1px solid #000 !important;}
-.red_cell {background:#ec4e4e !important; color:#fff  !important;}
-.green_cell {background:#68f500  !important;}
+.red_cell {background:#d26565 !important; color:#fff !important;}
+.green_cell {background:#00b050 !important;  color:#fff !important;}
+
+
 /**************************/
 /******* Footer ***********/
 /**************************/

@@ -39,4 +39,15 @@ def calcular_negativos(suma, numero, porcentaje = True):
         return 100 - float(positivos)
     else:
         return numero - positivos
- 
+
+#saca un porcentaje de aumentacion or baja entre dos valores
+def saca_aumento_regresso (primer_dato, segundo_dato, formato = True):
+    '''Si formato es true devuelve float caso contrario es cadena'''
+    try:
+        valor = (segundo_dato - primer_dato)/primer_dato
+    except:
+        return 0
+    if formato:
+        return valor
+    else:
+        return '%.6f' % valor
