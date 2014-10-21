@@ -1,0 +1,104 @@
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h2>Parametros <button class="btn btn-primary " style="float: right" data-toggle="modal" data-target="#parametros_modal">Cambiar los parámetros</button></h2>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="parametros_modal" tabindex="-1" role="dialog" aria-labelledby="parametros_modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+            <h4 class="modal-title" id="myModalLabel">Cambiar los parametros</h4>
+          </div>
+          <form action="/nuevos_informes/" method="POST">
+          <div class="modal-body">
+                <input type="hidden" name="informe_tipo" value="informes_nuevos"/>
+                {% csrf_token %}
+                <div style="visibility:hidden">
+                    <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div>
+                    <div class="form_widget">{{form.sexo}}</div>
+                    <div class="form_widget">{{form.departamento}}</div><br>
+                    <div class="form_widget">{{form.municipio}}</div><br>
+                    <div class="form_widget">{{form.comunidad}}</div>
+                    <div class="form_widget">{{form.dueno}}</div>
+                </div>
+                <divid="formulario_nuevosinformes" class="cambiar_form_parametros">
+                   <table class="table table-bordered">
+                       <tr>
+                           <td class="table_param_leftcol">Grupos</td>
+                           <td>{{data.param_form.grupo}}<br>{{data.param_form.grupo.errors}}</td>
+                       </tr>
+                       <tr>
+                           <td class="table_param_leftcol">Centros regionales</td>
+                           <td>{{data.param_form.centroregional}}<br>{{data.param_form.centroregional.errors}}</td>
+                       </tr>
+                       <tr>
+                           <td class="table_param_leftcol">Encuestas</td>
+                           <td>{{data.param_form.numero_encuesta}}<br>{{data.param_form.numero_encuesta.errors}}
+                               <div id="solo_jovenes_con_dos_wrapper">
+                                   {{data.param_form.solo_jovenes_con_dos}} Utilizar solo los datos de jóvenes que tienen dos encuestas rellenadas?
+                               </div>
+                               <div id="solo_jovenes_activados">
+                                   {{data.param_form.activo}} Solo jóvenes activados?
+                               </div>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td class="table_param_leftcol">Indicador</td>
+                           <td>{{data.param_form.indicador}}<br>{{data.param_form.indicador.errors}}</td>
+                       </tr>
+                   </table>
+                    <input type="submit" value="Consultar" class="consultar btn btn-primary"/>
+                </div>
+
+
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <table class="table table-condensed table-bordered table-striped " style="font-size: 85%">
+        <tr>
+            <td style="width:65%">Grupo(s):</td>
+            <td>{{ data.strings.grupos_name }}</td>
+        </tr>
+        <tr>
+            <td>Centro(s) Regional(es):</td>
+            <td>{{ data.strings.centroregional_name }}</td>
+        </tr>
+        <tr>
+            <td>Numero de encuesta:</td>
+            <td>{{ data.strings.numero_encuesta_name }}</td>
+        </tr>
+        {% if numero_encuesta == "3" %}
+        <tr>
+            <td>Utilizar solo los datos de jóvenes que tienen dos encuestas rellenadas?</td>
+            <td>{{ data.strings.solo_jovenes_con_dos_name }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td>Solo jóvenes activados?</td>
+            <td>{{ data.strings.activo_name }}</td>
+        </tr>
+        <tr>
+            <td>Numero total de jovenes utilizados en estos calculos</td>
+            <td>
+                {{ data.strings.numero_total_encuestas1 }}{% if numero_encuesta == "3" %} (primera encuesta)
+                <br/>
+                {{ data.strings.numero_total_encuestas2 }} (segunda encuesta)
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Numero total de encuestas utilizadas en estos calculos</td>
+            <td>{{ data.strings.numero_total_jovenes1 }}{% if numero_encuesta == "3" %} (primera encuesta)
+                <br/>
+                {{ data.strings.numero_total_jovenes2 }} (segunda encuesta)
+                {% endif %}
+
+            </td>
+        </tr>
+    </table>

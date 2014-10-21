@@ -47,4 +47,5 @@ def percent(value):
     value = float(value)
 
     if value == 0: return "n/d"
+    #return floatformat(value, 2)
     return floatformat(value * 100.0, 2) + '%'

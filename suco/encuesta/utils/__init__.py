@@ -42,12 +42,13 @@ def calcular_negativos(suma, numero, porcentaje = True):
 
 #saca un porcentaje de aumentacion or baja entre dos valores
 def saca_aumento_regresso (primer_dato, segundo_dato, formato = True):
+
     '''Si formato es true devuelve float caso contrario es cadena'''
     try:
-        valor = (segundo_dato - primer_dato)/primer_dato
+        valor = (float(segundo_dato) - float(primer_dato))/float(primer_dato)
     except:
         return 0
     if formato:
         return valor
     else:
-        return '%.6f' % valor
+        return '%.6f' % valor #eso es a 6 para que los calculos en la tabla utilisen mas decimales

@@ -101,7 +101,7 @@ INSTALLED_APPS = (
     'suco.seguridad',
     'south',
     'suco.smart_selects',
-    'suco.jovenes'
+    'suco.jovenes',
 )
 
 # A sample logging configuration. The only tangible logging

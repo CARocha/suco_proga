@@ -1,0 +1,16 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Datos</h2>
+    <p>Este informe no está programado todavía.</p>
+
+{% endblock %}
