@@ -68,21 +68,11 @@
             }
         }
 
-        function show_solo_jovenes_con_dos (numero_encuesta)
-        {
-            if (numero_encuesta == 3) {
-                $('#solo_jovenes_con_dos_wrapper').show();
-            } else {
-                $('#solo_jovenes_con_dos_wrapper').hide();
-            }
-        }
-
         $( document ).ready(function() {
             $('.select2').select2();
 
             show_informe_menu_de_tipo($("#id_informe_tipo").val())
             show_solo_jovenes_con_dos ($("#id_numero_encuesta").val())
-
 
             //Cuando el usario cambia de tipo de informe.
             $("#id_informe_tipo").change(function () {
@@ -147,6 +137,10 @@
                                            <td>{{form.centroregional}}<br>{{form.centroregional.errors}}</td>
                                        </tr>
                                        <tr>
+                                           <td class="table_param_leftcol">Sexo</td>
+                                           <td>{{form.sexo_encuesta}}</td>
+                                       </tr>
+                                       <tr>
                                            <td class="table_param_leftcol">Encuestas</td>
                                            <td>{{form.numero_encuesta}}<br>{{form.numero_encuesta.errors}}
                                                <div id="solo_jovenes_con_dos_wrapper">
@@ -155,6 +149,7 @@
                                                <div id="solo_jovenes_activados">
                                                    {{form.activo}} Solo jóvenes activados?
                                                </div>
+
                                            </td>
                                        </tr>
                                        <tr>

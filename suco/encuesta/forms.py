@@ -8,6 +8,8 @@ from suco.finca_tierra.models import *
 
 CHOICE_SEXO = (('', u'Sexo'),(1,'Hombre'),(2,'Mujer')) #CUIDADO -> los informes viejas tenian 1 como Hombre et 2 como Mujer, et es el contrario.
 
+CHOICE_SEXO_NUEVO = (('3', u'Los dos sexos'),('2','Solo hombres'),('1','Solo mujeres'))
+
 CHOICE_ENCUESTA_NUM = (
     ('1','Primera encuesta'),
     ('2','Segunda encuesta'),
@@ -74,6 +76,7 @@ class MonitoreoForm(forms.Form):
     indicador = forms.ChoiceField(choices = CHOICE_INFORME_INDICADOR, required=True, widget=forms.Select(attrs={'class': 'form-control'}))
     solo_jovenes_con_dos = forms.BooleanField(required=False)
     activo = forms.BooleanField(required=False)
+    sexo_encuesta = forms.ChoiceField(choices = CHOICE_SEXO_NUEVO, required=False, widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 

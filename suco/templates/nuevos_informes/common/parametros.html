@@ -15,7 +15,7 @@
           <div class="modal-body">
                 <input type="hidden" name="informe_tipo" value="informes_nuevos"/>
                 {% csrf_token %}
-                <div style="visibility:hidden">
+                <div style="display:none">
                     <div class="form_widget date_widget">{{form.fecha}}<br>{{form.fecha.errors}}</div>
                     <div class="form_widget">{{form.sexo}}</div>
                     <div class="form_widget">{{form.departamento}}</div><br>
@@ -32,6 +32,10 @@
                        <tr>
                            <td class="table_param_leftcol">Centros regionales</td>
                            <td>{{data.param_form.centroregional}}<br>{{data.param_form.centroregional.errors}}</td>
+                       </tr>
+                       <tr>
+                           <td class="table_param_leftcol">Sexo</td>
+                           <td>{{data.param_form.sexo_encuesta}}</td>
                        </tr>
                        <tr>
                            <td class="table_param_leftcol">Encuestas</td>
@@ -70,6 +74,10 @@
             <td>{{ data.strings.centroregional_name }}</td>
         </tr>
         <tr>
+            <td>Sexo:</td>
+            <td>{{ data.strings.sexo_name }}</td>
+        </tr>
+        <tr>
             <td>Numero de encuesta:</td>
             <td>{{ data.strings.numero_encuesta_name }}</td>
         </tr>
@@ -84,7 +92,7 @@
             <td>{{ data.strings.activo_name }}</td>
         </tr>
         <tr>
-            <td>Numero total de jovenes utilizados en estos calculos</td>
+            <td>Numero total de encuestas utilizadas en estos calculos</td>
             <td>
                 {{ data.strings.numero_total_encuestas1 }}{% if numero_encuesta == "3" %} (primera encuesta)
                 <br/>
@@ -93,7 +101,7 @@
             </td>
         </tr>
         <tr>
-            <td>Numero total de encuestas utilizadas en estos calculos</td>
+            <td>Numero total de jovenes utilizados en estos calculos</td>
             <td>{{ data.strings.numero_total_jovenes1 }}{% if numero_encuesta == "3" %} (primera encuesta)
                 <br/>
                 {{ data.strings.numero_total_jovenes2 }} (segunda encuesta)

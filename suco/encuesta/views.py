@@ -48,7 +48,7 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 
 ######################################################################################################
 #DISPATCHER -> manda la request a la buena methodo
-def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False):
+def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False, sexo = "3"):
 
     if request.method == 'POST':
 
@@ -63,7 +63,6 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
 
         centrosregionales = request.POST.getlist('centroregional')
         centrosregionales_string = ""
-
         for centroregional in centrosregionales:
             centrosregionales_string = centrosregionales_string+str(centroregional)+'_'
         if centrosregionales_string != "":
@@ -71,22 +70,34 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
         else:
             centrosregionales_string = "todosloscentros"
 
+
         numero_encuesta = request.POST.get('numero_encuesta')
         if numero_encuesta == "":
             numero_encuesta = "3" #default : 3 => comparar las dosè
         indicador =  request.POST.get('indicador')
 
-        if request.POST.get('solo_jovenes_con_dos') == True:
+        if (request.POST.get('solo_jovenes_con_dos') == True) or (request.POST.get('solo_jovenes_con_dos') == "on"):
             solo_jovenes_con_dos = "1"
         else:
             solo_jovenes_con_dos = "0"
 
-        if request.POST.get('activo') == True:
+        if (request.POST.get('activo') == True) or (request.POST.get('activo') == "on"):
             activo = "1"
         else:
             activo = "0"
+            #return HttpResponse (activo)
 
-        return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/')
+        sexo = "3" #default : comparar los dos
+        if request.POST.get('sexo_encuesta') == "1":
+            sexo = "1"
+        if request.POST.get('sexo_encuesta') == "2":
+            sexo = "2"
+
+
+        indicador =  request.POST.get('indicador')
+
+
+        return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/')
 
 
     if indicador == "___":
@@ -94,7 +105,7 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
     #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
     # especificados en forms.py/CHOICE_INFORME_INDICADOR.
     # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
-    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
 
 
 ######################################################################################################
@@ -127,13 +138,14 @@ def debug (output_src):
 
 ######################################################################################################
 #Methodo que recupera todas las encuestas que se aplican a un grupo/centro/numrero_encuesta, etc, etc.
-def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
 
     ######################################################
     #lo que sera retornado
     return_dict = {
         'encuestas': {},
-        'strings': {}
+        'strings': {},
+        'tablas': {}
     }
 
     ######################################################
@@ -142,6 +154,15 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         jovenes = Joven.objects.filter(activo=1)
     else:
         jovenes = Joven.objects.all()
+
+    ######################################################
+    #Sexo?
+    if sexo == "1":
+        jovenes = Joven.objects.filter(sexo=1)
+    elif sexo == "2":
+        jovenes = Joven.objects.filter(sexo=2)
+
+
 
     ######################################################
     #Grupos
@@ -217,6 +238,7 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         if centroregional_name != "":
             centroregional_name = centroregional_name[:-2]
 
+    sexo_name = dict(CHOICE_SEXO_NUEVO)[sexo]
     indicador_name = dict(CHOICE_INFORME_INDICADOR)[indicador]
     numero_encuesta_name = dict(CHOICE_ENCUESTA_NUM)[str(numero_encuesta)]
 
@@ -234,15 +256,16 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
 
     ######################################################
     #Para llenar el block del formulario a dentro de un informe
-    solo_jovenes_con_dos_initialdata = True if solo_jovenes_con_dos == "1" else True
-    activo_initialdata = True if activo == "1" else True
+    solo_jovenes_con_dos_initialdata = True if solo_jovenes_con_dos == "1" else False
+    activo_initialdata = True if activo == "1" else False
     return_dict['initial_form_data'] = {
         'centroregional': centroregional,
         'indicador': indicador,
         'grupo': grupos,
-        'numero_encuesta': solo_jovenes_con_dos_initialdata,
-        'solo_jovenes_con_dos': activo_initialdata,
-        'activo': activo,
+        'sexo_encuesta': sexo,
+        'numero_encuesta': numero_encuesta,
+        'solo_jovenes_con_dos': solo_jovenes_con_dos_initialdata,
+        'activo': activo_initialdata,
     }
     return_dict['param_form'] = MonitoreoForm(initial=return_dict['initial_form_data'])
 
@@ -264,6 +287,7 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     ######################################################
     return_dict['strings'] = {
         'grupos_name': grupos_name,
+        'sexo_name': sexo_name,
         'centroregional_name': centroregional_name,
         'indicador_name': indicador_name,
         'numero_encuesta_name': numero_encuesta_name,
@@ -279,20 +303,15 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
 ######################################################################################################
 # INDICADOR : % de aumento de la producción
 
-def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
-
-
+def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
 
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     encuestas = data['encuestas']
     primera_encuesta = data['encuestas'][1] #encuesta 1
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
-
-    ######################################################
-    data['tablas'] = {} #Variable que tiene todas las tablas (cultivos, animales, etc.)
 
     ######################################################
     #TABLA CULTIVOS
@@ -315,7 +334,6 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     valor1_total = 0
     valor2_total = 0
     valor_total_diff = 0
-
 
     data['tablas']['tabla_cultivos'] = {}
     for i in TipoCultivos.objects.order_by('tipo').all():   #todos los tipos de cultivos (col A)
@@ -439,120 +457,305 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             'numero2': numero2,
             'porcentaje_num2': porcentaje_num2,
             'numero_diff': saca_aumento_regresso(numero1, numero2, False),
-            'porcentaje_diff': saca_aumento_regresso(porcentaje_num1, porcentaje_num2, False),
+            'porcentaje_diff': saca_aumento_regresso(porcentaje_num1, porcentaje_num2, False, "absolute"),
         }
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nivel de diversificación de la producción
-def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+
+
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    encuestas = data['encuestas']
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    ######################################################
+    data['tablas'] = {} #Variable que tiene todas las tablas (cultivos, animales, etc.)
+
+    ######################################################
+    #TABLA DIVERSIFICACION DE CULTIVOS
+    ######################################################
+
+    data['tablas']['cultivos'] = {}
+    data['tablas']['cultivos']['encuesta1'] = {}
+    data['tablas']['cultivos']['encuesta2'] = {}
+    data['tablas']['cultivos']['encuesta1']['total_encuesta1'] = primera_encuesta.count()
+    if numero_encuesta == "3":
+        data['tablas']['cultivos']['encuesta1']['total_encuesta2'] = segunda_encuesta.count()
+
+    ######################################################
+
+    data['tablas']['cultivos']['encuesta1']['cero'] = 0
+    data['tablas']['cultivos']['encuesta1']['uno_a_cinco'] = 0
+    data['tablas']['cultivos']['encuesta1']['seis_a_diez'] = 0
+    data['tablas']['cultivos']['encuesta1']['mas_de_diez'] = 0
+
+    data['tablas']['cultivos']['encuesta2']['cero'] = 0
+    data['tablas']['cultivos']['encuesta2']['uno_a_cinco'] = 0
+    data['tablas']['cultivos']['encuesta2']['seis_a_diez'] = 0
+    data['tablas']['cultivos']['encuesta2']['mas_de_diez'] = 0
+
+    nb_cultivos_para_promedio1 = []
+    #Encuesta 1 -> Ver cada encuesta y contear sus cultivos diferentes
+    for encuesta in primera_encuesta:
+        nb_cultivos = encuesta.cultivos_set.count()
+        nb_cultivos_para_promedio1.append(float(nb_cultivos))
+        if nb_cultivos == 0 or nb_cultivos is None:
+            data['tablas']['cultivos']['encuesta1']['cero'] += 1
+        elif nb_cultivos < 6:
+            data['tablas']['cultivos']['encuesta1']['uno_a_cinco'] += 1
+        elif nb_cultivos < 11:
+            data['tablas']['cultivos']['encuesta1']['seis_a_diez'] += 1
+        elif nb_cultivos > 10:
+            data['tablas']['cultivos']['encuesta1']['mas_de_diez'] += 1
+
+
+    numero_promedio_de_cultivos_por_familia1 = reduce(lambda x, y: x + y, nb_cultivos_para_promedio1) / len(nb_cultivos_para_promedio1)
+
+    data['tablas']['cultivos']['encuesta1']['cero_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['cero'], primera_encuesta.count(), False )
+    data['tablas']['cultivos']['encuesta1']['uno_a_cinco_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['uno_a_cinco'], primera_encuesta.count(), False )
+    data['tablas']['cultivos']['encuesta1']['seis_a_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['seis_a_diez'], primera_encuesta.count(), False )
+    data['tablas']['cultivos']['encuesta1']['mas_de_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['mas_de_diez'], primera_encuesta.count(), False )
+
+
+
+
+    #Encuesta 2 -> Ver cada encuesta y contear sus cultivos diferentes
+    nb_cultivos_para_promedio2 = []
+    if numero_encuesta == "3":
+        for encuesta in segunda_encuesta:
+            nb_cultivos = encuesta.cultivos_set.count()
+            nb_cultivos_para_promedio2.append(float(nb_cultivos))
+            if nb_cultivos == 0 or nb_cultivos is None:
+                data['tablas']['cultivos']['encuesta2']['cero'] += 1
+            elif nb_cultivos < 6:
+                data['tablas']['cultivos']['encuesta2']['uno_a_cinco'] += 1
+            elif nb_cultivos < 11:
+                data['tablas']['cultivos']['encuesta2']['seis_a_diez'] += 1
+            elif nb_cultivos > 10:
+                data['tablas']['cultivos']['encuesta2']['mas_de_diez'] += 1
+
+        numero_promedio_de_cultivos_por_familia2 = reduce(lambda x, y: x + y, nb_cultivos_para_promedio2) / len(nb_cultivos_para_promedio2)
+        numero_promedio_de_cultivos_por_familia_diff = saca_aumento_regresso(numero_promedio_de_cultivos_por_familia1, numero_promedio_de_cultivos_por_familia2, False, "percent")
+
+        data['tablas']['cultivos']['encuesta2']['cero_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta2']['cero'], segunda_encuesta.count(), False )
+        data['tablas']['cultivos']['encuesta2']['uno_a_cinco_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta2']['uno_a_cinco'], segunda_encuesta.count(), False )
+        data['tablas']['cultivos']['encuesta2']['seis_a_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta2']['seis_a_diez'], segunda_encuesta.count(), False )
+        data['tablas']['cultivos']['encuesta2']['mas_de_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta2']['mas_de_diez'], segunda_encuesta.count(), False )
+
+        data['tablas']['cultivos']['cero_porcentaje_diff']           = saca_aumento_regresso (data['tablas']['cultivos']['encuesta1']['cero_porcentaje'], data['tablas']['cultivos']['encuesta2']['cero_porcentaje'], False, "absolute")
+        data['tablas']['cultivos']['uno_a_cinco_porcentaje_diff']    = saca_aumento_regresso (data['tablas']['cultivos']['encuesta1']['uno_a_cinco_porcentaje'], data['tablas']['cultivos']['encuesta2']['uno_a_cinco_porcentaje'], False, "absolute")
+        data['tablas']['cultivos']['seis_a_diez_porcentaje_diff']    = saca_aumento_regresso (data['tablas']['cultivos']['encuesta1']['seis_a_diez_porcentaje'], data['tablas']['cultivos']['encuesta2']['seis_a_diez_porcentaje'], False, "absolute")
+        data['tablas']['cultivos']['mas_de_diez_porcentaje_diff']    = saca_aumento_regresso (data['tablas']['cultivos']['encuesta1']['mas_de_diez_porcentaje'], data['tablas']['cultivos']['encuesta2']['mas_de_diez_porcentaje'], False, "absolute")
+
+
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : %  de parcelas cultivadas con técnicas que mejoran el ecosistema (protección de suelos, de fuentes de agua, reforestación…).
-def parcelas_cultivadas_con_tecnicas_que_mejoran_el_ecosistema (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def parcelas_cultivadas_con_tecnicas_que_mejoran_el_ecosistema (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    ######################################################
+    #Nivel de conocimiento
+    data['tablas']['tabla_manejoagro'] = {}
+    for k in ManejoAgro.objects.all():
+        key = slugify(k.nombre).replace('-','_')
+        #Encuesta 1
+        query = primera_encuesta.filter(opcionesmanejo__uso = k)
+        frecuencia = query.count()
+        nada1 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=1).aggregate(nada=Count('opcionesmanejo__nivel'))['nada']
+        por_nada1 = saca_porcentajes(nada1, primera_encuesta.count())
+        poco1 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=2).aggregate(poco=Count('opcionesmanejo__nivel'))['poco']
+        por_poco1 = saca_porcentajes(poco1, primera_encuesta.count())
+        algo1 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=3).aggregate(algo=Count('opcionesmanejo__nivel'))['algo']
+        por_algo1 = saca_porcentajes(algo1, primera_encuesta.count())
+        bastante1 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=4).aggregate(bastante=Count('opcionesmanejo__nivel'))['bastante']
+        por_bastante1 = saca_porcentajes(bastante1, primera_encuesta.count())
+
+        #Encuesta 2
+        if numero_encuesta == "3":
+            query = segunda_encuesta.filter(opcionesmanejo__uso = k)
+            frecuencia = query.count()
+            nada2 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=1).aggregate(nada=Count('opcionesmanejo__nivel'))['nada']
+            por_nada2 = saca_porcentajes(nada2, segunda_encuesta.count())
+            nada_diff = saca_aumento_regresso (por_nada1, por_nada2, True, "absolute")
+            poco2 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=2).aggregate(poco=Count('opcionesmanejo__nivel'))['poco']
+            por_poco2 = saca_porcentajes(poco2, segunda_encuesta.count())
+            poco_diff = saca_aumento_regresso (por_poco1, por_poco2, True, "absolute")
+            algo2 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=3).aggregate(algo=Count('opcionesmanejo__nivel'))['algo']
+            por_algo2 = saca_porcentajes(algo2, segunda_encuesta.count())
+            algo_diff = saca_aumento_regresso (por_algo1, por_algo2, True, "absolute")
+            bastante2 = query.filter(opcionesmanejo__uso=k, opcionesmanejo__nivel=4).aggregate(bastante=Count('opcionesmanejo__nivel'))['bastante']
+            por_bastante2 = saca_porcentajes(bastante2, segunda_encuesta.count())
+            bastante_diff = saca_aumento_regresso (por_bastante1, por_bastante2, True, "absolute")
+
+        data['tablas']['tabla_manejoagro'][key] = {'nada1':nada1,'poco1':poco1,'algo1':algo1,'bastante1':bastante1,
+                      'por_nada1':por_nada1,'por_poco1':por_poco1,'por_algo1':por_algo1,
+                      'por_bastante1':por_bastante1}
+        if numero_encuesta == "3":
+            data['tablas']['tabla_manejoagro'][key].update({'nada2':nada2,'poco2':poco2,'algo2':algo2,'bastante2':bastante2,
+                      'por_nada2':por_nada2,'por_poco2':por_poco2,'por_algo2':por_algo2,
+                      'por_bastante2':por_bastante2, 'nada_diff':nada_diff, 'poco_diff':poco_diff, 'algo_diff':algo_diff, 'bastante_diff':bastante_diff })
+
+    ######################################################
+    #Ha experimentado
+    data['tablas']['tabla_experimentado'] = {}
+
+    for u in ManejoAgro.objects.all():
+        key = slugify(u.nombre).replace('-','_')
+
+        ######################################################
+        #Primera encuesta
+        query = primera_encuesta.filter(opcionesmanejo__uso = u)
+        frecuencia = query.count()
+        ######################################################
+        #Menor
+        menor_escala_si1 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__menor_escala=1).aggregate(menor_escala_si1=Count('opcionesmanejo__menor_escala'))['menor_escala_si1']
+        menor_escala_no1 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__menor_escala=2).aggregate(menor_escala_no1=Count('opcionesmanejo__menor_escala'))['menor_escala_no1']
+        por_menor_escala1 = saca_porcentajes(menor_escala_si1,primera_encuesta.count())
+
+        ######################################################
+        #Mayor
+        mayor_escala_si1 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__mayor_escala=1).aggregate(mayor_escala_si1= Count('opcionesmanejo__mayor_escala'))['mayor_escala_si1']
+        mayor_escala_no1 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__mayor_escala=2).aggregate(mayor_escala_no1= Count('opcionesmanejo__mayor_escala'))['mayor_escala_no1']
+        por_mayor_escala1 = saca_porcentajes(mayor_escala_si1, primera_encuesta.count())
+
+        data['tablas']['tabla_experimentado'][key] = {'menor_escala_si1':menor_escala_si1,'menor_escala_no1':menor_escala_no1,
+                             'mayor_escala_si1':mayor_escala_si1,'mayor_escala_no1':mayor_escala_no1,
+                             'por_menor_escala1':por_menor_escala1,'por_mayor_escala1':por_mayor_escala1}
+
+        ######################################################
+        #Segunda encuesta
+        if numero_encuesta == "3":
+            query = segunda_encuesta.filter(opcionesmanejo__uso = u)
+            frecuencia = query.count()
+            ######################################################
+            #Menor
+            menor_escala_si2 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__menor_escala=1).aggregate(menor_escala_si2=Count('opcionesmanejo__menor_escala'))['menor_escala_si2']
+            menor_escala_no2 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__menor_escala=2).aggregate(menor_escala_no2=Count('opcionesmanejo__menor_escala'))['menor_escala_no2']
+            por_menor_escala2 = saca_porcentajes(menor_escala_si2,segunda_encuesta.count())
+
+            ######################################################
+            #Mayor
+            mayor_escala_si2 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__mayor_escala=1).aggregate(mayor_escala_si2= Count('opcionesmanejo__mayor_escala'))['mayor_escala_si2']
+            mayor_escala_no2 = query.filter(opcionesmanejo__uso=u, opcionesmanejo__mayor_escala=2).aggregate(mayor_escala_no2= Count('opcionesmanejo__mayor_escala'))['mayor_escala_no2']
+            por_mayor_escala2 = saca_porcentajes(mayor_escala_si2, primera_encuesta.count())
+
+            por_menor_escala_diff   = saca_aumento_regresso(por_menor_escala1, por_menor_escala2, False, "absolute")
+            por_mayor_escala_diff   = saca_aumento_regresso(por_mayor_escala1, por_mayor_escala2, False, "absolute")
+
+            data['tablas']['tabla_experimentado'][key].update({'menor_escala_si2':menor_escala_si2,'menor_escala_no2':menor_escala_no2,
+                                 'mayor_escala_si2':mayor_escala_si2,'mayor_escala_no2':mayor_escala_no2,
+                                 'por_menor_escala2':por_menor_escala2,'por_mayor_escala2':por_mayor_escala2, 'por_menor_escala_diff':por_menor_escala_diff, 'por_mayor_escala_diff':por_mayor_escala_diff})
+
+
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nº de meses en los que la mayoría de familias tienen acceso a una variedad de alimentos
-def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 ######################################################################################################
 # INDICADOR : % de familias participantes del proyecto que tienen acceso a una gama de diversos alimentos durante tod el año
-def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de aumento de los ingresos provenientes de las actividades de transformación y comercialización
-def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nº de familias que obtienen ingresos provenientes de la comercialización y la transformación de la producción
-def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nivel de aceptación de la opinión de las jóvenes mujeres en la toma de decisión en el seno de las parcelas agrícolas familiares
-def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : %  de jóvenes mujeres que participan en las actividades agrícolas de la parcela familiar
-def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de jóvenes mujeres que participan en actividades comunitarias
-def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de jóvenes hombres que participan en actividades habitualmente reservadas a las mujeres
-def hombres_actividades_habitualmente_mujer (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def hombres_actividades_habitualmente_mujer (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nº de familias superando el mínimo de subsistencia en términos de producción agrícola
-def ultime_familias_superando_minimo (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def ultime_familias_superando_minimo (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de aumento de los ingresos proviniendo de la producción agrícola
-def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nivel de satisfacción de las condiciones de vida asociadas a la producción agrícola y alimentaria
-def ultime_nivel_satisfaccion_condiciones (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def ultime_nivel_satisfaccion_condiciones (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Percepción de las condiciones del medioambiente (riqueza de los suelos, disponibilidad de agua)
-def ultime_percepcion_condiciones_medioambiente (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo):
+def ultime_percepcion_condiciones_medioambiente (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 
@@ -668,6 +871,7 @@ def index(request):
 
             #nuevos informes - No utilisan las sessiones
             elif form.cleaned_data['informe_tipo'] == "informes_nuevos":
+
                 grupos = request.POST.getlist('grupo')
 
                 grupos_string = ""
@@ -677,9 +881,6 @@ def index(request):
                     grupos_string = grupos_string[:-1] #borra el ultimo _
                 else:
                     grupos_string = "todoslosgrupos"
-
-
-
 
                 centrosregionales = request.POST.getlist('centroregional')
 
@@ -707,7 +908,13 @@ def index(request):
                 else:
                     activo = "0"
 
-                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/')
+                sexo = "3" #default : comparar los dos
+                if request.POST.get('sexo_encuesta') == "1":
+                    sexo = "1"
+                if request.POST.get('sexo_encuesta') == "2":
+                    sexo = "2"
+
+                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/')
 
     else:
         form = MonitoreoForm()

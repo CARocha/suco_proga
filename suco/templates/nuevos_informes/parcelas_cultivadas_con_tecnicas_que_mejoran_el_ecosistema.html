@@ -11,6 +11,130 @@
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
-    <p>Este informe no está programado todavía.</p>
+
+    <h3>Nivel de conocimiento <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('conocimiento'); return false;">Exportar en Excel</a></h3>
+    <br/>
+
+    </div></div></div>
+    <div id="conocimiento">
+        <table class="table table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Uso de manejo agro.</th>
+                    <th>Nada{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Nada{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                    <th>Poco{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Poco{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                    <th>Algo{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Algo{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                    <th>Bastante{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Bastante{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 2</small>{% endif %}</th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.tabla_manejoagro.items%}
+                <tr>
+                    <td>{{key|unslugify}}</td>
+
+                    <td>{{value.nada1|floatformat}}</td>
+                    <td>{{value.por_nada1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.nada2|floatformat}}</td>
+                        <td>{{value.por_nada2|floatformat}}</td>
+                        <td class="format_diff">{{value.nada_diff}}</td>
+                    {% endif %}
+                    <td>{{value.poco1|floatformat}}</td>
+                    <td>{{value.por_poco1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.poco2|floatformat}}</td>
+                        <td>{{value.por_poco2|floatformat}}</td>
+                        <td class="format_diff">{{value.poco_diff}}</td>
+                    {% endif %}
+                    <td>{{value.algo1|floatformat}}</td>
+                    <td>{{value.por_algo1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.algo2|floatformat}}</td>
+                        <td>{{value.por_algo2|floatformat}}</td>
+                        <td class="format_diff">{{value.algo_diff}}</td>
+                    {% endif %}
+                    <td>{{value.bastante1|floatformat}}</td>
+                    <td>{{value.por_bastante1|floatformat}}
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.bastante2|floatformat}}</td>
+                        <td>{{value.por_bastante2|floatformat}}</td>
+                        <td class="format_diff">{{value.bastante_diff}}</td>
+                    {% endif %}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container"><div class="row"><div class="col-md-12">
+    <br/><br/>
+    <h3>Ha experimentado <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('experimentado'); return false;">Exportar en Excel</a></h3>
+    <br/>
+    <div id="experimentado">
+        <table class="table table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Uso de manejo agro</th>
+                    <th>Menor escala (Sí) {% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%</th>
+                    <th>Mayor escala (Sí){% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%</th>
+                    {% if numero_encuesta == "3" %}
+                        <th style="border-left:2px solid #000">Menor escala (Sí) <br/><small>Encuesta 2</small></th>
+                        <th>%</th>
+                        <th>Mayor escala (Sí)<br/><small>Encuesta 2</small></th>
+                        <th>%</th>
+                        <th  style="border-left:2px solid #000">Menor escala / Diferencia de % entre<br><small>Encuesta 1 y 2</small></th>
+                        <th>Mayor escala / Diferencia de % entre<br><small>Encuesta 1 y 2</small></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.tabla_experimentado.items%}
+                    <tr>
+                        <td>{{key|unslugify}}</td>
+
+                        <td>{{value.menor_escala_si1|floatformat}}</td>
+                        <td>{{value.por_menor_escala1|floatformat}}</td>
+                        <td>{{value.mayor_escala_si1|floatformat}}</td>
+                        <td>{{value.por_mayor_escala1|floatformat}}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td style="border-left:2px solid #000">{{value.menor_escala_si2|floatformat}}</td>
+                            <td>{{value.por_menor_escala2|floatformat}}</td>
+                            <td>{{value.mayor_escala_si2|floatformat}}</td>
+                            <td>{{value.por_mayor_escala2|floatformat}}</td>
+                            <td class="format_diff"  style="border-left:2px solid #000">{{value.por_menor_escala_diff|floatformat}}</td>
+                            <td class="format_diff">{{value.por_mayor_escala_diff|floatformat}}</td>
+                        {% endif %}
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
 
 {% endblock %}

@@ -16,13 +16,9 @@
     <h3 style="padding-bottom:20px;">Cultivos en la finca <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('finca'); return false;">Exportar en Excel</a></h3>
 
 
-    </div>
-        </div>
-            </div>
 
-
-        <div id="finca">
-            <div class="table-responsive">
+        <div id="finca" style="width:100%; overflow-x: scroll">
+            <div class="table-responsive" >
                 <table class="table table-striped table-bordered table-condensed datatable">
                     <thead>
                         <tr>
@@ -140,7 +136,7 @@
 
                     <tbody>
                     <tfoot>
-                        <tr style="border-top:5px solid #000000">
+                        <tr style="border-top:2px solid #000000">
                             <td colspan="2">Totales</td>
 
                             <td>{{ area1_total|floatformat:2 }}</td>
@@ -189,15 +185,12 @@
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
 
-
+        <br/><br/><br/><br/>
 
         <div id="animales">
             <h3>Animales <a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('animales'); return false;">Exportar en Excel</a></h3>
-
+            <br/>
             <table  class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -226,7 +219,7 @@
                             <td>{{ value.porcentaje_num1 }}</td>
                             {% if numero_encuesta == "3" %}
                                 <td>{{ value.porcentaje_num2 }}</td>
-                                <td class="format_diff">{{ value.porcentaje_diff|percent }}</td>
+                                <td class="format_diff">{{ value.porcentaje_diff }}</td>
                             {% endif %}
                         </tr>
                     {%endfor%}
