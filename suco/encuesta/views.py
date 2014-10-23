@@ -7,6 +7,7 @@ from django.views.generic.simple import direct_to_template
 from django.utils import simplejson
 from django.db.models import Sum, Count, Avg
 from django.core.exceptions import ViewDoesNotExist
+from django.db.models import Q
 from decorators import session_required
 from datetime import date
 from forms import *
@@ -27,7 +28,8 @@ from suco.seguridad.models import *
 from utils import grafos
 from utils import *
 import random
-from django.db.models import Q
+import collections
+
 
 '''
 
@@ -317,6 +319,8 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     #TABLA CULTIVOS
     ######################################################
 
+    una_manzana_nica_en_metros_cuadrados = 7044 #a verificar. Felipe dice 7044. J-F dice 7026
+
     ######################################################
     #variables para los totales abajo de la tabla
     area1_total = 0
@@ -335,8 +339,16 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     valor2_total = 0
     valor_total_diff = 0
 
-    data['tablas']['tabla_cultivos'] = {}
-    for i in TipoCultivos.objects.order_by('tipo').all():   #todos los tipos de cultivos (col A)
+    ######################################################
+    #TABLA Los productos con la más alta tasa de rendimiento (calculado abajo en este mismo for)
+    ######################################################
+    productos_con_mas_rendimiento1 = collections.OrderedDict()
+    productos_con_mas_rendimiento2 = collections.OrderedDict()
+
+
+    data['tablas']['tabla_cultivos'] = collections.OrderedDict()
+    for i in TipoCultivos.objects.all().order_by('nombre'):   #todos los tipos de cultivos (col A)
+
         key = slugify(i.nombre).replace('-', '_')   #ex: platano
         key2 = slugify(i.unidad).replace('-', '_')  #ex: libras, cien, docenas
 
@@ -346,6 +358,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         area1 = query.aggregate(area=Sum('cultivos__area'))['area']
         totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
         totales1_kg = (totales1 * i.conversion_kg) if totales1 is not None else 0
+        kg_por_metrocuadrado1 = (totales1_kg / (area1 * una_manzana_nica_en_metros_cuadrados)) if area1 is not None else 0
         consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
         consumo1_kg = (consumo1 * i.conversion_kg) if consumo1 is not None  else 0
         precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
@@ -359,6 +372,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             area2 = query2.aggregate(area=Sum('cultivos__area'))['area']
             totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
             totales2_kg = (totales2 * i.conversion_kg) if totales2 is not None else 0
+            kg_por_metrocuadrado2 = (totales2_kg / (area2 * una_manzana_nica_en_metros_cuadrados)) if area2 is not None else 0
             consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
             consumo2_kg = (consumo2 * i.conversion_kg) if consumo2 is not None else 0
             precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
@@ -369,6 +383,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             area_diff = 0
             totales2 = 0
             totales2_kg = 0
+            kg_por_metrocuadrado2 = 0
             consumo2 = 0
             consumo2_kg = 0
             precio2 = 0
@@ -381,17 +396,28 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         consumo_diff = saca_aumento_regresso(consumo1, consumo2, False)
         precio_diff = saca_aumento_regresso(precio1, precio2, False)
         valor_diff = saca_aumento_regresso(valor1, valor2, False)
+        kg_por_metrocuadrado_diff = saca_aumento_regresso(kg_por_metrocuadrado1, kg_por_metrocuadrado2, False, "percent")
 
         ######################################################
         #Totales - Incrementa los totales
         area1_total = (area1_total + area1) if (area1 is not None) else area1_total
         area2_total = (area2_total + area2) if (area2 is not None) else area2_total
-        totales1kg_total = totales1kg_total + totales1_kg
-        totales2kg_total = totales2kg_total + totales2_kg
-        consumo1kg_total = consumo1kg_total + consumo1_kg
-        consumo2kg_total = consumo2kg_total + consumo2_kg
-        valor1_total = valor1_total + valor1
-        valor2_total = valor2_total + valor2
+        totales1kg_total += totales1_kg
+        totales2kg_total += totales2_kg
+        consumo1kg_total += consumo1_kg
+        consumo2kg_total += consumo2_kg
+        valor1_total += valor1
+        valor2_total += valor2
+
+
+        ######################################################
+        #TABLA Los productos con la más alta tasa de rendimiento (mas que 5000kg por ano)
+        ######################################################
+        if (totales1_kg > 5000):
+            productos_con_mas_rendimiento1[key] = totales1_kg
+        if (totales2_kg > 5000):
+            productos_con_mas_rendimiento2[key] = totales2_kg
+
 
         #para el template
         if totales1 > 0 or totales2 > 0:
@@ -403,6 +429,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
                 'conversion_kg': i.conversion_kg,
                 'totales1':totales1,
                 'totales1_kg':totales1_kg,
+                'kg_por_metrocuadrado1': kg_por_metrocuadrado1,
                 'consumo1':consumo1,
                 'consumo1_kg':consumo1_kg,
                 'precio1':precio1,
@@ -410,12 +437,14 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
                 'area2':area2,
                 'totales2':totales2,
                 'totales2_kg':totales2_kg,
+                'kg_por_metrocuadrado2': kg_por_metrocuadrado2,
                 'totales_diff': totales_diff,
                 'consumo2':consumo2,
                 'consumo2_kg':consumo2_kg,
                 'consumo_diff': consumo_diff,
                 'precio_diff': precio_diff,
                 'valor_diff': valor_diff,
+                'kg_por_metrocuadrado_diff': kg_por_metrocuadrado_diff,
                 'precio2':precio2,
                 'valor2':valor2,
                 'area_diff':area_diff,
@@ -425,12 +454,26 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     totaleskg_total_diff = saca_aumento_regresso(totales1kg_total, totales2kg_total, False)
     consumokg_total_diff = saca_aumento_regresso(consumo1kg_total, consumo2kg_total, False)
     valor_total_diff = saca_aumento_regresso(valor1_total, valor2_total, False)
+    kg_por_metrocuadrado_total1 = (totales1kg_total / (area1_total * una_manzana_nica_en_metros_cuadrados)) if area1_total is not None else 0
+    kg_por_metrocuadrado_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_metros_cuadrados)) if area2_total is not None else 0
+    kg_por_metrocuadrado_total_diff = saca_aumento_regresso(kg_por_metrocuadrado_total1, kg_por_metrocuadrado_total2, False, "percent")
+
+    ######################################################
+    #TABLA PROMEDIOS - CULTIVOS
+    ######################################################
+    promedio_producion_por_familia_kg1 = totales1kg_total / primera_encuesta.count()
+    if numero_encuesta == "3":
+        promedio_producion_por_familia_kg2 = totales2kg_total / segunda_encuesta.count() if segunda_encuesta.count() > 0 else 0
+        promedio_producion_por_familia_diff_percent = saca_aumento_regresso(promedio_producion_por_familia_kg1, promedio_producion_por_familia_kg2, True, "percent")
+        promedio_producion_por_familia_diff_kg = saca_aumento_regresso(promedio_producion_por_familia_kg1, promedio_producion_por_familia_kg2, True, "absolute")
+
+
 
 
     ######################################################
     #TABLA ANIMALES
     ######################################################
-    data['tablas']['tabla_animales'] = {}
+    data['tablas']['tabla_animales'] = collections.OrderedDict()
 
     for animal in Animales.objects.all():
         numero1 = 0.00
@@ -438,8 +481,6 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         key = slugify(animal.nombre).replace('-', '_')
         query1 = primera_encuesta.filter(animalesfinca__animales = animal)
         numero1 = query1.count()
-
-
 
         porcentaje_num1 = saca_porcentajes(numero1, data['strings']['numero_total_jovenes1'], False)
         if numero_encuesta == "3":
@@ -669,7 +710,110 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['alimentos'] = collections.OrderedDict()
+
+    all_verano1 = []
+    all_verano2 = []
+    all_verano_diff = []
+    all_invierno1 = []
+    all_invierno2 = []
+    all_invierno_diff = []
+    all_no_mes_acceso1 = []
+    all_no_mes_acceso2 = []
+    all_no_mes_acceso_diff = []
+
+    for alimento in Alimentos.objects.all():
+        #en esa variable vamos a poner 0.5 para cada 6 meses con disponibilidad. Despues, vamos a hace un promedio para saber cuantos meses.
+        no_mes_acceso1 = 0.0
+        no_mes_acceso2 = 0.0
+
+        key = slugify(alimento.nombre).replace('-','_')
+        query = primera_encuesta.filter(seguridad__alimento = alimento)
+        producen1 = query.filter(seguridad__alimento=alimento,seguridad__producen=1).aggregate(producen=Count('seguridad__producen'))['producen']
+        por_producen1 = saca_porcentajes(producen1, primera_encuesta.count())
+        compran1 = query.filter(seguridad__alimento=alimento,seguridad__compran=1).aggregate(compran=Count('seguridad__compran'))['compran']
+        por_compran1 = saca_porcentajes(compran1, primera_encuesta.count())
+        verano1 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1).aggregate(consumen=Count('seguridad__consumen'))['consumen']
+        por_verano1 = saca_porcentajes(verano1, primera_encuesta.count())
+        invierno1 = query.filter(seguridad__alimento=alimento,seguridad__consumen_invierno=1).aggregate(invierno=Count('seguridad__consumen_invierno'))['invierno']
+        por_invierno1 = saca_porcentajes(invierno1, primera_encuesta.count())
+
+        no_mes_acceso1 = verano1 * 0.5
+        no_mes_acceso1 += invierno1 * 0.5
+        no_mes_acceso1 = no_mes_acceso1 /  primera_encuesta.count()
+        no_mes_acceso1 = no_mes_acceso1 * 12
+        if no_mes_acceso1 > 0: #si hay 0 aqui, es que nadie utilisa, cultiva o compra el producto.. no lo queremos en le promedio
+            all_no_mes_acceso1.append(no_mes_acceso1)
+            all_verano1.append(verano1)
+            all_invierno1.append(invierno1)
+
+
+
+        data['tablas']['alimentos'][key] = {'producen1':producen1, 'por_producen1':por_producen1,
+                      'compran1':compran1,'por_compran1':por_compran1,'invierno1':invierno1,
+                      'por_invierno1':int(por_invierno1),
+                      'verano1':int(verano1),
+                      'por_verano1':int(por_verano1), 'no_mes_acceso1': no_mes_acceso1}
+
+        if numero_encuesta == "3":
+            query = segunda_encuesta.filter(seguridad__alimento = alimento)
+            producen2 = query.filter(seguridad__alimento=alimento,seguridad__producen=1).aggregate(producen=Count('seguridad__producen'))['producen']
+            por_producen2 = saca_porcentajes(producen2, primera_encuesta.count())
+            compran2 = query.filter(seguridad__alimento=alimento,seguridad__compran=1).aggregate(compran=Count('seguridad__compran'))['compran']
+            por_compran2 = saca_porcentajes(compran2, primera_encuesta.count())
+            verano2 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1).aggregate(consumen=Count('seguridad__consumen'))['consumen']
+            por_verano2 = saca_porcentajes(verano2, primera_encuesta.count())
+            invierno2 = query.filter(seguridad__alimento=alimento,seguridad__consumen_invierno=1).aggregate(invierno=Count('seguridad__consumen_invierno'))['invierno']
+            por_invierno2 = saca_porcentajes(invierno2, primera_encuesta.count())
+            por_producen_diff = saca_aumento_regresso(por_producen1, por_producen2, False, "absolute")
+            por_compran_diff = saca_aumento_regresso(por_compran1, por_compran2, False, "absolute")
+            por_verano_diff = saca_aumento_regresso(por_verano1, por_verano2, False, "absolute")
+            por_invierno_diff = saca_aumento_regresso(por_invierno1, por_invierno2, False, "absolute")
+            no_mes_acceso2 = verano2 * 0.5
+            no_mes_acceso2 += invierno2 * 0.5
+            no_mes_acceso2 = no_mes_acceso2 /  segunda_encuesta.count()
+            no_mes_acceso2 = no_mes_acceso2 * 12
+            no_mes_acceso_diff = saca_aumento_regresso(no_mes_acceso1, no_mes_acceso2, False, "absolute")
+
+
+            if no_mes_acceso2 > 0: #si hay 0 aqui, es que nadie utilisa, cultiva o compra el producto.. no lo queremos en le promedio
+                all_verano2.append(verano2)
+                all_invierno2.append(invierno2)
+                all_no_mes_acceso2.append(no_mes_acceso2)
+                all_no_mes_acceso_diff.append(no_mes_acceso_diff)
+                all_verano_diff.append(por_verano_diff)
+                all_invierno_diff.append(por_invierno_diff)
+
+            data['tablas']['alimentos'][key].update({'producen2':producen2, 'por_producen2':por_producen2,
+                          'compran2':compran2,'por_compran2':por_compran2,'invierno2':invierno2,
+                          'por_invierno2':int(por_invierno2),
+                          'verano2':int(verano2),
+                          'por_verano2':int(por_verano2), 'por_producen_diff':por_producen_diff,
+                          'por_compran_diff':por_compran_diff, 'por_verano_diff':por_verano_diff,
+                          'por_invierno_diff':por_invierno_diff, 'no_mes_acceso2':no_mes_acceso2,
+                          'no_mes_acceso_diff':no_mes_acceso_diff})
+
+        promedio_all_invierno1 = reduce(lambda x, y: x + y, all_invierno1) / float(len(all_invierno1))
+        promedio_all_invierno2 = reduce(lambda x, y: x + y, all_invierno2) / float(len(all_invierno2))
+        promedio_all_verano1 = reduce(lambda x, y: x + y, all_verano1) / float(len(all_verano1))
+        promedio_all_verano2 = reduce(lambda x, y: x + y, all_verano2) / float(len(all_verano2))
+        promedio_all_por_verano1 = saca_porcentajes(promedio_all_verano1, primera_encuesta.count())
+        promedio_all_por_verano2 = saca_porcentajes(promedio_all_verano2, segunda_encuesta.count())
+        promedio_all_por_invierno1 = saca_porcentajes(promedio_all_invierno1, primera_encuesta.count())
+        promedio_all_por_invierno2 = saca_porcentajes(promedio_all_invierno2, segunda_encuesta.count())
+
+        promedio_all_verano_diff = reduce(lambda x, y: x + y, all_verano_diff) / float(len(all_verano_diff))
+        promedio_all_invierno_diff = reduce(lambda x, y: x + y, all_invierno_diff) / float(len(all_invierno_diff))
+        promedio_all_no_mes_acceso1 = reduce(lambda x, y: x + y, all_no_mes_acceso1) / float(len(all_no_mes_acceso1))
+        promedio_all_no_mes_acceso2 = reduce(lambda x, y: x + y, all_no_mes_acceso2) / float(len(all_no_mes_acceso2))
+        promedio_all_no_mes_acceso_diff = reduce(lambda x, y: x + y, all_no_mes_acceso_diff) / float(len(all_no_mes_acceso_diff))
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
+
+
 ######################################################################################################
 # INDICADOR : % de familias participantes del proyecto que tienen acceso a una gama de diversos alimentos durante tod el año
 def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):

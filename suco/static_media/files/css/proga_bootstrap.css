@@ -8,7 +8,7 @@
 body {}
 h1, h2, h3, h4 {font-family: "Yanone Kaffeesatz",sans-serif;}
 h3 {margin-top:0;}
-
+tfoot td {font-weight: bold}
 .header_row {background:#131313; color:#dce2b6; font-family: "Yanone Kaffeesatz",sans-serif; padding:6px 0 6px 30px;}
     .site_title {color:#5e5e5c; font-size:40px;}
     .site_slogan {padding-top:12px; font-size:22px;}

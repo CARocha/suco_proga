@@ -19,7 +19,7 @@
 
         <div id="finca" style="width:100%; overflow-x: scroll">
             <div class="table-responsive" >
-                <table class="table table-striped table-bordered table-condensed datatable">
+                <table class="table table-striped table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th>CULTIVOS</th>
@@ -44,6 +44,11 @@
                                 <th class="last_datagroup_col">Total producción por año <br/><small>Diferencia</small></th>
                             {% endif %}
 
+                            <th>KG por m<sup>2</sup>{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                            {% if numero_encuesta == "3" %}
+                                <th>KG por m<sup>2</sup><br/><small>Encuesta 2</small></th>
+                                <th class="last_datagroup_col">KG por m<sup>2</sup><br/><small>Diferencia</small></th>
+                            {% endif %}
 
                             <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>En su unidad</small></th>
                             {% if numero_encuesta == "3" %}
@@ -102,6 +107,11 @@
                                 <td class="last_datagroup_col format_diff">{{value.totales_diff|percent}}</td>
                             {% endif %}
 
+                            <td>{{value.kg_por_metrocuadrado1|floatformat:2}}</td>
+                            {% if numero_encuesta == "3" %}
+                                <td>{{value.kg_por_metrocuadrado2|floatformat:2}}</td>
+                                <td class="last_datagroup_col format_diff">{{value.kg_por_metrocuadrado_diff|percent}}</td>
+                            {% endif %}
 
 
                             <td>{{value.consumo1|floatformat:2}}</td>
@@ -157,6 +167,12 @@
                                 <td class="format_diff">{{ totaleskg_total_diff|percent }}</td>
                             {% endif %}
 
+                            <td>{{ kg_por_metrocuadrado_total1|floatformat:2 }}</td>
+                            {% if numero_encuesta == "3" %}
+                                <td>{{ kg_por_metrocuadrado_total2|floatformat:2 }}</td>
+                                <td class="format_diff">{{ kg_por_metrocuadrado_total_diff|percent }}</td>
+                            {% endif %}
+
                             <td></td>
                             {% if numero_encuesta == "3" %}
                                 <td></td>
@@ -183,6 +199,68 @@
                     </tfoot>
                 </table>
             </div>
+        </div>
+        <br/><br/><br/><br/>
+
+        <div id="promedios_cultivos">
+            <h3>Producción por familia <a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('promedios_cultivos'); return false;">Exportar en Excel</a></h3>
+            <br/>
+            <table  class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producción por familia (Kg){% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                        {% if numero_encuesta == "3" %}
+                            <th>Producción por familia (Kg)<br><small>Encuesta 2</small></th>
+                            <th>Diferencia (%)</th>
+                            <th>Diferencia (kg)</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ promedio_producion_por_familia_kg1|floatformat }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ promedio_producion_por_familia_kg2|floatformat }}</td>
+                            <td class="format_diff">{{ promedio_producion_por_familia_diff_percent|percent }}</td>
+                            <td class="format_diff">{{ promedio_producion_por_familia_diff_kg|floatformat }}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <br/><br/><br/><br/>
+
+        <div id="productos_con_mas_rendimiento">
+            <h3>Los cultivos con la más alta tasa de rendimiento (mas que 5000kg por ano)<a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('productos_con_mas_rendimiento'); return false;">Exportar en Excel</a></h3>
+            <br/>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Productos con la más alta tasa de rendimiento{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                        {% if numero_encuesta == "3" %}
+                            <th>Productos con la más alta tasa de rendimiento<br><small>Encuesta 2</small></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {%for key, value in productos_con_mas_rendimiento1.items%}
+                                {{ key|unslugify }} ({{ value|floatformat }} kg)<br/>
+                            {% endfor %}
+                        </td>
+                        {% if numero_encuesta == "3" %}
+                            <td>
+                                {%for key, value in productos_con_mas_rendimiento2.items%}
+                                    {{ key|unslugify }} ({{ value|floatformat }} kg)<br/>
+                                {% endfor %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
 
