@@ -9,8 +9,42 @@
 {%endblock%}
 {% block content %}
     {% include "nuevos_informes/common/parametros.html" %}
-
+    {% if sexo != "1" %}
+        <div class="alert alert-danger">
+            <p>Para obtener resultados relevantes a este indicador, por favor elija "Solo mujeres" en los parámetros.</p>
+        </div>
+    {% endif %}
     <h2>Datos</h2>
-    <p>Este informe no está programado todavía.</p>
+    <h3>Organizaciones comunitarias <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('actividades_comunitarias'); return false;">Exportar en Excel</a></h3>
+    <br/>
+    <div id="actividades_comunitarias">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>¿Pertenece a algunas organizaciones comunitarias?{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>¿Pertenece a algunas organizaciones comunitarias?<br><small>Encuesta 2</small></th>
+                        <th>%<br><small>Encuesta 2</small></th>
+                        <th>Diferencia #</th>
+                        <th>Diferencia %</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ pertence1 }}</td>
+                    <td>{{ por_pertence1|floatformat:2 }}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{ pertence2 }}</td>
+                        <td>{{ por_pertence2|floatformat:2 }}</td>
+                        <td class="format_diff">{{ pertence_diff|floatformat:0 }}</td>
+                        <td class="format_diff">{{ por_pertence_diff|floatformat:2 }}</td>
+                    {% endif %}
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

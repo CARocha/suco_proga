@@ -13,4 +13,42 @@
     <h2>Datos</h2>
     <p>Este informe no está programado todavía.</p>
 
+    {% for tipokey,tipo in data.tablas.ingresos_agro.items %}
+        <h3>{{ tipokey|unslugify }}</h3>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="font-size:9px;">RUBROS</th>
+                    <th style="font-size:9px;">Número de familias que venden</th>
+                    <th style="font-size:9px;">Unidad</th>
+                    <th style="font-size:9px;">Cantidad vendida por familia</th>
+                    <th style="font-size:9px;">Precio promedio</th>
+                    <th style="font-size:9px;">Ingreso por venta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in tipo.items%}
+                <tr>
+                    <td>{{key|unslugify}}</td>
+                    <td>{{value.numero|floatformat}}</td>
+                    <td>{{value.key2|unslugify}}</td>
+                    <td>{{value.cantidad|floatformat}}</td>
+                    <td>{{value.precio|floatformat}}</td>
+                    <td>{{value.ingreso|floatformat}}</td>
+
+                    {%endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>TOTAL VENTA RUBROS</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>{{total_musaceas}}</th>
+                </tr>
+            </tfoot>
+        </table>
+    {% endfor %}
+
 {% endblock %}

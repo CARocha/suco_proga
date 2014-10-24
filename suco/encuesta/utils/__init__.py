@@ -46,6 +46,7 @@ def saca_aumento_regresso (primer_dato, segundo_dato, formato = True, tipo = "pe
     if tipo == "percent":
         try:
             valor = (float(segundo_dato) - float(primer_dato))/float(primer_dato)
+
         except:
             return 0
         if formato:
@@ -56,8 +57,8 @@ def saca_aumento_regresso (primer_dato, segundo_dato, formato = True, tipo = "pe
         try:
             valor = float(segundo_dato) - float(primer_dato)
         except:
-            return n/d
+            return "n/d"
         if formato:
-            return '%.1f' % valor #eso es a 6 para que los calculos en la tabla utilisen mas decimales
+            return '%.1f' % valor
         else:
             return valor

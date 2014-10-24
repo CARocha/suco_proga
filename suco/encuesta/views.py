@@ -8,6 +8,7 @@ from django.utils import simplejson
 from django.db.models import Sum, Count, Avg
 from django.core.exceptions import ViewDoesNotExist
 from django.db.models import Q
+from django.conf import settings
 from decorators import session_required
 from datetime import date
 from forms import *
@@ -30,6 +31,10 @@ from utils import *
 import random
 import collections
 
+#para el cache
+import os.path
+import hashlib
+import pickle
 
 '''
 
@@ -50,6 +55,7 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 
 ######################################################################################################
 #DISPATCHER -> manda la request a la buena methodo
+#CACHING : hace tambien un caching del html
 def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False, sexo = "3"):
 
     if request.method == 'POST':
@@ -104,10 +110,33 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
 
     if indicador == "___":
         return HttpResponseRedirect('/')
-    #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
-    # especificados en forms.py/CHOICE_INFORME_INDICADOR.
-    # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
-    return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+
+    #CACHING --- Si exista en la cache, la utilisa. Sinon, llama la funcion.
+    USE_CACHE = getattr(settings, "USE_CACHE", None)
+    if USE_CACHE == True:
+        CACHE_PATH = getattr(settings, "CACHE_PATH", None)
+        m = hashlib.md5()
+        m.update(indicador+grupos+centroregional+numero_encuesta+solo_jovenes_con_dos+activo+sexo)
+        cache_file_fullpath = CACHE_PATH+m.hexdigest()+'.cache'
+        status = "None"
+        if os.path.isfile(cache_file_fullpath):
+            file_object = open(cache_file_fullpath, "r+")
+            return pickle.loads(file_object.read())
+        else:
+            #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
+            # especificados en forms.py/CHOICE_INFORME_INDICADOR.
+            # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
+            html = globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+            #write cache
+            file = open(cache_file_fullpath, "w")
+            serialized_data = pickle.dumps(html)
+            file.write(serialized_data)
+            file.close()
+            return html
+    #no cache
+    else:
+        return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+
 
 
 ######################################################################################################
@@ -358,7 +387,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         area1 = query.aggregate(area=Sum('cultivos__area'))['area']
         totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
         totales1_kg = (totales1 * i.conversion_kg) if totales1 is not None else 0
-        kg_por_metrocuadrado1 = (totales1_kg / (area1 * una_manzana_nica_en_metros_cuadrados)) if area1 is not None else 0
+        kg_por_metrocuadrado1 = (totales1_kg / (area1 * una_manzana_nica_en_metros_cuadrados)) if area1 is not None and area1 > 0 else 0
         consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
         consumo1_kg = (consumo1 * i.conversion_kg) if consumo1 is not None  else 0
         precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
@@ -713,6 +742,8 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
+
+
     data['tablas']['alimentos'] = collections.OrderedDict()
 
     all_verano1 = []
@@ -733,13 +764,14 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
         key = slugify(alimento.nombre).replace('-','_')
         query = primera_encuesta.filter(seguridad__alimento = alimento)
         producen1 = query.filter(seguridad__alimento=alimento,seguridad__producen=1).aggregate(producen=Count('seguridad__producen'))['producen']
-        por_producen1 = saca_porcentajes(producen1, primera_encuesta.count())
         compran1 = query.filter(seguridad__alimento=alimento,seguridad__compran=1).aggregate(compran=Count('seguridad__compran'))['compran']
-        por_compran1 = saca_porcentajes(compran1, primera_encuesta.count())
         verano1 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1).aggregate(consumen=Count('seguridad__consumen'))['consumen']
-        por_verano1 = saca_porcentajes(verano1, primera_encuesta.count())
         invierno1 = query.filter(seguridad__alimento=alimento,seguridad__consumen_invierno=1).aggregate(invierno=Count('seguridad__consumen_invierno'))['invierno']
-        por_invierno1 = saca_porcentajes(invierno1, primera_encuesta.count())
+
+        por_producen1 = saca_porcentajes(producen1, data['strings']['numero_total_encuestas1'])
+        por_compran1 = saca_porcentajes(compran1, data['strings']['numero_total_encuestas1'])
+        por_verano1 = saca_porcentajes(verano1, data['strings']['numero_total_encuestas1'])
+        por_invierno1 = saca_porcentajes(invierno1, data['strings']['numero_total_encuestas1'])
 
         no_mes_acceso1 = verano1 * 0.5
         no_mes_acceso1 += invierno1 * 0.5
@@ -750,8 +782,6 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
             all_verano1.append(verano1)
             all_invierno1.append(invierno1)
 
-
-
         data['tablas']['alimentos'][key] = {'producen1':producen1, 'por_producen1':por_producen1,
                       'compran1':compran1,'por_compran1':por_compran1,'invierno1':invierno1,
                       'por_invierno1':int(por_invierno1),
@@ -760,14 +790,17 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
 
         if numero_encuesta == "3":
             query = segunda_encuesta.filter(seguridad__alimento = alimento)
+
             producen2 = query.filter(seguridad__alimento=alimento,seguridad__producen=1).aggregate(producen=Count('seguridad__producen'))['producen']
-            por_producen2 = saca_porcentajes(producen2, primera_encuesta.count())
             compran2 = query.filter(seguridad__alimento=alimento,seguridad__compran=1).aggregate(compran=Count('seguridad__compran'))['compran']
-            por_compran2 = saca_porcentajes(compran2, primera_encuesta.count())
             verano2 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1).aggregate(consumen=Count('seguridad__consumen'))['consumen']
-            por_verano2 = saca_porcentajes(verano2, primera_encuesta.count())
             invierno2 = query.filter(seguridad__alimento=alimento,seguridad__consumen_invierno=1).aggregate(invierno=Count('seguridad__consumen_invierno'))['invierno']
-            por_invierno2 = saca_porcentajes(invierno2, primera_encuesta.count())
+
+            por_producen2 = saca_porcentajes(producen2, data['strings']['numero_total_encuestas2'])
+            por_compran2 = saca_porcentajes(compran2, data['strings']['numero_total_encuestas2'])
+            por_verano2 = saca_porcentajes(verano2, data['strings']['numero_total_encuestas2'])
+            por_invierno2 = saca_porcentajes(invierno2, data['strings']['numero_total_encuestas2'])
+
             por_producen_diff = saca_aumento_regresso(por_producen1, por_producen2, False, "absolute")
             por_compran_diff = saca_aumento_regresso(por_compran1, por_compran2, False, "absolute")
             por_verano_diff = saca_aumento_regresso(por_verano1, por_verano2, False, "absolute")
@@ -796,19 +829,19 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
                           'por_invierno_diff':por_invierno_diff, 'no_mes_acceso2':no_mes_acceso2,
                           'no_mes_acceso_diff':no_mes_acceso_diff})
 
-        promedio_all_invierno1 = reduce(lambda x, y: x + y, all_invierno1) / float(len(all_invierno1))
-        promedio_all_invierno2 = reduce(lambda x, y: x + y, all_invierno2) / float(len(all_invierno2))
-        promedio_all_verano1 = reduce(lambda x, y: x + y, all_verano1) / float(len(all_verano1))
-        promedio_all_verano2 = reduce(lambda x, y: x + y, all_verano2) / float(len(all_verano2))
+        promedio_all_invierno1 = reduce(lambda x, y: x + y, all_invierno1) / float(len(all_invierno1))  #promedio de la lista
+        promedio_all_invierno2 = reduce(lambda x, y: x + y, all_invierno2) / float(len(all_invierno2))  #promedio de la lista
+        promedio_all_verano1 = reduce(lambda x, y: x + y, all_verano1) / float(len(all_verano1))        #promedio de la lista
+        promedio_all_verano2 = reduce(lambda x, y: x + y, all_verano2) / float(len(all_verano2))        #promedio de la lista
         promedio_all_por_verano1 = saca_porcentajes(promedio_all_verano1, primera_encuesta.count())
         promedio_all_por_verano2 = saca_porcentajes(promedio_all_verano2, segunda_encuesta.count())
         promedio_all_por_invierno1 = saca_porcentajes(promedio_all_invierno1, primera_encuesta.count())
         promedio_all_por_invierno2 = saca_porcentajes(promedio_all_invierno2, segunda_encuesta.count())
 
-        promedio_all_verano_diff = reduce(lambda x, y: x + y, all_verano_diff) / float(len(all_verano_diff))
-        promedio_all_invierno_diff = reduce(lambda x, y: x + y, all_invierno_diff) / float(len(all_invierno_diff))
-        promedio_all_no_mes_acceso1 = reduce(lambda x, y: x + y, all_no_mes_acceso1) / float(len(all_no_mes_acceso1))
-        promedio_all_no_mes_acceso2 = reduce(lambda x, y: x + y, all_no_mes_acceso2) / float(len(all_no_mes_acceso2))
+        promedio_all_verano_diff = reduce(lambda x, y: x + y, all_verano_diff) / float(len(all_verano_diff))            #promedio de la lista
+        promedio_all_invierno_diff = reduce(lambda x, y: x + y, all_invierno_diff) / float(len(all_invierno_diff))      #promedio de la lista
+        promedio_all_no_mes_acceso1 = reduce(lambda x, y: x + y, all_no_mes_acceso1) / float(len(all_no_mes_acceso1))   #promedio de la lista
+        promedio_all_no_mes_acceso2 = reduce(lambda x, y: x + y, all_no_mes_acceso2) / float(len(all_no_mes_acceso2))   #promedio de la lista
         promedio_all_no_mes_acceso_diff = reduce(lambda x, y: x + y, all_no_mes_acceso_diff) / float(len(all_no_mes_acceso_diff))
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
@@ -817,17 +850,73 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
 ######################################################################################################
 # INDICADOR : % de familias participantes del proyecto que tienen acceso a una gama de diversos alimentos durante tod el año
 def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['alimentos_todoelano'] = collections.OrderedDict()
+
+    for alimento in Alimentos.objects.all():
+        key = slugify(alimento.nombre).replace('-','_')
+        query = primera_encuesta.filter(seguridad__alimento = alimento)
+        todoelano1 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1, seguridad__consumen_invierno=1).count()
+        por_todoelano1 = saca_porcentajes(todoelano1, primera_encuesta.count())
+        data['tablas']['alimentos_todoelano'][key] = {'todoelano1':todoelano1, 'por_todoelano1':por_todoelano1}
+
+        if numero_encuesta == "3":
+            query = segunda_encuesta.filter(seguridad__alimento = alimento)
+            todoelano2 = query.filter(seguridad__alimento=alimento,seguridad__consumen=1, seguridad__consumen_invierno=1).count()
+            por_todoelano2 = saca_porcentajes(todoelano2, segunda_encuesta.count())
+            por_todoelano_diff = saca_aumento_regresso(por_todoelano1, por_todoelano2, False, "absolute")
+            data['tablas']['alimentos_todoelano'][key].update({'todoelano2':todoelano2, 'por_todoelano2':por_todoelano2, 'por_todoelano_diff':por_todoelano_diff})
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de aumento de los ingresos provenientes de las actividades de transformación y comercialización
 def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['procesamiento_comercializacion'] = collections.OrderedDict()
+
+    for pro in Procesado.objects.all():
+        key = slugify(pro.nombre).replace('-','_')
+        query = primera_encuesta.filter(procesamiento__producto = pro)
+        frecuencia1 = query.count()
+        por_frecuencia1 = saca_porcentajes(frecuencia1, primera_encuesta.count())
+        cantidad1 = query.aggregate(cantidad=Sum('procesamiento__cantidad'))['cantidad']
+        comer1 = query.aggregate(comer=Sum('procesamiento__comercializada'))['comer']
+        data['tablas']['procesamiento_comercializacion'][key] = {
+            'frecuencia1':frecuencia1,
+            'por_frecuencia1':por_frecuencia1,
+            'cantidad1':cantidad1,
+            'comer1':comer1
+        }
+        if numero_encuesta == "3":
+            query = segunda_encuesta.filter(procesamiento__producto = pro)
+            frecuencia2 = query.count()
+            por_frecuencia2 = saca_porcentajes(frecuencia2, segunda_encuesta.count())
+            cantidad2 = query.aggregate(cantidad=Sum('procesamiento__cantidad'))['cantidad']
+            comer2 = query.aggregate(comer=Sum('procesamiento__comercializada'))['comer']
+            data['tablas']['procesamiento_comercializacion'][key].update({
+                'frecuencia2':frecuencia2,
+                'frecuendia_diff': saca_aumento_regresso(frecuencia1, frecuencia2, False, "absolute"),
+                'por_frecuencia2':por_frecuencia2,
+                'por_frecuencia_diff': saca_aumento_regresso(por_frecuencia1, por_frecuencia2, False, "absolute"),
+                'cantidad2':cantidad2,
+                'cantidad_diff': saca_aumento_regresso(cantidad1, cantidad2, False, "percent"),
+                'comer2':comer2,
+                'comer_diff': saca_aumento_regresso(comer1, comer2, False, "percent"),
+            })
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -844,6 +933,32 @@ def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['participacion_beneficio'] = collections.OrderedDict()
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        data['tablas']['participacion_beneficio'][key] = collections.OrderedDict()
+        for decide in Decision.objects.all():
+            cuanto1 = primera_encuesta.filter(participasion__rubro=especie, participasion__beneficios=decide).count()
+            data['tablas']['participacion_beneficio'][key][decide.nombre+"1"] = cuanto1
+            if numero_encuesta == "3":
+                cuanto2 = segunda_encuesta.filter(participasion__rubro=especie, participasion__beneficios=decide).count()
+                data['tablas']['participacion_beneficio'][key][decide.nombre+"2"] = cuanto2
+
+    data['tablas']['participacion_decisiones'] = collections.OrderedDict()
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        data['tablas']['participacion_decisiones'][key] = collections.OrderedDict()
+        for decide in Decision.objects.all():
+            cuanto1 = primera_encuesta.filter(participasion__rubro=especie, participasion__labores=decide).count()
+            data['tablas']['participacion_decisiones'][key][decide.nombre+"1"] = cuanto1
+            if numero_encuesta == "3":
+                cuanto2 = segunda_encuesta.filter(participasion__rubro=especie, participasion__labores=decide).count()
+                data['tablas']['participacion_decisiones'][key][decide.nombre+"2"] = cuanto2
+
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -852,6 +967,21 @@ def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroreg
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+    data['tablas']['procesamiento_comercializacion'] = collections.OrderedDict()
+
+    data['tablas']['participacion_labores'] = collections.OrderedDict()
+    for especie in Rubros.objects.all():
+        key = slugify(especie.nombre).replace('-','_')
+        data['tablas']['participacion_labores'][key] = collections.OrderedDict()
+        for decide in Decision.objects.all():
+            cuanto1 = primera_encuesta.filter(participasion__rubro=especie, participasion__labores=decide).count()
+            data['tablas']['participacion_labores'][key][decide.nombre+"1"] = cuanto1
+            if numero_encuesta == "3":
+                cuanto2 = segunda_encuesta.filter(participasion__rubro=especie, participasion__labores=decide).count()
+                data['tablas']['participacion_labores'][key][decide.nombre+"2"] = cuanto2
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -859,13 +989,31 @@ def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroreg
 def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
     #Busca las encuestas para este informe.
+
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['actividades_cumunitarias'] = collections.OrderedDict()
+
+    pertence1 = primera_encuesta.filter(organizacioncomunitaria__pertence=1).count()
+    por_pertence1 = saca_porcentajes(pertence1, primera_encuesta.count())
+    if numero_encuesta == "3":
+        pertence2 = segunda_encuesta.filter(organizacioncomunitaria__pertence=1).count()
+        por_pertence2 = saca_porcentajes(pertence2, segunda_encuesta.count())
+        pertence_diff = saca_aumento_regresso(pertence1, pertence2, False, "absolute")
+        por_pertence_diff = saca_aumento_regresso(por_pertence1, por_pertence2, False, "absolute")
+
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : % de jóvenes hombres que participan en actividades habitualmente reservadas a las mujeres
 def hombres_actividades_habitualmente_mujer (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
     ######################################################
+
+    #No hay datos para este indicador.  Ver con Nathalie
+
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
@@ -884,6 +1032,52 @@ def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['ingresos_agro'] = collections.OrderedDict()
+
+    tipos = {
+        'agro':1,
+        'forestal':2,
+        'grano_basico':3,
+        'patio':5,
+        'frutas':6,
+        'musaceas':7,
+        'raices':8,
+    }
+
+    #para cada tipos de tipos de cultivos (ariba),
+    for tipokey,tipo in tipos.iteritems():
+        data['tablas']['ingresos_agro'][tipokey] = collections.OrderedDict()
+        #buscamos los cultivos
+        for cultivo in TipoCultivos.objects.filter(tipo=tipo):
+            key2 = slugify(cultivo.unidad).replace('-','_')
+            query = primera_encuesta.filter(cultivos__cultivo = cultivo)
+            numero = query.count() #numero de familias que venden
+            total = query.aggregate(total=Sum('cultivos__total'))['total']
+            consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+            try:
+                cantidad = total - consumo
+            except:
+                pass
+            precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+            try:
+                ingreso = precio * cantidad
+            except:
+                ingreso = 0
+            if ingreso > 0:
+                data['tablas']['ingresos_agro'][tipokey][cultivo.nombre] = {'key2':key2,'numero':numero,'cantidad':cantidad,
+                              'ingreso':ingreso,'precio':precio}
+
+
+
+
+
+
+
+
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -2289,7 +2483,7 @@ def calculo_cultivo(request,tipo):
         #key = slugify(cultivo.nombre).replace('-','_')
         key2 = slugify(cultivo.unidad).replace('-','_')
         consulta = a.filter(cultivos__cultivo = cultivo)
-        numero = consulta.count()
+        numero = consulta.count() #numero de familias que venden
         total = consulta.aggregate(total=Sum('cultivos__total'))['total']
         consumo = consulta.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
         try:
@@ -2909,11 +3103,9 @@ VALID_VIEWS = {
         'procesamiento': procesamiento,
         'general': generales,
         'nuevos_informes': nuevos_informes,
-
   }
 
 # Vistas para obtener los municipios, comunidades, etc..
-
 def get_municipios(request, departamento):
     municipios = Municipio.objects.filter(departamento = departamento)
     lista = [(municipio.id, municipio.nombre) for municipio in municipios]
@@ -2931,7 +3123,6 @@ def get_comunidad(request, municipio):
     return HttpResponse(simplejson.dumps(lista), mimetype='application/javascript')
 
 # Funciones utilitarias para cualquier proposito
-
 def saca_porcentajes(values):
     """sumamos los valores y devolvemos una lista con su porcentaje"""
     total = sum(values)

@@ -32,6 +32,10 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'static_media/files/'),
 )
 
+#Systema de caching. Desarollado en octubre / noviembre 2014
+USE_CACHE = False
+CACHE_PATH = PROJECT_DIR+'/static_media/cache/'
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (

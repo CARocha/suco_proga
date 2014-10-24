@@ -54,6 +54,7 @@ CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplica
 CHOICE_SEXO = ( (1,'Hombre'),
                 (2,'Mujer')
               )
+
 CHOICE_ENCUESTA_NUMERO = (
     (1,'Primera encuesta'),
     (2,'Segunda encuesta'),

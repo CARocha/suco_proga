@@ -37,7 +37,7 @@ CHOICE_INFORME_INDICADOR = (
     ('mujeres_actividades_cumunitarias', '% de jóvenes mujeres que participan en actividades comunitarias '),
     ('hombres_actividades_habitualmente_mujer', '% de jóvenes hombres que participan en actividades habitualmente reservadas a las mujeres'),
     ('___','---------RESULTADO ULTIMO------------'),
-    ('ultime_familias_superandoi_minimo', 'Nº de familias superando el mínimo de subsistencia en términos de producción agrícola'),
+    ('ultime_familias_superando_minimo', 'Nº de familias superando el mínimo de subsistencia en términos de producción agrícola'),
     ('ultime_aumento_ingresos', '% de aumento de los ingresos proviniendo de la producción agrícola'),
     ('ultime_nivel_satisfaccion_condiciones', 'Nivel de satisfacción de las condiciones de vida asociadas a la producción agrícola y alimentaria '),
     ('ultime_percepcion_condiciones_medioambiente', 'Percepción de las condiciones del medioambiente (riqueza de los suelos, disponibilidad de agua) '),
