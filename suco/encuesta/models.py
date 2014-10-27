@@ -66,8 +66,8 @@ class Encuesta(models.Model):
     '''
     fecha = models.DateField()
     recolector = models.ForeignKey(Recolector)
-    nombre = models.CharField('Nombre de entrevistado/a', max_length=200)
-    cedula = models.CharField('cedula de entrevistado', max_length=200, null=True, blank=True)
+    nombre = models.CharField('Nombre (vieja manera)', max_length=200)
+    cedula = models.CharField('Cedula (vieja manera)', max_length=200, null=True, blank=True)
     edad = models.IntegerField()
     sexo = models.IntegerField(choices=CHOICE_SEXO)
     enquesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
@@ -90,4 +90,4 @@ class Encuesta(models.Model):
         return self.nombre
         
     class Meta:
-        verbose_name_plural = "Encuesta"
+        verbose_name_plural = "Encuestas"

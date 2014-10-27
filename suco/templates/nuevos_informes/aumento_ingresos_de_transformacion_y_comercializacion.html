@@ -8,10 +8,19 @@
     </script>
 {%endblock%}
 {% block content %}
-    {% include "nuevos_informes/common/parametros.html" %}
 
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 20%</h3>
+
+    {% include "nuevos_informes/common/parametros.html" %}
+    <div class="alert alert-warning">
+        <p>No disponemos de datos sobre el valor monetario de la producción. Sólo tenemos el número de jóvenes, la cantidad producida y la cantidad comercializada.</p>
+    </div>
     <h2>Datos</h2>
     <h3>Procesamiento y comercialización de la producción <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('process'); return false;">Exportar en Excel</a></h3>
+
+
+
     <br/><br/>
     <div id="process">
 

@@ -8,9 +8,42 @@
     </script>
 {%endblock%}
 {% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 700</h3>
+
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
-    <p>Este informe no está programado todavía.</p>
+
+
+
+    <div id="alimentos">
+        <table  class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Nº de familias que obtienen ingresos provenientes de la comercialización y la transformación de la producción{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Nº de familias que obtienen ingresos provenientes de la comercialización y la transformación de la producción<br/><small>Encuesta 2</small></th>
+                        <th>Diferencia (#)</th>
+                        <th class="last_datagroup_col">Diferencia (%)</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>{{ nb_familias_con_processos1 }}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{ nb_familias_con_processos2 }}</td>
+                        <td class="format_diff">{{ nb_familias_con_processos_diff }}</td>
+                        <td class="format_diff">{{ nb_familias_con_processos_diffpercent|percent }}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
 
 {% endblock %}

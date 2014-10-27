@@ -8,9 +8,16 @@
     </script>
 {%endblock%}
 {% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: elevado</h3>
+
+
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
-    <p>Este informe no está programado todavía.</p>
+    <div class="alert alert-danger">
+        <p>No hay datos sobre este indicador en la base de datos.</p>
+    </div>
 
 {% endblock %}

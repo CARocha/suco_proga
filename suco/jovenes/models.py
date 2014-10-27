@@ -18,8 +18,8 @@ class Grupo(models.Model):
         return self.nombre
 
 class Joven(models.Model):
-    nombre = models.CharField('Nombre de entrevistado/a', max_length=200)
-    cedula = models.CharField('Cedula de entrevistado', max_length=200)
+    nombre = models.CharField('Nombre', max_length=200)
+    cedula = models.CharField('Cedula', max_length=200)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     sexo = models.IntegerField(choices=CHOICE_SEXO)
     grupo = models.ForeignKey(Grupo)
@@ -29,3 +29,6 @@ class Joven(models.Model):
 
     def __unicode__(self):
         return self.nombre
+    class Meta:
+        verbose_name_plural = "Jovenes"
+        ordering = ('nombre',)

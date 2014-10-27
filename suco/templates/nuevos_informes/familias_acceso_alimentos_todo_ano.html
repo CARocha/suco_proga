@@ -8,10 +8,13 @@
     </script>
 {%endblock%}
 {% block content %}
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 70%</h3>
+
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
-    {{ status }}
+
     <h3>Familias que consumen suficiente durante todo el año <a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('alimentos'); return false;">Exportar in Excel</a></h3>
     <br/><br/>
 

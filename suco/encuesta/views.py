@@ -193,8 +193,6 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     elif sexo == "2":
         jovenes = Joven.objects.filter(sexo=2)
 
-
-
     ######################################################
     #Grupos
     if grupos != "todoslosgrupos":
@@ -496,9 +494,6 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         promedio_producion_por_familia_diff_percent = saca_aumento_regresso(promedio_producion_por_familia_kg1, promedio_producion_por_familia_kg2, True, "percent")
         promedio_producion_por_familia_diff_kg = saca_aumento_regresso(promedio_producion_por_familia_kg1, promedio_producion_por_familia_kg2, True, "absolute")
 
-
-
-
     ######################################################
     #TABLA ANIMALES
     ######################################################
@@ -535,7 +530,6 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
 ######################################################################################################
 # INDICADOR : Nivel de diversificación de la producción
 def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
-
 
     ######################################################
     #Busca las encuestas para este informe.
@@ -591,9 +585,6 @@ def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centr
     data['tablas']['cultivos']['encuesta1']['uno_a_cinco_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['uno_a_cinco'], primera_encuesta.count(), False )
     data['tablas']['cultivos']['encuesta1']['seis_a_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['seis_a_diez'], primera_encuesta.count(), False )
     data['tablas']['cultivos']['encuesta1']['mas_de_diez_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta1']['mas_de_diez'], primera_encuesta.count(), False )
-
-
-
 
     #Encuesta 2 -> Ver cada encuesta y contear sus cultivos diferentes
     nb_cultivos_para_promedio2 = []
@@ -742,8 +733,6 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
-
-
     data['tablas']['alimentos'] = collections.OrderedDict()
 
     all_verano1 = []
@@ -880,7 +869,7 @@ def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregion
 def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
 
     ######################################################
-    #Busca las encuestas para este informe.
+    #Busca las encuestas para este informe
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
@@ -925,6 +914,27 @@ def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicad
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+
+    nb_familias_con_processos1 = 0
+    for enc in primera_encuesta:
+        tiene_processo = False
+        enc_processos = Procesamiento.objects.filter(encuesta=enc)
+        if enc_processos.count() > 0:
+            nb_familias_con_processos1 += 1
+
+    nb_familias_con_processos2 = 0
+    for enc in segunda_encuesta:
+        tiene_processo = False
+        enc_processos = Procesamiento.objects.filter(encuesta=enc)
+        if enc_processos.count() > 0:
+            nb_familias_con_processos2 += 1
+
+    nb_familias_con_processos_diff = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "absolute")
+    nb_familias_con_processos_diffpercent = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "percent")
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -1024,6 +1034,40 @@ def ultime_familias_superando_minimo (request, indicador, grupos, centroregional
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queremos sola una encuesta (que sea la primera o la segunda)
+    segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
+
+    data['tablas']['ingresos_agro'] = collections.OrderedDict()
+
+    #query = primera_encuesta.cultivos_set.all()
+
+    nb_familias_con_ingresos1 = 0
+    for enc in primera_encuesta:
+        has_sales = False
+        encuesta_total = 0
+        cultivos_total_higher_than_zero = enc.cultivos_set.filter(total__gt=100)
+        for cul in cultivos_total_higher_than_zero:
+            if cul.total > 0:
+                has_sales = True
+                encuesta_total += cul.total
+        if has_sales == True:
+            nb_familias_con_ingresos1 += 1
+
+
+    if numero_encuesta == "3":
+        nb_familias_con_ingresos2 = 0
+        for enc in segunda_encuesta:
+            has_sales = False
+            cultivos_total_higher_than_zero = enc.cultivos_set.filter(total__gt=0)
+            for cul in cultivos_total_higher_than_zero:
+                if cul.total > 0:
+                    has_sales = True
+            if has_sales == True:
+                nb_familias_con_ingresos2 += 1
+
+    nb_familias_con_ingresos_diff = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "absolute")
+    nb_familias_con_ingresos_diffpercent = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "percent")
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
@@ -1032,51 +1076,100 @@ def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_
     ######################################################
     #Busca las encuestas para este informe.
     data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
-    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
+    primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queremos sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
     data['tablas']['ingresos_agro'] = collections.OrderedDict()
 
+    #Ganado mayor - granado_mayo
+    #Otros ingresos familiares - matriz
+    #Ingreso bruto por familia - repuesta.bruto
+    #Ingreso neto por familia - repuesta.total_neto
     tipos = {
-        'agro':1,
-        'forestal':2,
-        'grano_basico':3,
-        'patio':5,
-        'frutas':6,
-        'musaceas':7,
-        'raices':8,
+        'agro': {"id":1,"name":"Ingresos agroforestales"},
+        'forestal':{"id":2,"name":"Forestales"},
+        'grano_basico':{"id":3,"name":"Granos básicos"},
+        'patio':{"id":5,"name":"Animales de patio"},
+        'frutas':{"id":6,"name":"Hortalizas y frutas"},
+        'musaceas':{"id":7,"name":"Musáceas"},
+        'raices':{"id":8,"name":"Raíces y tubérculos"},
     }
 
     #para cada tipos de tipos de cultivos (ariba),
+    grande_total_ingresos1 = 0
+    grande_total_ingresos2 = 0
+
     for tipokey,tipo in tipos.iteritems():
         data['tablas']['ingresos_agro'][tipokey] = collections.OrderedDict()
+        data['tablas']['ingresos_agro'][tipokey]['tiponame'] = tipo['name']
+        data['tablas']['ingresos_agro'][tipokey]['entries'] = collections.OrderedDict()
+
         #buscamos los cultivos
-        for cultivo in TipoCultivos.objects.filter(tipo=tipo):
+        total_ingresos_de_este_tipo_de_cultivo1 = 0
+        total_ingresos_de_este_tipo_de_cultivo2 = 0
+        for cultivo in TipoCultivos.objects.filter(tipo=tipo['id']):
             key2 = slugify(cultivo.unidad).replace('-','_')
             query = primera_encuesta.filter(cultivos__cultivo = cultivo)
-            numero = query.count() #numero de familias que venden
-            total = query.aggregate(total=Sum('cultivos__total'))['total']
-            consumo = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+            numero1 = query.count()  #numero de familias que venden
+            total1 = query.aggregate(total=Sum('cultivos__total'))['total']
+            consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+
             try:
-                cantidad = total - consumo
+                cantidad1 = total1 - consumo1
             except:
-                pass
-            precio = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+                cantidad1 = 0
+            precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
             try:
-                ingreso = precio * cantidad
+                ingreso1 = precio1 * cantidad1
             except:
-                ingreso = 0
-            if ingreso > 0:
-                data['tablas']['ingresos_agro'][tipokey][cultivo.nombre] = {'key2':key2,'numero':numero,'cantidad':cantidad,
-                              'ingreso':ingreso,'precio':precio}
+                ingreso1 = 0
+            #Si la familia consume mas que produce..
+            if cantidad1 <= 0:
+                numero1 = 0
+                cantidad1 = 0
+                precio1 = ""
+                ingreso1 = 0
 
+            total_ingresos_de_este_tipo_de_cultivo1 += ingreso1
 
+            data['tablas']['ingresos_agro'][tipokey]['entries'][cultivo.nombre] = {'key2':key2,'numero1':numero1,'cantidad1':cantidad1,
+                              'ingreso1':ingreso1,'precio1':precio1}
 
+            if numero_encuesta == "3":
+                query = segunda_encuesta.filter(cultivos__cultivo = cultivo)
+                numero2 = query.count() #numero de familias que venden
+                total2 = query.aggregate(total=Sum('cultivos__total'))['total']
+                consumo2 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+                try:
+                    cantidad2 = total2 - consumo2
+                except:
+                    cantidad2 = 0
+                if cantidad2 < 0:
+                    cantidad2 = 0
+                precio2 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+                try:
+                    ingreso2 = precio2 * cantidad2
+                except:
+                    ingreso2 = 0
+                #Si la familia consume mas que produce..
+                if cantidad2 <= 0:
+                    numero2 = 0
+                    cantidad2 = 0
+                    precio2 = ""
+                    ingreso2 = 0
 
+                total_ingresos_de_este_tipo_de_cultivo2 += ingreso2
 
+                data['tablas']['ingresos_agro'][tipokey]['entries'][cultivo.nombre].update ({'key2':key2,'numero2':numero2,'cantidad2':cantidad2,
+                              'ingreso2':ingreso2,'precio2':precio2})
 
-
-
+        #totales de ingresos para este tipo de cultivo
+        data['tablas']['ingresos_agro'][tipokey]['total_ingresos_de_este_tipo_de_cultivo1'] = total_ingresos_de_este_tipo_de_cultivo1
+        data['tablas']['ingresos_agro'][tipokey]['total_ingresos_de_este_tipo_de_cultivo2'] = total_ingresos_de_este_tipo_de_cultivo2
+        grande_total_ingresos1 += total_ingresos_de_este_tipo_de_cultivo1
+        grande_total_ingresos2 += total_ingresos_de_este_tipo_de_cultivo2
+        grande_total_ingresos_diff = saca_aumento_regresso(grande_total_ingresos1, grande_total_ingresos2, False, "absolute")
+        grande_total_ingresos_diffpercent = saca_aumento_regresso(grande_total_ingresos1, grande_total_ingresos2, False, "percent")
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 

@@ -8,11 +8,37 @@
     </script>
 {%endblock%}
 {% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 1000 familias</h3>
+
+
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
     <p>Este informe no está programado todavía.</p>
 
-    <p>Note Simon, discussion avec Marie-Claude : dès qu'un jeune a 1$ de vente, on considère qu'il est sorti de la subsistance.</p>
+    <div class="alert alert-info">
+        <p>Este indicador supone que una familia supera el mínimo de subsistencia cuando se obtiene ingresos de venta.</p>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Familias con ingresos de cultivos{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+            {% if numero_encuesta == "3" %}
+                <th>Familias con ingresos de cultivos<br/><small>Encuesta 2</small></th>
+                <th>Diferencia (#)</th>
+                <th>Diferencia (%)</th>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>{{ nb_familias_con_ingresos1 }}</td>
+            {% if numero_encuesta == "3" %}
+                <td>{{ nb_familias_con_ingresos2 }}</td>
+                <td class="format_diff">{{ nb_familias_con_ingresos_diff|floatformat:2 }}</td>
+                <td class="format_diff">{{ nb_familias_con_ingresos_diffpercent|percent }}</td>
+            {% endif %}
+        </tr>
+    </table>
 
 {% endblock %}

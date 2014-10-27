@@ -8,9 +8,16 @@
     </script>
 {%endblock%}
 {% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 30%</h3>
+
+
     {% include "nuevos_informes/common/parametros.html" %}
 
     <h2>Datos</h2>
-    <p>No hay datos sobre este indicador en la base de datos. Por favor ver con Nathalie Kamileris.</p>
+    <div class="alert alert-danger">
+        <p>No hay datos sobre este indicador en la base de datos. Por favor ver con Nathalie Kamileris.</p>
+    </div>
 
 {% endblock %}
