@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 from django.template import RequestContext
@@ -7,6 +8,7 @@ from django.views.generic.simple import direct_to_template
 from django.utils import simplejson
 from django.db.models import Sum, Count, Avg
 from django.core.exceptions import ViewDoesNotExist
+from django.core.cache import cache
 from django.db.models import Q
 from django.conf import settings
 from decorators import session_required
@@ -25,7 +27,6 @@ from suco.opciones.models import *
 from suco.organizaciones.models import *
 from suco.propiedades.models import *
 from suco.seguridad.models import *
-
 from utils import grafos
 from utils import *
 import random
@@ -56,6 +57,7 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 ######################################################################################################
 #DISPATCHER -> manda la request a la buena methodo
 #CACHING : hace tambien un caching del html
+@csrf_exempt
 def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False, sexo = "3"):
 
     if request.method == 'POST':
@@ -114,27 +116,20 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
     #CACHING --- Si exista en la cache, la utilisa. Sinon, llama la funcion.
     USE_CACHE = getattr(settings, "USE_CACHE", None)
     if USE_CACHE == True:
-        CACHE_PATH = getattr(settings, "CACHE_PATH", None)
         m = hashlib.md5()
         m.update(indicador+grupos+centroregional+numero_encuesta+solo_jovenes_con_dos+activo+sexo)
-        cache_file_fullpath = CACHE_PATH+m.hexdigest()+'.cache'
-        status = "None"
-        if os.path.isfile(cache_file_fullpath):
-            file_object = open(cache_file_fullpath, "r+")
-            return pickle.loads(file_object.read())
+        cache_hash_key = m.hexdigest()
+        cached_data = cache.get(cache_hash_key)
+        if cached_data is not None:
+            return pickle.loads(cached_data)
         else:
-            #el nombre del archivo del template en HTML debe tene el mismo nombre que los indicadores
-            # especificados en forms.py/CHOICE_INFORME_INDICADOR.
-            # ejemplo: aumento_de_la_produccion => nuevos_informes/aumento_de_la_produccion.html
             html = globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
             #write cache
-            file = open(cache_file_fullpath, "w")
-            serialized_data = pickle.dumps(html)
-            file.write(serialized_data)
-            file.close()
+            cache.set(cache_hash_key, pickle.dumps(html), None)
             return html
     #no cache
     else:
+        cache.clear()
         return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
 
 
@@ -818,20 +813,23 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
                           'por_invierno_diff':por_invierno_diff, 'no_mes_acceso2':no_mes_acceso2,
                           'no_mes_acceso_diff':no_mes_acceso_diff})
 
-        promedio_all_invierno1 = reduce(lambda x, y: x + y, all_invierno1) / float(len(all_invierno1))  #promedio de la lista
-        promedio_all_invierno2 = reduce(lambda x, y: x + y, all_invierno2) / float(len(all_invierno2))  #promedio de la lista
-        promedio_all_verano1 = reduce(lambda x, y: x + y, all_verano1) / float(len(all_verano1))        #promedio de la lista
-        promedio_all_verano2 = reduce(lambda x, y: x + y, all_verano2) / float(len(all_verano2))        #promedio de la lista
-        promedio_all_por_verano1 = saca_porcentajes(promedio_all_verano1, primera_encuesta.count())
-        promedio_all_por_verano2 = saca_porcentajes(promedio_all_verano2, segunda_encuesta.count())
-        promedio_all_por_invierno1 = saca_porcentajes(promedio_all_invierno1, primera_encuesta.count())
-        promedio_all_por_invierno2 = saca_porcentajes(promedio_all_invierno2, segunda_encuesta.count())
 
-        promedio_all_verano_diff = reduce(lambda x, y: x + y, all_verano_diff) / float(len(all_verano_diff))            #promedio de la lista
-        promedio_all_invierno_diff = reduce(lambda x, y: x + y, all_invierno_diff) / float(len(all_invierno_diff))      #promedio de la lista
+        promedio_all_invierno1 = reduce(lambda x, y: x + y, all_invierno1) / float(len(all_invierno1))  #promedio de la lista
+        promedio_all_verano1 = reduce(lambda x, y: x + y, all_verano1) / float(len(all_verano1))        #promedio de la lista
+        promedio_all_por_verano1 = saca_porcentajes(promedio_all_verano1, primera_encuesta.count())
+        promedio_all_por_invierno1 = saca_porcentajes(promedio_all_invierno1, primera_encuesta.count())
         promedio_all_no_mes_acceso1 = reduce(lambda x, y: x + y, all_no_mes_acceso1) / float(len(all_no_mes_acceso1))   #promedio de la lista
-        promedio_all_no_mes_acceso2 = reduce(lambda x, y: x + y, all_no_mes_acceso2) / float(len(all_no_mes_acceso2))   #promedio de la lista
-        promedio_all_no_mes_acceso_diff = reduce(lambda x, y: x + y, all_no_mes_acceso_diff) / float(len(all_no_mes_acceso_diff))
+
+
+        if numero_encuesta == "3":
+            promedio_all_invierno2 = reduce(lambda x, y: x + y, all_invierno2) / float(len(all_invierno2))  #promedio de la lista
+            promedio_all_verano2 = reduce(lambda x, y: x + y, all_verano2) / float(len(all_verano2))        #promedio de la lista
+            promedio_all_por_verano2 = saca_porcentajes(promedio_all_verano2, segunda_encuesta.count())
+            promedio_all_por_invierno2 = saca_porcentajes(promedio_all_invierno2, segunda_encuesta.count())
+            promedio_all_no_mes_acceso2 = reduce(lambda x, y: x + y, all_no_mes_acceso2) / float(len(all_no_mes_acceso2))   #promedio de la lista
+            promedio_all_verano_diff = reduce(lambda x, y: x + y, all_verano_diff) / float(len(all_verano_diff))            #promedio de la lista
+            promedio_all_invierno_diff = reduce(lambda x, y: x + y, all_invierno_diff) / float(len(all_invierno_diff))      #promedio de la lista
+            promedio_all_no_mes_acceso_diff = reduce(lambda x, y: x + y, all_no_mes_acceso_diff) / float(len(all_no_mes_acceso_diff))
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 

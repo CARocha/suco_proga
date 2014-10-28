@@ -2,6 +2,9 @@
 
 from django.db import models
 from suco.encuesta.models import *
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 
 # Create your models here.
 
@@ -31,7 +34,11 @@ class Educacion(models.Model):
         
     class Meta:
         verbose_name_plural = "Educacion"
-        
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Salud(models.Model):
     sexo = models.IntegerField(choices=CHOICE_EDUCACION)
     b_salud = models.IntegerField('# tiene buena salud')
@@ -48,7 +55,12 @@ class Salud(models.Model):
         
     class Meta:
         verbose_name_plural = "Salud"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class PreguntaEnergia(models.Model):
     pregunta = models.CharField(max_length=200)
 
@@ -57,11 +69,21 @@ class PreguntaEnergia(models.Model):
 
     class Meta:
         verbose_name_plural = "Pregunta sobre energia"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Cocinar(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Energia(models.Model):
     pregunta = models.ForeignKey(PreguntaEnergia)
@@ -71,15 +93,30 @@ class Energia(models.Model):
     class Meta:
         ordering = ('pregunta',)
         verbose_name_plural = "Energia"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class QueUtiliza(models.Model):
     cocina = models.ManyToManyField(Cocinar)
     encuesta = models.ForeignKey(Encuesta)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class FuenteConsumo(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class TrataAgua(models.Model):
     nombre = models.CharField(max_length=200)
@@ -90,7 +127,12 @@ class DisponibilidadAgua(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class AguaConsumo(models.Model):
     fuente = models.ManyToManyField(FuenteConsumo, verbose_name="Fuente de consumo de agua")
     tratar = models.ManyToManyField(TrataAgua, verbose_name="Como se trata el agua de beber y cocinar")
@@ -99,7 +141,12 @@ class AguaConsumo(models.Model):
     
     class Meta:
         verbose_name_plural = "Agua para consumo humano"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class FuenteProduccion(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
@@ -109,12 +156,22 @@ class EquipoBombeo(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class EnergiaUtiliza(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre    
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
     
 class AguaProduccion(models.Model):
     fuente = models.ManyToManyField(FuenteProduccion, verbose_name="Fuente de agua")
@@ -124,3 +181,8 @@ class AguaProduccion(models.Model):
     
     class Meta:
         verbose_name_plural = "Agua para la producción"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")

@@ -34,7 +34,13 @@ STATICFILES_DIRS = (
 
 #Systema de caching. Desarollado en octubre / noviembre 2014 - No esta terminado. Por favor no utilizar todavia.
 USE_CACHE = False
-CACHE_PATH = PROJECT_DIR+'/static_media/cache/'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': PROJECT_DIR+'/static_media/cache/'
+    }
+}
+
 
 # List of finder classes that know how to find static files in
 # various locations.

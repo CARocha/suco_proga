@@ -2,13 +2,20 @@
 
 from django.db import models
 from suco.encuesta.models import *
-
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 
 # Create your models here.
 class Componentes(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Alimentos(models.Model):
     componete = models.ForeignKey(Componentes)
@@ -19,6 +26,11 @@ class Alimentos(models.Model):
     class Meta:
         verbose_name_plural = "Alimentos"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Seguridad(models.Model):
     ''' Modelo Seguridad alimentaria
@@ -35,7 +47,12 @@ class Seguridad(models.Model):
     
     class Meta:
         verbose_name_plural = "Seguridad alimentaria"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 # Cuales son los riesgos que hace la finca vulnerable
 
 class Causa(models.Model):
@@ -45,7 +62,12 @@ class Causa(models.Model):
         
     class Meta:
         verbose_name_plural = "Vulnerable - causa"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Fenomeno(models.Model):
     causa = models.ForeignKey(Causa)
     nombre = models.CharField(max_length=100)
@@ -55,7 +77,12 @@ class Fenomeno(models.Model):
     class Meta:
         verbose_name_plural = "Vulnerable - causa + fenomeno"
         ordering = ('causa__nombre', 'nombre',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Graves(models.Model):
     nombre = models.CharField(max_length=100)
     def __unicode__(self):
@@ -63,7 +90,12 @@ class Graves(models.Model):
         
     class Meta:
         verbose_name_plural = "Vulnerable - daños graves"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Vulnerable(models.Model):
     ''' modelo vulnerable
     '''
@@ -73,7 +105,12 @@ class Vulnerable(models.Model):
     
     class Meta:
         verbose_name_plural = "Cuáles son los riesgos que hacen la finca vulnerable"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
  #Mitigación de riesgos
 
 class PreguntaRiesgo(models.Model):
@@ -85,6 +122,11 @@ class PreguntaRiesgo(models.Model):
         verbose_name_plural = "Riesgo - pregunta"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Riesgos(models.Model):
     ''' 20 mitigacion de los riesgos
     '''
@@ -94,3 +136,8 @@ class Riesgos(models.Model):
     
     class Meta:
         verbose_name_plural = "Gestión de riesgos"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")

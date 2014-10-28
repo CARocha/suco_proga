@@ -1,5 +1,8 @@
 from django.db import models
 from suco.lugar.models import *
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 
 # Create your models here.
 
@@ -17,6 +20,11 @@ class Grupo(models.Model):
     def __unicode__(self):
         return self.nombre
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Joven(models.Model):
     nombre = models.CharField('Nombre', max_length=200)
     cedula = models.CharField('Cedula', max_length=200)
@@ -29,6 +37,12 @@ class Joven(models.Model):
 
     def __unicode__(self):
         return self.nombre
+
     class Meta:
         verbose_name_plural = "Jovenes"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
