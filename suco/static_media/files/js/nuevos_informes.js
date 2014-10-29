@@ -31,4 +31,9 @@ $( document ).ready(function() {
             $(this).addClass('red_cell');
         }
     });
+
+
+
+    $(".table").tablesorter();
+
 });

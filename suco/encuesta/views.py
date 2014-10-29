@@ -15,7 +15,6 @@ from decorators import session_required
 from datetime import date
 from forms import *
 from decimal import Decimal
-
 from suco.encuesta.models import *
 from suco.animal_produccion.models import *
 from suco.cultivos.models import *
@@ -31,9 +30,6 @@ from utils import grafos
 from utils import *
 import random
 import collections
-
-#para el cache
-import os.path
 import hashlib
 import pickle
 
