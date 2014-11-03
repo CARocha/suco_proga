@@ -338,7 +338,8 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     #TABLA CULTIVOS
     ######################################################
 
-    una_manzana_nica_en_metros_cuadrados = 7044 #a verificar. Felipe dice 7044. J-F dice 7026
+    una_manzana_nica_en_metros_cuadrados = 7044
+    una_manzana_nica_en_hectare = 0.7044 #a verificar. Felipe dice 7044. J-F dice 7026
 
     ######################################################
     #variables para los totales abajo de la tabla
@@ -377,7 +378,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         area1 = query.aggregate(area=Sum('cultivos__area'))['area']
         totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
         totales1_kg = (totales1 * i.conversion_kg) if totales1 is not None else 0
-        kg_por_metrocuadrado1 = (totales1_kg / (area1 * una_manzana_nica_en_metros_cuadrados)) if area1 is not None and area1 > 0 else 0
+        kg_por_hectare1 = (totales1_kg / (area1 * una_manzana_nica_en_hectare)) if area1 is not None and area1 > 0 else 0
         consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
         consumo1_kg = (consumo1 * i.conversion_kg) if consumo1 is not None  else 0
         precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
@@ -391,7 +392,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             area2 = query2.aggregate(area=Sum('cultivos__area'))['area']
             totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
             totales2_kg = (totales2 * i.conversion_kg) if totales2 is not None else 0
-            kg_por_metrocuadrado2 = (totales2_kg / (area2 * una_manzana_nica_en_metros_cuadrados)) if area2 is not None else 0
+            kg_por_hectare2 = (totales2_kg / (area2 * una_manzana_nica_en_hectare)) if area2 is not None and area2 > 0 else 0
             consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
             consumo2_kg = (consumo2 * i.conversion_kg) if consumo2 is not None else 0
             precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
@@ -402,7 +403,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             area_diff = 0
             totales2 = 0
             totales2_kg = 0
-            kg_por_metrocuadrado2 = 0
+            kg_por_hectare2 = 0
             consumo2 = 0
             consumo2_kg = 0
             precio2 = 0
@@ -415,7 +416,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         consumo_diff = saca_aumento_regresso(consumo1, consumo2, False)
         precio_diff = saca_aumento_regresso(precio1, precio2, False)
         valor_diff = saca_aumento_regresso(valor1, valor2, False)
-        kg_por_metrocuadrado_diff = saca_aumento_regresso(kg_por_metrocuadrado1, kg_por_metrocuadrado2, False, "percent")
+        kg_por_hectare_diff = saca_aumento_regresso(kg_por_hectare1, kg_por_hectare2, False, "percent")
 
         ######################################################
         #Totales - Incrementa los totales
@@ -448,7 +449,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
                 'conversion_kg': i.conversion_kg,
                 'totales1':totales1,
                 'totales1_kg':totales1_kg,
-                'kg_por_metrocuadrado1': kg_por_metrocuadrado1,
+                'kg_por_hectare1': kg_por_hectare1,
                 'consumo1':consumo1,
                 'consumo1_kg':consumo1_kg,
                 'precio1':precio1,
@@ -456,14 +457,14 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
                 'area2':area2,
                 'totales2':totales2,
                 'totales2_kg':totales2_kg,
-                'kg_por_metrocuadrado2': kg_por_metrocuadrado2,
+                'kg_por_hectare2': kg_por_hectare2,
                 'totales_diff': totales_diff,
                 'consumo2':consumo2,
                 'consumo2_kg':consumo2_kg,
                 'consumo_diff': consumo_diff,
                 'precio_diff': precio_diff,
                 'valor_diff': valor_diff,
-                'kg_por_metrocuadrado_diff': kg_por_metrocuadrado_diff,
+                'kg_por_hectare_diff': kg_por_hectare_diff,
                 'precio2':precio2,
                 'valor2':valor2,
                 'area_diff':area_diff,
@@ -473,9 +474,9 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     totaleskg_total_diff = saca_aumento_regresso(totales1kg_total, totales2kg_total, False)
     consumokg_total_diff = saca_aumento_regresso(consumo1kg_total, consumo2kg_total, False)
     valor_total_diff = saca_aumento_regresso(valor1_total, valor2_total, False)
-    kg_por_metrocuadrado_total1 = (totales1kg_total / (area1_total * una_manzana_nica_en_metros_cuadrados)) if area1_total is not None and area1_total > 0 and una_manzana_nica_en_metros_cuadrados > 0 else 0
-    kg_por_metrocuadrado_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_metros_cuadrados)) if area2_total is not None and area2_total > 0 and una_manzana_nica_en_metros_cuadrados > 0 else 0
-    kg_por_metrocuadrado_total_diff = saca_aumento_regresso(kg_por_metrocuadrado_total1, kg_por_metrocuadrado_total2, False, "percent")
+    kg_por_hectare_total1 = (totales1kg_total / (area1_total * una_manzana_nica_en_hectare)) if area1_total is not None and area1_total > 0 else 0
+    kg_por_hectare_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_hectare)) if area2_total is not None and area2_total > 0 else 0
+    kg_por_hectare_total_diff = saca_aumento_regresso(kg_por_hectare_total1, kg_por_hectare_total2, False, "percent")
 
 
     ######################################################

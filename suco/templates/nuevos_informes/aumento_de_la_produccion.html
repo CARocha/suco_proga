@@ -19,7 +19,6 @@
     <h2>Datos</h2>
     <h3 style="padding-bottom:20px;">Cultivos en la finca <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('finca'); return false;">Exportar en Excel</a></h3>
 
-
         </div></div></div>
     
         <div id="finca">
@@ -49,10 +48,10 @@
                                 <th class="last_datagroup_col">Total producción por año <br/><small>Diferencia</small></th>
                             {% endif %}
 
-                            <th>KG por m<sup>2</sup>{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                            <th>KG por hectare{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
                             {% if numero_encuesta == "3" %}
-                                <th>KG por m<sup>2</sup><br/><small>Encuesta 2</small></th>
-                                <th class="last_datagroup_col">KG por m<sup>2</sup><br/><small>Diferencia</small></th>
+                                <th>KG por hectare<br/><small>Encuesta 2</small></th>
+                                <th class="last_datagroup_col">KG por hectare<br/><small>Diferencia</small></th>
                             {% endif %}
 
                             <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>En su unidad</small></th>
@@ -112,10 +111,10 @@
                                 <td class="last_datagroup_col format_diff">{{value.totales_diff|percent}}</td>
                             {% endif %}
 
-                            <td>{{value.kg_por_metrocuadrado1|floatformat:2}}</td>
+                            <td>{{value.kg_por_hectare1|floatformat:2}}</td>
                             {% if numero_encuesta == "3" %}
-                                <td>{{value.kg_por_metrocuadrado2|floatformat:2}}</td>
-                                <td class="last_datagroup_col format_diff">{{value.kg_por_metrocuadrado_diff|percent}}</td>
+                                <td>{{value.kg_por_hectare2|floatformat:2}}</td>
+                                <td class="last_datagroup_col format_diff">{{value.kg_por_hectare_diff|percent}}</td>
                             {% endif %}
 
 
@@ -172,10 +171,10 @@
                                 <td class="format_diff">{{ totaleskg_total_diff|percent }}</td>
                             {% endif %}
 
-                            <td>{{ kg_por_metrocuadrado_total1|floatformat:2 }}</td>
+                            <td>{{ kg_por_hectare_total1|floatformat:2 }}</td>
                             {% if numero_encuesta == "3" %}
-                                <td>{{ kg_por_metrocuadrado_total2|floatformat:2 }}</td>
-                                <td class="format_diff">{{ kg_por_metrocuadrado_total_diff|percent }}</td>
+                                <td>{{ kg_por_hectare_total2|floatformat:2 }}</td>
+                                <td class="format_diff">{{ kg_por_hectare_total_diff|percent }}</td>
                             {% endif %}
 
                             <td></td>
