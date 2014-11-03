@@ -62,22 +62,23 @@
             {
                 $('#formulario_informes').show();
                 $('.submit_button_wrapper').show();
+                $("#id_informe_tipo").val('informes_originales');
+                $("#link_informes_originales").hide();
+                $("#link_informes_nuevos").show();
             } else if (tipo == "informes_nuevos") {
                 $('#formulario_nuevosinformes').show();
                 $('.submit_button_wrapper').show();
+                $("#id_informe_tipo").val('informes_nuevos');
+                $("#link_informes_originales").show();
+                $("#link_informes_nuevos").hide();
             }
         }
 
         $( document ).ready(function() {
             $('.select2').select2();
 
-            show_informe_menu_de_tipo($("#id_informe_tipo").val())
+            show_informe_menu_de_tipo('informes_nuevos')
             show_solo_jovenes_con_dos ($("#id_numero_encuesta").val())
-
-            //Cuando el usario cambia de tipo de informe.
-            $("#id_informe_tipo").change(function () {
-                show_informe_menu_de_tipo($(this).val())
-            });
 
             //Encuesta comparar(3): necesitamos saber si utilisamos solo jovenes que tienen 2 encuestas
             $("#id_numero_encuesta").change(function () {
@@ -99,11 +100,10 @@
 
                         <form action="." method="POST" class="form">
                             {% csrf_token %}
-                            <h3>Paso 1 - Qué tipo de informes?</h3>
-                            <div class="form_widget">{{form.informe_tipo}}<br>{{form.informe_tipo.errors}}</div>
+
+                            <div class="form_widget" style="display: none;">{{form.informe_tipo}}<br>{{form.informe_tipo.errors}}</div>
 
                             <div class="formulario_consulta" id="formulario_informes">
-                                    <h3>Paso 2 - Definir los parámetros</h3>
                                    <table class="table table-bordered">
                                        <tr>
                                            <td>
@@ -126,7 +126,6 @@
                             </div>
 
                             <div class="formulario_consulta"  id="formulario_nuevosinformes">
-                                    <h3>Paso 2 - Definir los parámetros</h3>
                                    <table class="table table-bordered">
                                        <tr>
                                            <td class="table_param_leftcol">Grupos</td>
@@ -188,6 +187,8 @@
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-8 estadisticas_generales">
+                    <a href="javascript:void(0);" id="link_informes_originales" onclick="show_informe_menu_de_tipo('informes_originales');">Informes originales de Linea de base (2011-2014)</a>
+                    <a href="javascript:void(0);" id="link_informes_nuevos" onclick="show_informe_menu_de_tipo('informes_nuevos');">Informes nuevos (2014+)</a>
                     <a href="/general">Estadísticas generales</a>
                 </div>
                 <div class="col-md-2">

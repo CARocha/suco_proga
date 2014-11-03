@@ -1,0 +1,432 @@
+[
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "1",
+        "fields": {
+            "nombre": "Ma\u00edz",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "2",
+        "fields": {
+            "nombre": "Frijol",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "3",
+        "fields": {
+            "nombre": "Ajonjol\u00ed",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "4",
+        "fields": {
+            "nombre": "Arroz",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "5",
+        "fields": {
+            "nombre": "Sorgo",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "6",
+        "fields": {
+            "nombre": "Mill\u00f3n",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "7",
+        "fields": {
+            "nombre": "Yuca",
+            "tipo": "8",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "8",
+        "fields": {
+            "nombre": "Quequisque",
+            "tipo": "8",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "9",
+        "fields": {
+            "nombre": "Malanga",
+            "tipo": "8",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "10",
+        "fields": {
+            "nombre": "Tomate",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "11",
+        "fields": {
+            "nombre": "Cebolla",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "12",
+        "fields": {
+            "nombre": "Chiltoma",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "13",
+        "fields": {
+            "nombre": "Pepino",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "1.56"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "14",
+        "fields": {
+            "nombre": "Caf\u00e9",
+            "tipo": "1",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "15",
+        "fields": {
+            "nombre": "Cacao",
+            "tipo": "1",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "16",
+        "fields": {
+            "nombre": "Guineo",
+            "tipo": "7",
+            "unidad": "cabeza",
+            "conversion_kg": "26.4"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "17",
+        "fields": {
+            "nombre": "Pl\u00e1tano",
+            "tipo": "7",
+            "unidad": "cabeza",
+            "conversion_kg": "9.9"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "18",
+        "fields": {
+            "nombre": "Naranja",
+            "tipo": "6",
+            "unidad": "cien",
+            "conversion_kg": "13"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "19",
+        "fields": {
+            "nombre": "Jocote",
+            "tipo": "6",
+            "unidad": "lata",
+            "conversion_kg": "1.08"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "20",
+        "fields": {
+            "nombre": "Mango",
+            "tipo": "6",
+            "unidad": "cien",
+            "conversion_kg": "8"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "21",
+        "fields": {
+            "nombre": "Lim\u00f3n",
+            "tipo": "6",
+            "unidad": "cien",
+            "conversion_kg": "5"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "22",
+        "fields": {
+            "nombre": "Mandarina",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "1.56"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "23",
+        "fields": {
+            "nombre": "Melocot\u00f3n",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "0.75"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "24",
+        "fields": {
+            "nombre": "Chaya",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "3.96"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "25",
+        "fields": {
+            "nombre": "Maracuy\u00e1",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "2.04"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "26",
+        "fields": {
+            "nombre": "Papaya",
+            "tipo": "6",
+            "unidad": "docena",
+            "conversion_kg": "18"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "27",
+        "fields": {
+            "nombre": "Papa",
+            "tipo": "8",
+            "unidad": "qq",
+            "conversion_kg": "100"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "28",
+        "fields": {
+            "nombre": "Manzanilla",
+            "tipo": "1",
+            "unidad": "saco",
+            "conversion_kg": "0"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "29",
+        "fields": {
+            "nombre": "Repollo",
+            "tipo": "6",
+            "unidad": "cabeza",
+            "conversion_kg": "1.5"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "30",
+        "fields": {
+            "nombre": "Pipi\u00e1n",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "31",
+        "fields": {
+            "nombre": "Noni",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "32",
+        "fields": {
+            "nombre": "Soya",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "33",
+        "fields": {
+            "nombre": "Jamaica",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "34",
+        "fields": {
+            "nombre": "Camote",
+            "tipo": "8",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "35",
+        "fields": {
+            "nombre": "Mungo",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "36",
+        "fields": {
+            "nombre": "Gandul",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "37",
+        "fields": {
+            "nombre": "Terciopelo",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "38",
+        "fields": {
+            "nombre": "Caupi",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "39",
+        "fields": {
+            "nombre": "Canavalia",
+            "tipo": "3",
+            "unidad": "qq",
+            "conversion_kg": "45.359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "40",
+        "fields": {
+            "nombre": "Granadilla",
+            "tipo": "6",
+            "unidad": "unidad",
+            "conversion_kg": "1"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "41",
+        "fields": {
+            "nombre": "Fresa",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "42",
+        "fields": {
+            "nombre": "Uva",
+            "tipo": "6",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    },
+    {
+        "model": "cultivos.tipocultivos",
+        "pk": "43",
+        "fields": {
+            "nombre": "Chia",
+            "tipo": "3",
+            "unidad": "libras",
+            "conversion_kg": "0.45359"
+        }
+    }
+]

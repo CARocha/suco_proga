@@ -8,22 +8,16 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Encuesta.enquesta_numero'
-        db.add_column('encuesta_encuesta', 'enquesta_numero',
-                      self.gf('django.db.models.fields.IntegerField')(default=3),
+        # Adding field 'Encuesta.fecha_encuesta'
+        db.add_column('encuesta_encuesta', 'fecha_encuesta',
+                      self.gf('django.db.models.fields.DateField')(null=True, blank=True),
                       keep_default=False)
 
 
-        # Changing field 'Encuesta.comunidad'
-        db.alter_column('encuesta_encuesta', 'comunidad_id', self.gf('suco.smart_selects.db_fields.ChainedForeignKey')(to=orm['lugar.Comunidad']))
-
     def backwards(self, orm):
-        # Deleting field 'Encuesta.enquesta_numero'
-        db.delete_column('encuesta_encuesta', 'enquesta_numero')
+        # Deleting field 'Encuesta.fecha_encuesta'
+        db.delete_column('encuesta_encuesta', 'fecha_encuesta')
 
-
-        # Changing field 'Encuesta.comunidad'
-        db.alter_column('encuesta_encuesta', 'comunidad_id', self.gf('smart_selects.db_fields.ChainedForeignKey')(to=orm['lugar.Comunidad']))
 
     models = {
         'auth.group': {
@@ -67,12 +61,14 @@ class Migration(SchemaMigration):
             'cedula': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'comunidad': ('suco.smart_selects.db_fields.ChainedForeignKey', [], {'to': "orm['lugar.Comunidad']"}),
             'edad': ('django.db.models.fields.IntegerField', [], {}),
-            'enquesta_numero': ('django.db.models.fields.IntegerField', [], {'default': '3'}),
+            'encuesta_numero': ('django.db.models.fields.IntegerField', [], {'default': '3'}),
             'escolaridad': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['encuesta.Escolaridad']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
+            'fecha_encuesta': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'finca': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'formacion': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['encuesta.Tecnica']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'joven': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['jovenes.Joven']", 'null': 'True'}),
             'municipio': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lugar.Municipio']"}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'participacion': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['encuesta.ParticipacionProyecto']", 'symmetrical': 'False'}),
@@ -97,6 +93,28 @@ class Migration(SchemaMigration):
         },
         'encuesta.tecnica': {
             'Meta': {'ordering': "('nombre',)", 'object_name': 'Tecnica'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+        },
+        'jovenes.grupo': {
+            'Meta': {'object_name': 'Grupo'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+        },
+        'jovenes.joven': {
+            'Meta': {'ordering': "('nombre',)", 'object_name': 'Joven'},
+            'activo': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
+            'cedula': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'centroregional': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lugar.Centroregional']"}),
+            'fecha_nacimiento': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'grupo': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['jovenes.Grupo']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'idseguimiento': ('django.db.models.fields.IntegerField', [], {}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'sexo': ('django.db.models.fields.IntegerField', [], {})
+        },
+        'lugar.centroregional': {
+            'Meta': {'object_name': 'Centroregional'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },

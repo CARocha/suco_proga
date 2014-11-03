@@ -83,7 +83,14 @@
         {% if numero_encuesta == "3" %}
         <tr>
             <td>Utilizar solo los datos de jóvenes que tienen dos encuestas rellenadas?</td>
-            <td>{{ data.strings.solo_jovenes_con_dos_name }}</td>
+            <td>
+                {{ data.strings.solo_jovenes_con_dos_name }}
+                {% if data.strings.solo_jovenes_con_dos_name_warning != "" %}
+                    <div class="alert alert-warning" style="margin-bottom:0">
+                        {{ data.strings.solo_jovenes_con_dos_name_warning }}
+                    </div>
+                {% endif %}
+            </td>
         </tr>
         {% endif %}
         <tr>

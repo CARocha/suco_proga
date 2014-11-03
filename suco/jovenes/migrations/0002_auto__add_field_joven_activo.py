@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'jovenes.joven': {
-            'Meta': {'object_name': 'Joven'},
+            'Meta': {'ordering': "('nombre',)", 'object_name': 'Joven'},
             'activo': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'cedula': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'centroregional': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lugar.Centroregional']"}),

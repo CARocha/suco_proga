@@ -8,16 +8,30 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding field 'Encuesta.encuesta_numero'
+        db.add_column('encuesta_encuesta', 'encuesta_numero',
+                      self.gf('django.db.models.fields.IntegerField')(default=3),
+                      keep_default=False)
+
         # Adding field 'Encuesta.joven'
         db.add_column('encuesta_encuesta', 'joven',
                       self.gf('django.db.models.fields.related.ForeignKey')(to=orm['jovenes.Joven'], null=True),
                       keep_default=False)
 
 
+        # Changing field 'Encuesta.comunidad'
+        db.alter_column('encuesta_encuesta', 'comunidad_id', self.gf('suco.smart_selects.db_fields.ChainedForeignKey')(to=orm['lugar.Comunidad']))
+
     def backwards(self, orm):
+        # Deleting field 'Encuesta.encuesta_numero'
+        db.delete_column('encuesta_encuesta', 'encuesta_numero')
+
         # Deleting field 'Encuesta.joven'
         db.delete_column('encuesta_encuesta', 'joven_id')
 
+
+        # Changing field 'Encuesta.comunidad'
+        db.alter_column('encuesta_encuesta', 'comunidad_id', self.gf('smart_selects.db_fields.ChainedForeignKey')(to=orm['lugar.Comunidad']))
 
     models = {
         'auth.group': {
@@ -61,7 +75,7 @@ class Migration(SchemaMigration):
             'cedula': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'comunidad': ('suco.smart_selects.db_fields.ChainedForeignKey', [], {'to': "orm['lugar.Comunidad']"}),
             'edad': ('django.db.models.fields.IntegerField', [], {}),
-            'enquesta_numero': ('django.db.models.fields.IntegerField', [], {'default': '3'}),
+            'encuesta_numero': ('django.db.models.fields.IntegerField', [], {'default': '3'}),
             'escolaridad': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['encuesta.Escolaridad']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
             'finca': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
@@ -101,7 +115,8 @@ class Migration(SchemaMigration):
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'jovenes.joven': {
-            'Meta': {'object_name': 'Joven'},
+            'Meta': {'ordering': "('nombre',)", 'object_name': 'Joven'},
+            'activo': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'cedula': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'centroregional': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['lugar.Centroregional']"}),
             'fecha_nacimiento': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),

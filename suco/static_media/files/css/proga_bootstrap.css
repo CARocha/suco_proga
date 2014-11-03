@@ -9,6 +9,7 @@ body {}
 h1, h2, h3, h4 {font-family: "Yanone Kaffeesatz",sans-serif;}
 h3 {margin-top:0;}
 tfoot td {font-weight: bold; background:#999999}
+thead th {cursor:pointer}
 .header_row {background:#131313; color:#dce2b6; font-family: "Yanone Kaffeesatz",sans-serif; padding:6px 0 6px 30px;}
     .site_title {color:#5e5e5c; font-size:40px;}
     .site_slogan {padding-top:12px; font-size:22px;}
@@ -28,7 +29,7 @@ tfoot td {font-weight: bold; background:#999999}
 #menu {border-bottom: 11px solid #013F78; padding-bottom: 30px; }
 #menu_form_wrapper { background:url(../img/fondo_form_index.png) repeat; padding:30px; margin-top:20px; border:1px solid #6E8262; color:#fff}
 .menu_logo_wrapper {padding:30px 0 0 22px}
-.estadisticas_generales a {color:#fff; font-size:16px; font-family: "Yanone Kaffeesatz",sans-serif; text-decoration: underline; float:right;}
+.estadisticas_generales a {color:#fff; font-size:16px; font-family: "Yanone Kaffeesatz",sans-serif; text-decoration: underline; float:right; margin-left:20px;}
 
 .table_param_leftcol {color:#fff; font-size:21px; font-family: "Yanone Kaffeesatz",sans-serif;}
 #encolaboracion_wrapper {padding-left:20px;}

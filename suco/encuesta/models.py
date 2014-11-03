@@ -89,13 +89,15 @@ CHOICE_ENCUESTA_NUMERO = (
 class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
     '''
-    fecha = models.DateField()
+    fecha = models.DateField() #Esta fecha es para los viejos informes (las encuestas 1 de GR1 estan en 2015, et y las encuestas 2 en 2016.)
+    #Para no quebrar los informes originales de la linea de base, ahora hay tambien un nuevo field fecha:
+    fecha_encuesta = models.DateField(u'Encuesta fecha', blank=True, null=True)
     recolector = models.ForeignKey(Recolector)
     nombre = models.CharField('Nombre (vieja manera)', max_length=200)
     cedula = models.CharField('Cedula (vieja manera)', max_length=200, null=True, blank=True)
     edad = models.IntegerField()
     sexo = models.IntegerField(choices=CHOICE_SEXO)
-    enquesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
+    encuesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
     joven = models.ForeignKey(Joven,null=True)
     escolaridad = models.ForeignKey(Escolaridad)
     formacion = models.ForeignKey(Tecnica)

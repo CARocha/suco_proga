@@ -206,34 +206,34 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     #Busca las encuestas
     #La encuesta1, con todos los jovenes que tienen una.
     if numero_encuesta == "1":
-        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=1))
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=1))
         return_dict['encuestas'][2] = False;
 
     #La encuesta2, con todos los jovenes que tienen una.
     if numero_encuesta == "2":
-        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=2))
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=2))
         return_dict['encuestas'][2] = False;
 
     #La encuesta1, pero solo con jovenes que tienen tambien la segunda
     if numero_encuesta == "3":
         #no importa si los jovenes tienen 1 o 2 encuestas. Utilizamos todo.
         if solo_jovenes_con_dos == "0":
-            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=1))
-            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(enquesta_numero=2))
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=1))
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=2))
         #solo jovenes que tienen 2 encuestas
         else:
             encuesta1_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
             jovenes_ids = []
             for enc in encuesta1_dos_del_mismo_joven:
                 jovenes_ids.append(enc['joven'])
-            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(enquesta_numero=1))
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=1))
 
             #La encuesta2, pero solo con jovenes que tienen tambien la primera
             encuesta2_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
             jovenes_ids = []
             for enc in encuesta2_dos_del_mismo_joven:
                 jovenes_ids.append(enc['joven'])
-            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(enquesta_numero=2))
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=2))
 
     ######################################################
     #Variables de nombres para la view.
@@ -265,9 +265,10 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     solo_jovenes_con_dos_name = ""
     if solo_jovenes_con_dos == "1":
         solo_jovenes_con_dos_name = "Si"
+        solo_jovenes_con_dos_name_warning = ""
     else:
-        solo_jovenes_con_dos_name = "No. (Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber más producción en el primer año que el segundo.)"
-
+        solo_jovenes_con_dos_name = "No"
+        solo_jovenes_con_dos_name_warning = "Importante: los datos pueden ser incorrectos. Los datos incluyen jóvenes que todavía no tienen sus secunda encuestas. Por tanto, puede haber, por ejemplo, más producción en el primer año que el segundo."
     activo_name = ""
     if activo == "1":
         activo_name = "Si"
@@ -312,6 +313,7 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
         'indicador_name': indicador_name,
         'numero_encuesta_name': numero_encuesta_name,
         'solo_jovenes_con_dos_name': solo_jovenes_con_dos_name,
+        'solo_jovenes_con_dos_name_warning': solo_jovenes_con_dos_name_warning,
         'activo_name':activo_name,
         'numero_total_encuestas1': numero_total_encuestas1,
         'numero_total_encuestas2': numero_total_encuestas2,
@@ -331,7 +333,6 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     encuestas = data['encuestas']
     primera_encuesta = data['encuestas'][1] #encuesta 1
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
-
 
     ######################################################
     #TABLA CULTIVOS
@@ -472,14 +473,15 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     totaleskg_total_diff = saca_aumento_regresso(totales1kg_total, totales2kg_total, False)
     consumokg_total_diff = saca_aumento_regresso(consumo1kg_total, consumo2kg_total, False)
     valor_total_diff = saca_aumento_regresso(valor1_total, valor2_total, False)
-    kg_por_metrocuadrado_total1 = (totales1kg_total / (area1_total * una_manzana_nica_en_metros_cuadrados)) if area1_total is not None else 0
-    kg_por_metrocuadrado_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_metros_cuadrados)) if area2_total is not None else 0
+    kg_por_metrocuadrado_total1 = (totales1kg_total / (area1_total * una_manzana_nica_en_metros_cuadrados)) if area1_total is not None and area1_total > 0 and una_manzana_nica_en_metros_cuadrados > 0 else 0
+    kg_por_metrocuadrado_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_metros_cuadrados)) if area2_total is not None and area2_total > 0 and una_manzana_nica_en_metros_cuadrados > 0 else 0
     kg_por_metrocuadrado_total_diff = saca_aumento_regresso(kg_por_metrocuadrado_total1, kg_por_metrocuadrado_total2, False, "percent")
+
 
     ######################################################
     #TABLA PROMEDIOS - CULTIVOS
     ######################################################
-    promedio_producion_por_familia_kg1 = totales1kg_total / primera_encuesta.count()
+    promedio_producion_por_familia_kg1 = (totales1kg_total / primera_encuesta.count()) if primera_encuesta.count() > 0 else 0
     if numero_encuesta == "3":
         promedio_producion_por_familia_kg2 = totales2kg_total / segunda_encuesta.count() if segunda_encuesta.count() > 0 else 0
         promedio_producion_por_familia_diff_percent = saca_aumento_regresso(promedio_producion_por_familia_kg1, promedio_producion_por_familia_kg2, True, "percent")
