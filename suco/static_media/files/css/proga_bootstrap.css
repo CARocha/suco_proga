@@ -141,8 +141,9 @@ thead th {cursor:pointer}
     -moz-border-radius: 5px;
 }
 
-.footer_logos {text-align: center; padding:50px 0;}
-    .footer_logos img {padding:0px 30px; max-height: 90px}
+.footer_logos {text-align: center; padding:60px 0;}
+    .footer_logos img {padding:0px 30px; max-height: 40px}
+    .footer_logos img.logo_suco {max-height: 30px;}
 footer{
     font-family: "Yanone Kaffeesatz",sans-serif;
 	background: #fff url(../img/footer.jpg) repeat-x;

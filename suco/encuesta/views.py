@@ -922,15 +922,16 @@ def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicad
         if enc_processos.count() > 0:
             nb_familias_con_processos1 += 1
 
-    nb_familias_con_processos2 = 0
-    for enc in segunda_encuesta:
-        tiene_processo = False
-        enc_processos = Procesamiento.objects.filter(encuesta=enc)
-        if enc_processos.count() > 0:
-            nb_familias_con_processos2 += 1
+    if numero_encuesta == "3":
+        nb_familias_con_processos2 = 0
+        for enc in segunda_encuesta:
+            tiene_processo = False
+            enc_processos = Procesamiento.objects.filter(encuesta=enc)
+            if enc_processos.count() > 0:
+                nb_familias_con_processos2 += 1
 
-    nb_familias_con_processos_diff = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "absolute")
-    nb_familias_con_processos_diffpercent = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "percent")
+        nb_familias_con_processos_diff = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "absolute")
+        nb_familias_con_processos_diffpercent = saca_aumento_regresso(nb_familias_con_processos1, nb_familias_con_processos2, False, "percent")
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
@@ -1042,7 +1043,7 @@ def ultime_familias_superando_minimo (request, indicador, grupos, centroregional
     for enc in primera_encuesta:
         has_sales = False
         encuesta_total = 0
-        cultivos_total_higher_than_zero = enc.cultivos_set.filter(total__gt=100)
+        cultivos_total_higher_than_zero = enc.cultivos_set.filter(total__gt=0)
         for cul in cultivos_total_higher_than_zero:
             if cul.total > 0:
                 has_sales = True
@@ -1062,8 +1063,8 @@ def ultime_familias_superando_minimo (request, indicador, grupos, centroregional
             if has_sales == True:
                 nb_familias_con_ingresos2 += 1
 
-    nb_familias_con_ingresos_diff = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "absolute")
-    nb_familias_con_ingresos_diffpercent = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "percent")
+        nb_familias_con_ingresos_diff = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "absolute")
+        nb_familias_con_ingresos_diffpercent = saca_aumento_regresso(nb_familias_con_ingresos1, nb_familias_con_ingresos2, False, "percent")
 
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
