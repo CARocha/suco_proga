@@ -48,6 +48,40 @@ VISTAS DE LOS INFORMES NUEVAS / PROGRAMADAS EN OCTUBRE 2014.
 
 '''
 
+######################################################################################################
+#TAREAS -> permite a los equipos de saber que les faltan completar
+def tareas (request):
+
+    centrosregionales = Centroregional.objects.all()
+    grupos = Grupo.objects.all()
+
+    data = {}
+    for CR in centrosregionales:
+        cr_key = slugify(CR.nombre).replace('-', '_')
+        data[cr_key] = {}
+
+        for grupo in grupos:
+            grupo_key = grupo.id
+            data[cr_key][grupo_key] = {}
+            jovenes = Joven.objects.filter(activo=1).filter(centroregional=CR).filter(grupo=grupo)
+
+            for joven in jovenes:
+                joven_key = joven.id
+                data[cr_key][grupo_key][joven_key] = {}
+
+                encuesta1 = Encuesta.objects.filter(Q(joven=joven) & Q(encuesta_numero=1))
+                encuesta2 = Encuesta.objects.filter(Q(joven=joven) & Q(encuesta_numero=2))
+                primera_rellenada = 0
+                segunda_rellenada = 0
+                if encuesta1.count() > 0:
+                    primera_rellenada = 1
+                if encuesta2.count() > 0 is not None:
+                    segunda_rellenada = 1
+                data[cr_key][grupo_key][joven_key]['nombre'] = joven.nombre
+                data[cr_key][grupo_key][joven_key]['primera_rellenada'] = primera_rellenada
+                data[cr_key][grupo_key][joven_key]['segunda_rellenada'] = segunda_rellenada
+
+    return render_to_response('tareas/tareas.html', locals(), context_instance=RequestContext(request))
 
 
 ######################################################################################################
