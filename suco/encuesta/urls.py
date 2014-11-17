@@ -6,7 +6,7 @@ from django.views.generic.simple import direct_to_template
 urlpatterns = patterns('suco.encuesta.views',
     #(r'^index/$', 'inicio'),
     (r'^menu/$', 'menu'),
-    (r'^nuevos_informes/(?P<indicador>\w+)/(?P<grupos>\w+)/(?P<centroregional>\w+)/(?P<numero_encuesta>\w+)/(?P<solo_jovenes_con_dos>\w+)/(?P<activo>\w+)/(?P<sexo>\w+)', 'nuevos_informes'),
+    (r'^nuevos_informes/(?P<indicador>\w+)/(?P<grupos>\w+)/(?P<centroregional>\w+)/(?P<numero_encuesta>\w+)/(?P<solo_jovenes_con_dos>\w+)/(?P<activo>\w+)/(?P<sexo>\w+)/(?P<joven_especifico>\w+)', 'nuevos_informes'),
     (r'^tareas/$', 'tareas'),
     (r'^general/$', 'generales'),
     #(r'^ajax/organizaciones/(?P<departamento>\d+)/$', 'get_organizacion'),

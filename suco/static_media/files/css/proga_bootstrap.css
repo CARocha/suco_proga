@@ -53,12 +53,17 @@ thead th {cursor:pointer}
 /******* Informes *********/
 /**************************/
 .last_datagroup_col {border-right:1px solid #000 !important;}
-.red_cell {background:#d26565 !important; color:#fff !important;}
-.red_cell:after {content: "   ↓"; text-align: right; padding-bottom:3px 0 0 10px; bottom:2px; position: relative;}
-.green_cell {background:#00b050 !important;  color:#fff !important;}
-.green_cell:after {content: "  ↑"; text-align: right; padding-bottom:3px 0 0 10px; bottom:2px; position: relative;}
+
+
+.red_cell span {color:#d26565; float: right}
+.green_cell span {color:#00b050; float: right}
 
 .cambiar_form_parametros table td {color:#000}
+
+#jovenes_modal .modal-dialog
+{
+  width: 60%;
+}
 
 /**************************/
 /******* Footer ***********/

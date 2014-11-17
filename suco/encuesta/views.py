@@ -26,6 +26,7 @@ from suco.opciones.models import *
 from suco.organizaciones.models import *
 from suco.propiedades.models import *
 from suco.seguridad.models import *
+from suco.caching.models import *
 from utils import grafos
 from utils import *
 import random
@@ -88,7 +89,7 @@ def tareas (request):
 #DISPATCHER -> manda la request a la buena methodo
 #CACHING : hace tambien un caching del html
 @csrf_exempt
-def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False, sexo = "3"):
+def nuevos_informes (request, indicador = False, grupos = False, centroregional = False, numero_encuesta = False, solo_jovenes_con_dos = False, activo = False, sexo = "3", joven_especifico = "auto"):
 
     if request.method == 'POST':
 
@@ -133,34 +134,38 @@ def nuevos_informes (request, indicador = False, grupos = False, centroregional 
         if request.POST.get('sexo_encuesta') == "2":
             sexo = "2"
 
-
         indicador =  request.POST.get('indicador')
 
-
-        return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/')
-
+        return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/'+joven_especifico+'/')
 
     if indicador == "___":
         return HttpResponseRedirect('/')
 
-    #CACHING --- Si exista en la cache, la utilisa. Sinon, llama la funcion.
-    USE_CACHE = getattr(settings, "USE_CACHE", None)
+
+    #CACHING --- Si exista en la cache, la utilisa. Si no, llama la funcion.
+    cache_settings = Caching.objects.get(id=1)
+    USE_CACHE = False
+    if cache_settings is not None and cache_settings.activado == True:
+        USE_CACHE = True
+    #caching activado
     if USE_CACHE == True:
         m = hashlib.md5()
-        m.update(indicador+grupos+centroregional+numero_encuesta+solo_jovenes_con_dos+activo+sexo)
+        m.update(indicador+grupos+centroregional+numero_encuesta+solo_jovenes_con_dos+activo+sexo+joven_especifico)
         cache_hash_key = m.hexdigest()
         cached_data = cache.get(cache_hash_key)
+        #ya esta en el cache
         if cached_data is not None:
             return pickle.loads(cached_data)
+        #no esta en el cache
         else:
-            html = globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+            html = globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo,joven_especifico)
             #write cache
             cache.set(cache_hash_key, pickle.dumps(html), None)
             return html
-    #no cache
+    #caching no activado
     else:
         cache.clear()
-        return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+        return globals()[indicador](request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo,joven_especifico)
 
 
 
@@ -194,7 +199,7 @@ def debug (output_src):
 
 ######################################################################################################
 #Methodo que recupera todas las encuestas que se aplican a un grupo/centro/numrero_encuesta, etc, etc.
-def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
 
     ######################################################
     #lo que sera retornado
@@ -214,9 +219,9 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     ######################################################
     #Sexo?
     if sexo == "1":
-        jovenes = Joven.objects.filter(sexo=1)
+        jovenes = jovenes.filter(sexo=1)
     elif sexo == "2":
-        jovenes = Joven.objects.filter(sexo=2)
+        jovenes = jovenes.filter(sexo=2)
 
     ######################################################
     #Grupos
@@ -236,38 +241,42 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
     else:
         centroregional_object = Centroregional.objects.all()
 
+    #Joven especifico? No utilizamos lo que esta ariba. Solo utiliamos el joven.
+    if joven_especifico != "auto":
+        jovenes = Joven.objects.filter(id=joven_especifico)
+
     ######################################################
     #Busca las encuestas
     #La encuesta1, con todos los jovenes que tienen una.
     if numero_encuesta == "1":
-        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=1))
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes) & Q(encuesta_numero=1)).order_by('joven')
         return_dict['encuestas'][2] = False;
 
     #La encuesta2, con todos los jovenes que tienen una.
     if numero_encuesta == "2":
-        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=2))
+        return_dict['encuestas'][1] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes) & Q(encuesta_numero=2)).order_by('joven')
         return_dict['encuestas'][2] = False;
 
     #La encuesta1, pero solo con jovenes que tienen tambien la segunda
     if numero_encuesta == "3":
         #no importa si los jovenes tienen 1 o 2 encuestas. Utilizamos todo.
         if solo_jovenes_con_dos == "0":
-            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=1))
-            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=jovenes) & Q(encuesta_numero=2))
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes) & Q(encuesta_numero=1)).order_by('joven')
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes) & Q(encuesta_numero=2)).order_by('joven')
         #solo jovenes que tienen 2 encuestas
         else:
-            encuesta1_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
+            encuesta1_dos_del_mismo_joven = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
             jovenes_ids = []
             for enc in encuesta1_dos_del_mismo_joven:
                 jovenes_ids.append(enc['joven'])
-            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=1))
+            return_dict['encuestas'][1] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=1)).order_by('joven')
 
             #La encuesta2, pero solo con jovenes que tienen tambien la primera
-            encuesta2_dos_del_mismo_joven = Encuesta.objects.filter(Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
+            encuesta2_dos_del_mismo_joven = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=jovenes)).values('joven').annotate(counter=Count('joven')).filter(Q(joven__in=jovenes) & Q(counter__gt=1))
             jovenes_ids = []
             for enc in encuesta2_dos_del_mismo_joven:
                 jovenes_ids.append(enc['joven'])
-            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=2))
+            return_dict['encuestas'][2] = Encuesta.objects.filter(Q(activado=1) & Q(joven__in=list(jovenes_ids)) & Q(encuesta_numero=2)).order_by('joven')
 
     ######################################################
     #Variables de nombres para la view.
@@ -359,11 +368,11 @@ def get_encuestas (indicador, grupos, centroregional, numero_encuesta, solo_jove
 ######################################################################################################
 # INDICADOR : % de aumento de la producción
 
-def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
 
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     encuestas = data['encuestas']
     primera_encuesta = data['encuestas'][1] #encuesta 1
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
@@ -553,15 +562,16 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
             'porcentaje_diff': saca_aumento_regresso(porcentaje_num1, porcentaje_num2, False, "absolute"),
         }
 
+
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nivel de diversificación de la producción
-def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
 
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     encuestas = data['encuestas']
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
@@ -629,7 +639,9 @@ def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centr
             elif nb_cultivos > 10:
                 data['tablas']['cultivos']['encuesta2']['mas_de_diez'] += 1
 
-        numero_promedio_de_cultivos_por_familia2 = reduce(lambda x, y: x + y, nb_cultivos_para_promedio2) / len(nb_cultivos_para_promedio2)
+        numero_promedio_de_cultivos_por_familia2 = 0
+        if len(nb_cultivos_para_promedio2) > 0 :
+            numero_promedio_de_cultivos_por_familia2 = reduce(lambda x, y: x + y, nb_cultivos_para_promedio2) / len(nb_cultivos_para_promedio2)
         numero_promedio_de_cultivos_por_familia_diff = saca_aumento_regresso(numero_promedio_de_cultivos_por_familia1, numero_promedio_de_cultivos_por_familia2, False, "percent")
 
         data['tablas']['cultivos']['encuesta2']['cero_porcentaje'] = saca_porcentajes(data['tablas']['cultivos']['encuesta2']['cero'], segunda_encuesta.count(), False )
@@ -648,10 +660,10 @@ def nivel_de_diversificacion_de_la_produccion (request, indicador, grupos, centr
 
 ######################################################################################################
 # INDICADOR : %  de parcelas cultivadas con técnicas que mejoran el ecosistema (protección de suelos, de fuentes de agua, reforestación…).
-def parcelas_cultivadas_con_tecnicas_que_mejoran_el_ecosistema (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def parcelas_cultivadas_con_tecnicas_que_mejoran_el_ecosistema (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -754,10 +766,10 @@ def parcelas_cultivadas_con_tecnicas_que_mejoran_el_ecosistema (request, indicad
 
 ######################################################################################################
 # INDICADOR : Nº de meses en los que la mayoría de familias tienen acceso a una variedad de alimentos
-def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -869,11 +881,11 @@ def no_meses_acceso_variedad_alimentos (request, indicador, grupos, centroregion
 
 ######################################################################################################
 # INDICADOR : % de familias participantes del proyecto que tienen acceso a una gama de diversos alimentos durante tod el año
-def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
 
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -897,11 +909,11 @@ def familias_acceso_alimentos_todo_ano (request, indicador, grupos, centroregion
 
 ######################################################################################################
 # INDICADOR : % de aumento de los ingresos provenientes de las actividades de transformación y comercialización
-def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
 
     ######################################################
     #Busca las encuestas para este informe
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -941,10 +953,10 @@ def aumento_ingresos_de_transformacion_y_comercializacion (request, indicador, g
 
 ######################################################################################################
 # INDICADOR : Nº de familias que obtienen ingresos provenientes de la comercialización y la transformación de la producción
-def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -971,10 +983,10 @@ def familias_con_ingresos_de_comercializacion_y_transformacion (request, indicad
 
 ######################################################################################################
 # INDICADOR : Nivel de aceptación de la opinión de las jóvenes mujeres en la toma de decisión en el seno de las parcelas agrícolas familiares
-def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -1005,10 +1017,10 @@ def nivel_aceptacion_mujeres (request, indicador, grupos, centroregional, numero
 
 ######################################################################################################
 # INDICADOR : %  de jóvenes mujeres que participan en las actividades agrícolas de la parcela familiar
-def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
     data['tablas']['procesamiento_comercializacion'] = collections.OrderedDict()
@@ -1028,11 +1040,11 @@ def mujeres_actividades_agricolas_parcela (request, indicador, grupos, centroreg
 
 ######################################################################################################
 # INDICADOR : % de jóvenes mujeres que participan en actividades comunitarias
-def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
 
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queros sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -1051,21 +1063,21 @@ def mujeres_actividades_cumunitarias (request, indicador, grupos, centroregional
 
 ######################################################################################################
 # INDICADOR : % de jóvenes hombres que participan en actividades habitualmente reservadas a las mujeres
-def hombres_actividades_habitualmente_mujer (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def hombres_actividades_habitualmente_mujer (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
 
     #No hay datos para este indicador.  Ver con Nathalie
 
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Nº de familias superando el mínimo de subsistencia en términos de producción agrícola
-def ultime_familias_superando_minimo (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def ultime_familias_superando_minimo (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queremos sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -1104,10 +1116,10 @@ def ultime_familias_superando_minimo (request, indicador, grupos, centroregional
 
 ######################################################################################################
 # INDICADOR : % de aumento de los ingresos proviniendo de la producción agrícola
-def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     primera_encuesta = data['encuestas'][1] #encuesta 1, cuando queremos sola una encuesta (que sea la primera o la segunda)
     segunda_encuesta = data['encuestas'][2] #encuesta 2, si pedimos un informe que compara dos encuestas
 
@@ -1207,18 +1219,18 @@ def ultime_aumento_ingresos (request, indicador, grupos, centroregional, numero_
 
 ######################################################################################################
 # INDICADOR : Nivel de satisfacción de las condiciones de vida asociadas a la producción agrícola y alimentaria
-def ultime_nivel_satisfaccion_condiciones (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def ultime_nivel_satisfaccion_condiciones (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 ######################################################################################################
 # INDICADOR : Percepción de las condiciones del medioambiente (riqueza de los suelos, disponibilidad de agua)
-def ultime_percepcion_condiciones_medioambiente (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo):
+def ultime_percepcion_condiciones_medioambiente (request, indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico):
     ######################################################
     #Busca las encuestas para este informe.
-    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo)
+    data = get_encuestas(indicador, grupos, centroregional, numero_encuesta, solo_jovenes_con_dos, activo, sexo, joven_especifico)
     return render_to_response('nuevos_informes/'+indicador+'.html', locals(), context_instance=RequestContext(request))
 
 
@@ -1377,10 +1389,21 @@ def index(request):
                 if request.POST.get('sexo_encuesta') == "2":
                     sexo = "2"
 
-                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/')
+                #solo se utilisa desde parametros.html para ver un joven especifico.
+                joven_especifico = "auto"
+
+                return HttpResponseRedirect('/nuevos_informes/'+indicador+'/'+grupos_string+'/'+centrosregionales_string+'/'+numero_encuesta+'/'+solo_jovenes_con_dos+'/'+activo+'/'+sexo+'/'+joven_especifico+'/')
 
     else:
-        form = MonitoreoForm()
+
+        initial_data = {
+            'numero_encuesta': '3',
+            'solo_jovenes_con_dos': '1',
+            'activo': '1',
+            'indicador': 'aumento_de_la_produccion'
+        }
+        form = MonitoreoForm(initial=initial_data)
+
         mensaje = "Existen alguno errores"
     dict = {'form': form,'user': request.user, }
 

@@ -27,8 +27,10 @@ $( document ).ready(function() {
 
         if (val > 0) {
             $(this).addClass('green_cell');
+            $(this).append("<span class='glyphicon glyphicon-arrow-up'></span>");
         } else if (val < 0) {
             $(this).addClass('red_cell');
+            $(this).append("<span class='glyphicon glyphicon-arrow-down'></span>");
         }
     });
 

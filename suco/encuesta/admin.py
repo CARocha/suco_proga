@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.db.models import Max
 
+
 class AnimalesFincaInline(admin.TabularInline):
     model = AnimalesFinca
     extra = 1
@@ -353,7 +354,7 @@ class EncuestaAdmin(admin.ModelAdmin):
     save_on_top = True
     actions_on_top = True
     #desde octubre 2014, los jovenes estan vinculados con las encuestas, entonces no necesitamos nombre/edad/sexo/cedula no mas.
-    exclude = ('usuario', 'edad', 'sexo', 'cedula') #anadir 'nombre' despues de la importacion.. Simon.
+    #exclude = ('usuario', 'edad', 'sexo', 'cedula') #anadir 'nombre' despues de la importacion.. Simon.
     inlines = [EducacionInline,SaludInline,EnergiaInline,QueUtilizaInline,AguaConsumoInline,
                AguaProduccionInline,OrganizacionGremialInline,OrganizacionComunitariaInline,
                AccesoTierraInline,UsoTierraInline,AccesoAguaInline,ExistenciaArbolesInline,

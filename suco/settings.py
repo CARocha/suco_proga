@@ -33,11 +33,11 @@ STATICFILES_DIRS = (
 )
 
 #Systema de caching. Desarollado en octubre / noviembre 2014 - No esta terminado. Por favor no utilizar todavia.
-USE_CACHE = False
+#django.core.cache.backends.filebased.FileBasedCache'
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': PROJECT_DIR+'/static_media/cache/'
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': PROJECT_DIR+'/cache_encuestas/' #con LocMemCache solo sirve de token unique
     }
 }
 
@@ -112,6 +112,7 @@ INSTALLED_APPS = (
     'south',
     'suco.smart_selects',
     'suco.jovenes',
+    'suco.caching'
 )
 
 # A sample logging configuration. The only tangible logging

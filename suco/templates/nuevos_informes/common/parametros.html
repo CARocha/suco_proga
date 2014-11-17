@@ -3,7 +3,7 @@
     <h2>Parametros <button class="btn btn-primary " style="float: right" data-toggle="modal" data-target="#parametros_modal">Cambiar los parámetros</button></h2>
 
 
-    <!-- Modal -->
+    <!-- Modal Parametros -->
     <div class="modal fade" id="parametros_modal" tabindex="-1" role="dialog" aria-labelledby="parametros_modal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -62,6 +62,41 @@
       </div>
     </div>
 
+    <!-- Modal Encuestas/Jovenes -->
+    <div class="modal fade large" id="jovenes_modal" tabindex="-1" role="dialog" aria-labelledby="jovenes_modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+            <h4 class="modal-title" id="myModalLabel">Encuestas utilizadas</h4>
+          </div>
+          <div class="modal-body">
+            <table class="table table-responsive table-striped small">
+                <tr>
+                    <th>Encuestas utilizadas{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Encuestas utilizadas<br/><small>Encuesta 2</small></th>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td>
+                        {% for enc in primera_encuesta %}
+                            <a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank"/>{{ enc.joven }} (ID: {{ enc.id }})<br/>
+                        {% endfor %}
+                    </td>
+                    {% if numero_encuesta == "3" %}
+                        <td>
+                            {% for enc in segunda_encuesta %}
+                                <a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank"/>{{ enc.joven }} (ID: {{ enc.id }})<br/>
+                            {% endfor %}
+                        </td>
+                    {% endif %}
+                </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <table class="table table-condensed table-bordered table-striped " style="font-size: 85%">
         <tr>
@@ -101,9 +136,13 @@
             <td>Numero total de encuestas utilizadas en estos calculos</td>
             <td>
                 {{ data.strings.numero_total_encuestas1 }}{% if numero_encuesta == "3" %} (primera encuesta)
-                <br/>
-                {{ data.strings.numero_total_encuestas2 }} (segunda encuesta)
+                    <br/>
+                    {{ data.strings.numero_total_encuestas2 }} (segunda encuesta)
+
+
                 {% endif %}
+
+
             </td>
         </tr>
         <tr>
@@ -111,7 +150,13 @@
             <td>{{ data.strings.numero_total_jovenes1 }}{% if numero_encuesta == "3" %} (primera encuesta)
                 <br/>
                 {{ data.strings.numero_total_jovenes2 }} (segunda encuesta)
+                    {% if data.strings.numero_total_jovenes1 != data.strings.numero_total_jovenes2 and solo_jovenes_con_dos == "1" %}
+                        <div class="alert alert-danger">
+                            <p>El número de jóvenes no concorde entre la primera y la segunda encuesta. Esto significa que unos jóvenes tienen encuestas duplicadas. Por favor pedir a los coordinadores de buscar cual jóvenes tienen encuestas duplicadas y borrarlas.</p>
+                        </div>
+                    {% endif %}
                 {% endif %}
+                <a href="#" style="float: right" data-toggle="modal" data-target="#jovenes_modal">Ver la lista</a>
 
             </td>
         </tr>
