@@ -57,7 +57,7 @@ class TipoCultivos(models.Model):
     conversion_kg = models.FloatField('Conversión a kilo (multiplicar con)', default=1)
 
     def __unicode__(self):
-        return self.nombre
+        return self.nombre+ " (Unidad : "+self.unidad+")"
 
     class Meta:
         verbose_name_plural = "Tipos cultivos en la finca"
@@ -76,7 +76,8 @@ class Cultivos(models.Model):
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)
-    
+    def __unicode__(self):
+        return self.cultivo.nombre+" (Unidad: "+self.cultivo.unidad+")"
     class Meta:
         verbose_name_plural = "Cultivos en la Finca"
     def clear_cache(sender, **kwargs):

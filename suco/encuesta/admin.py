@@ -354,7 +354,7 @@ class EncuestaAdmin(admin.ModelAdmin):
     save_on_top = True
     actions_on_top = True
     #desde octubre 2014, los jovenes estan vinculados con las encuestas, entonces no necesitamos nombre/edad/sexo/cedula no mas.
-    #exclude = ('usuario', 'edad', 'sexo', 'cedula') #anadir 'nombre' despues de la importacion.. Simon.
+    exclude = ('usuario', 'sexo', 'cedula', 'nombre')
     inlines = [EducacionInline,SaludInline,EnergiaInline,QueUtilizaInline,AguaConsumoInline,
                AguaProduccionInline,OrganizacionGremialInline,OrganizacionComunitariaInline,
                AccesoTierraInline,UsoTierraInline,AccesoAguaInline,ExistenciaArbolesInline,
@@ -365,7 +365,7 @@ class EncuestaAdmin(admin.ModelAdmin):
                ElectrodomesticoInline,SanaInline,HerramientasInline,TransporteInline,OtrosIngresosInline,
                AhorroInline, CreditoInline,SeguridadInline,VulnerableInline,RiesgosInline
               ]
-    list_display = ('joven', 'nombre', 'fecha', 'formacion', 'comunidad', 'escolaridad','encuesta_numero')
+    list_display = ('joven', 'fecha', 'formacion', 'comunidad', 'escolaridad','encuesta_numero')
     list_filter = ['comunidad', 'formacion']
     search_fields = ['joven__nombre', 'comunidad__nombre', 'formacion__nombre']
     date_hierarchy = 'fecha'

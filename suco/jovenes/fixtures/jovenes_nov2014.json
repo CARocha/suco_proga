@@ -1,4 +1,4 @@
-	[
+[
     {
         "model": "jovenes.joven",
         "pk": "3",
@@ -5018,6 +5018,19 @@
             "grupo": "4",
             "idseguimiento": "1383",
             "centroregional": "3",
+            "activo": 1
+        }
+    },
+    {
+        "model": "jovenes.joven",
+        "pk": "1392",
+        "fields": {
+            "nombre": "Ena Isela Picado Rivera ",
+            "cedula": "161 251083 0017M",
+            "sexo": "1",
+            "grupo": "4",
+            "idseguimiento": "1392",
+            "centroregional": "1",
             "activo": 1
         }
     },

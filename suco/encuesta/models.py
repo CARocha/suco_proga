@@ -83,7 +83,6 @@ CHOICE_SEXO = ( (1,'Hombre'),
 CHOICE_ENCUESTA_NUMERO = (
     (1,'Primera encuesta'),
     (2,'Segunda encuesta'),
-    (3,'Por determinar'),
     )
 
 class Encuesta(models.Model):
@@ -91,13 +90,14 @@ class Encuesta(models.Model):
     '''
     activado  = models.BooleanField(default=1)
     fecha = models.DateField()
+    encuesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
     recolector = models.ForeignKey(Recolector)
     joven = models.ForeignKey(Joven,null=True)
     nombre = models.CharField('Nombre (vieja manera)', max_length=200)
     cedula = models.CharField('Cedula (vieja manera)', max_length=200, null=True, blank=True)
-    edad = models.IntegerField()
-    sexo = models.IntegerField(choices=CHOICE_SEXO)
-    encuesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
+    edad = models.IntegerField(blank=True, null=True, default=0)
+    sexo = models.IntegerField(choices=CHOICE_SEXO, blank=True, default=0)
+
 
     escolaridad = models.ForeignKey(Escolaridad)
     formacion = models.ForeignKey(Tecnica)
@@ -114,7 +114,7 @@ class Encuesta(models.Model):
     usuario = models.ForeignKey(User)
     
     def __unicode__(self):
-        return self.nombre
+        return self.joven.nombre
         
     class Meta:
         verbose_name_plural = "Encuestas"

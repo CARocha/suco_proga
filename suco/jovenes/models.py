@@ -36,7 +36,7 @@ class Joven(models.Model):
     activo = models.IntegerField(choices=CHOICE_ACTIVO, verbose_name=u'Activo?', default=1)
 
     def __unicode__(self):
-        return self.nombre
+        return self.nombre+ " - "+self.grupo.nombre
 
     class Meta:
         verbose_name_plural = "Jovenes"
