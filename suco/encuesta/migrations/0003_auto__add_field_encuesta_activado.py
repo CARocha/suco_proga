@@ -65,7 +65,6 @@ class Migration(SchemaMigration):
             'encuesta_numero': ('django.db.models.fields.IntegerField', [], {'default': '3'}),
             'escolaridad': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['encuesta.Escolaridad']"}),
             'fecha': ('django.db.models.fields.DateField', [], {}),
-            'fecha_encuesta': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'finca': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'formacion': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['encuesta.Tecnica']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

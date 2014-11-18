@@ -4983,6 +4983,20 @@
     },
     {
         "model": "jovenes.joven",
+        "pk": "1380",
+        "fields": {
+            "nombre": "Dora Damary Agurcia Meza",
+            "cedula": "490-180391-0000L",
+            "sexo": "1",
+            "grupo": "4",
+            "idseguimiento": "1380",
+            "centroregional": "4",
+            "activo": 1,
+            "fecha_nacimiento": "1991-03-18"
+        }
+    },
+    {
+        "model": "jovenes.joven",
         "pk": "1382",
         "fields": {
             "nombre": "Doris Patricia Hern\u00e1ndez Melgara",
@@ -5348,6 +5362,20 @@
             "idseguimiento": "1543",
             "centroregional": "3",
             "activo": 1
+        }
+    },
+    {
+        "model": "jovenes.joven",
+        "pk": "1548",
+        "fields": {
+            "nombre": "Maribel del Carmen Arguijo Herrera",
+            "cedula": "490-280793-0002A",
+            "sexo": "1",
+            "grupo": "4",
+            "idseguimiento": "1548",
+            "centroregional": "4",
+            "activo": 1,
+            "fecha_nacimiento": "1993-07-28"
         }
     },
     {
@@ -6120,6 +6148,20 @@
     },
     {
         "model": "jovenes.joven",
+        "pk": "1901",
+        "fields": {
+            "nombre": "Janier Juriel Roque Garc\u00eda",
+            "cedula": "17-09-1997",
+            "sexo": "2",
+            "grupo": "4",
+            "idseguimiento": "1901",
+            "centroregional": "4",
+            "activo": 1,
+            "fecha_nacimiento": "1997-09-17"
+        }
+    },
+    {
+        "model": "jovenes.joven",
         "pk": "1909",
         "fields": {
             "nombre": "Jaudiel En\u00f3c Chavarria Gonz\u00e1lez",
@@ -6486,6 +6528,20 @@
             "centroregional": "4",
             "activo": 1,
             "fecha_nacimiento": "1989-11-30"
+        }
+    },
+    {
+        "model": "jovenes.joven",
+        "pk": "2099",
+        "fields": {
+            "nombre": "Ruddy Alberto Lopez Maldonado",
+            "cedula": "01-07-1997",
+            "sexo": "2",
+            "grupo": "4",
+            "idseguimiento": "2099",
+            "centroregional": "4",
+            "activo": 1,
+            "fecha_nacimiento": "1997-07-01"
         }
     },
     {

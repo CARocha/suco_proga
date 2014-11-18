@@ -90,10 +90,7 @@ class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
     '''
     activado  = models.BooleanField(default=1)
-    fecha = models.DateField() #Esta fecha es para los viejos informes (las encuestas 1 de GR1 estan en 2015, et y las encuestas 2 en 2016.)
-    #Para no quebrar los informes originales de la linea de base, ahora hay tambien un nuevo field fecha:
-
-    fecha_encuesta = models.DateField(u'Encuesta fecha', blank=True, null=True)
+    fecha = models.DateField()
     recolector = models.ForeignKey(Recolector)
     joven = models.ForeignKey(Joven,null=True)
     nombre = models.CharField('Nombre (vieja manera)', max_length=200)

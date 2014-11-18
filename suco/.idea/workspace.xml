@@ -26,10 +26,8 @@
       <file leaf-file-name="views.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="194" column="28" selection-start="7682" selection-end="7682" vertical-scroll-proportion="-2.44" vertical-offset="3237" max-vertical-offset="56423">
-              <folding>
-                <element signature="e#24#76#0" expanded="true" />
-              </folding>
+            <state line="194" column="28" selection-start="7682" selection-end="7682" vertical-scroll-proportion="0.0" vertical-offset="3237" max-vertical-offset="56423">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -37,7 +35,7 @@
       <file leaf-file-name="ultime_aumento_ingresos.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/ultime_aumento_ingresos.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="0" selection-start="286" selection-end="286" vertical-scroll-proportion="-8.5" vertical-offset="0" max-vertical-offset="1870">
+            <state line="13" column="0" selection-start="286" selection-end="286" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="1870">
               <folding />
             </state>
           </provider>
@@ -46,16 +44,25 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="47" selection-start="1745" selection-end="1746" vertical-scroll-proportion="0.0" vertical-offset="1309" max-vertical-offset="2125">
+            <state line="92" column="30" selection-start="2652" selection-end="2652" vertical-scroll-proportion="0.0" vertical-offset="1173" max-vertical-offset="2074">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="encuestas.json" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/encuesta/fixtures/encuestas.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13241" column="1" selection-start="363781" selection-end="363781" vertical-scroll-proportion="0.8158845" vertical-offset="224645" max-vertical-offset="225199">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/encuesta/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="367" column="26" selection-start="11528" selection-end="11528" vertical-scroll-proportion="0.4413793" vertical-offset="5983" max-vertical-offset="7650">
+            <state line="367" column="26" selection-start="11528" selection-end="11528" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="7650">
               <folding>
                 <element signature="e#25#57#0" expanded="true" />
               </folding>
@@ -63,27 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cultivos/models.py">
+      <file leaf-file-name="jovenes.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jovenes/fixtures/jovenes.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="11" selection-start="2535" selection-end="2542" vertical-scroll-proportion="0.0" vertical-offset="895" max-vertical-offset="2023">
+            <state line="21" column="24" selection-start="582" selection-end="582" vertical-scroll-proportion="-13.730769" vertical-offset="0" max-vertical-offset="135252">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="aumento_de_la_produccion.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="0" selection-start="347" selection-end="347" vertical-scroll-proportion="3.6666667" vertical-offset="459" max-vertical-offset="5508">
-              <folding>
-                <element signature="n#style#0;n#h3#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#h3#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#tr#0;n#tfoot#0;n#tbody#1;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#h3#0;n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#h3#0;n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#a#0;n#h3#0;n#div#2;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -100,9 +91,18 @@
       <file leaf-file-name="parametros.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/common/parametros.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="79" selection-start="3893" selection-end="3893" vertical-scroll-proportion="-1.5769231" vertical-offset="1149" max-vertical-offset="2873">
+            <state line="131" column="39" selection-start="6337" selection-end="6337" vertical-scroll-proportion="-12.038462" vertical-offset="1914" max-vertical-offset="2873">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/jovenes/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="918">
               <folding>
-                <element signature="n#style#0;n#a#0;n#td#1;n#tr#7;n#table#0;n#!!top" expanded="true" />
+                <element signature="e#0#28#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -111,16 +111,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="193" column="48" selection-start="9727" selection-end="9727" vertical-scroll-proportion="-50.692307" vertical-offset="1963" max-vertical-offset="4386">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/encuesta/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="188" selection-start="436" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
+            <state line="148" column="89" selection-start="7516" selection-end="7516" vertical-scroll-proportion="-15.384615" vertical-offset="2116" max-vertical-offset="4386">
               <folding />
             </state>
           </provider>
@@ -136,15 +127,11 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/templates/tareas/tareas.html" />
-        <option value="$PROJECT_DIR$/jovenes/fixtures/jovenes20141013.json" />
         <option value="$PROJECT_DIR$/static_media/files/js/nuevos_informes.js" />
         <option value="$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html" />
         <option value="$PROJECT_DIR$/caching/admin.py" />
         <option value="$PROJECT_DIR$/settings.py" />
-        <option value="$PROJECT_DIR$/encuesta/models.py" />
         <option value="$PROJECT_DIR$/caching/models.py" />
-        <option value="$PROJECT_DIR$/jovenes/fixtures/jovenes.json" />
         <option value="$PROJECT_DIR$/templates/problemas/problemas.html" />
         <option value="$PROJECT_DIR$/encuesta/urls.py" />
         <option value="$PROJECT_DIR$/encuesta/views.py" />
@@ -152,6 +139,10 @@
         <option value="$PROJECT_DIR$/static_media/files/css/proga_bootstrap.css" />
         <option value="$PROJECT_DIR$/templates/nuevos_informes/ultime_aumento_ingresos.html" />
         <option value="$PROJECT_DIR$/encuesta/admin.py" />
+        <option value="$PROJECT_DIR$/jovenes/fixtures/jovenes.json" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/encuesta/models.py" />
+        <option value="$PROJECT_DIR$/encuesta/fixtures/encuestas.json" />
       </list>
     </option>
   </component>
@@ -325,55 +316,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="static_media" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="files" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="suco" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="suco" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static_media" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="files" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="suco" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="suco" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static_media" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="files" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
+              <option name="myItemId" value="jovenes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -388,6 +331,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="jovenes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrations" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -423,6 +370,42 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="encuesta" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrations" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="suco" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="encuesta" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fixtures" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -430,13 +413,14 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="preferences.updates" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -528,27 +512,7 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="suco" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -574,7 +538,27 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="suco" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -615,6 +599,12 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
     <configuration default="false" name="suco" type="Python.DjangoServer" factoryName="Django server">
@@ -675,14 +665,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1034" extended-state="1" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1828125" sideWeight="0.67408234" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23802084" sideWeight="0.67408234" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="FLOATING" visible="false" weight="0.25108853" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" x="0" y="317" width="1536" height="173" />
@@ -719,20 +709,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static_media/files/js/nuevos_informes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="11" selection-start="716" selection-end="716" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="782">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/basenueva.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="36" selection-start="732" selection-end="746" vertical-scroll-proportion="4.8461537" vertical-offset="296" max-vertical-offset="850">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="40" column="5" selection-start="1692" selection-end="1692" vertical-scroll-proportion="0.0" vertical-offset="321" max-vertical-offset="2499">
@@ -742,38 +718,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/caching/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="53" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
-          <folding />
-        </state>
+        <state line="10" column="53" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/caching/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="29" selection-start="646" selection-end="646" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
-          <folding>
-            <marker date="1416242711918" expanded="true" signature="-1:-1" placeholder="import ..." />
-            <marker date="1416242711918" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jovenes/fixtures/jovenes.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7894" column="1" selection-start="215379" selection-end="215379" vertical-scroll-proportion="-20.0" vertical-offset="133678" max-vertical-offset="134300">
-          <folding />
-        </state>
+        <state line="12" column="29" selection-start="646" selection-end="646" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cultivos/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="70" column="11" selection-start="2535" selection-end="2542" vertical-scroll-proportion="0.0" vertical-offset="895" max-vertical-offset="2023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="48" selection-start="9727" selection-end="9727" vertical-scroll-proportion="-50.692307" vertical-offset="1963" max-vertical-offset="4386">
           <folding />
         </state>
       </provider>
@@ -787,15 +742,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/aumento_de_la_produccion.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="347" selection-end="347" vertical-scroll-proportion="3.6666667" vertical-offset="459" max-vertical-offset="5508">
-          <folding>
-            <element signature="n#style#0;n#h3#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#h3#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tfoot#0;n#tbody#1;n#table#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#h3#0;n#div#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#h3#0;n#div#1;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#h3#0;n#div#2;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-          </folding>
+        <state line="16" column="0" selection-start="347" selection-end="347" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="5508">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -806,44 +754,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/common/parametros.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="79" selection-start="3893" selection-end="3893" vertical-scroll-proportion="-1.5769231" vertical-offset="1149" max-vertical-offset="2873">
-          <folding>
-            <element signature="n#style#0;n#a#0;n#td#1;n#tr#7;n#table#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="194" column="28" selection-start="7682" selection-end="7682" vertical-scroll-proportion="-2.44" vertical-offset="3237" max-vertical-offset="56423">
-          <folding>
-            <element signature="e#24#76#0" expanded="true" />
-          </folding>
+        <state line="194" column="28" selection-start="7682" selection-end="7682" vertical-scroll-proportion="0.0" vertical-offset="3237" max-vertical-offset="56423">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/ultime_aumento_ingresos.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="286" selection-end="286" vertical-scroll-proportion="-8.5" vertical-offset="0" max-vertical-offset="1870">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/encuesta/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="47" selection-start="1745" selection-end="1746" vertical-scroll-proportion="0.0" vertical-offset="1309" max-vertical-offset="2125">
+        <state line="13" column="0" selection-start="286" selection-end="286" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="1870">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/encuesta/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="367" column="26" selection-start="11528" selection-end="11528" vertical-scroll-proportion="0.4413793" vertical-offset="5983" max-vertical-offset="7650">
+        <state line="367" column="26" selection-start="11528" selection-end="11528" vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="7650">
           <folding>
             <element signature="e#25#57#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jovenes/fixtures/jovenes.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="24" selection-start="582" selection-end="582" vertical-scroll-proportion="-13.730769" vertical-offset="0" max-vertical-offset="135252">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="89" selection-start="7516" selection-end="7516" vertical-scroll-proportion="-15.384615" vertical-offset="2116" max-vertical-offset="4386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/nuevos_informes/common/parametros.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="131" column="39" selection-start="6337" selection-end="6337" vertical-scroll-proportion="-12.038462" vertical-offset="1914" max-vertical-offset="2873">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jovenes/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encuesta/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="30" selection-start="2652" selection-end="2652" vertical-scroll-proportion="0.0" vertical-offset="1173" max-vertical-offset="2074">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encuesta/fixtures/encuestas.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13241" column="1" selection-start="363781" selection-end="363781" vertical-scroll-proportion="0.8158845" vertical-offset="224645" max-vertical-offset="225199">
+          <folding />
         </state>
       </provider>
     </entry>
