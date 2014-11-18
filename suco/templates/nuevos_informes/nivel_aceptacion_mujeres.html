@@ -1,0 +1,100 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: Medio</h3>
+
+
+
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Datos</h2>
+    <h3>Toma de decisión<a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('decisiones'); return false;">Exportar en Excel</a></h3>
+    <br/><br/>
+    <div id="decisiones">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Hijas{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hijas<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Hijos{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hijos<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Mujer{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Mujer<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Hombre{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hombre<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.participacion_decisiones.items%}
+                <tr>
+                    <td>{{key|unslugify}}</td>
+                    {%for k,v in value.items%}
+                        <td>{{v}}</td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <br/><br/>
+
+    <h3>Beneficios<a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('decisiones'); return false;">Exportar en Excel</a></h3>
+    <br/><br/>
+    <div id="decisiones">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Hijas{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hijas<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Hijos{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hijos<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Mujer{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Mujer<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Hombre{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Hombre<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.participacion_beneficio.items%}
+                <tr>
+                    <td>{{key|unslugify}}</td>
+                    {%for k,v in value.items%}
+                        <td>{{v}}</td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <br/><br/>
+
+
+
+{% endblock %}

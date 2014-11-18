@@ -1,5 +1,6 @@
 from django import template
 register = template.Library()
+from django.template.defaultfilters import floatformat
 
 @register.filter
 def restar(value, arg):
@@ -33,4 +34,18 @@ def frecuencia(cantidad, tabla):
 @register.filter
 def get_value(dicc, key):   
     '''donde dicc es el diccionario con valores y key la llave a obtener'''
-    return dicc[key] 
+    return dicc[key]
+
+@register.filter
+def percent(value):
+    if value is None:
+        return None
+
+    if value == "":
+        return ""
+
+    value = float(value)
+
+    if value == 0: return "n/d"
+    #return floatformat(value, 2)
+    return floatformat(value * 100.0, 2) + '%'

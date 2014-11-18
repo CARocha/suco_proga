@@ -2,6 +2,9 @@
 
 from django.db import models
 from suco.encuesta.models import *
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 
 # Create your models here.
 
@@ -14,7 +17,12 @@ class ManejoAgro(models.Model):
     class Meta:
         verbose_name_plural = "Uso opciones de manejo agroecologico"
         ordering = ('nombre',)
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 CHOICE_NIVEL_CONOCIMIENTO = ((1,'Nada'),(2,'Poco'),(3,'Algo'),(4,'Bastante'))
 
 class OpcionesManejo(models.Model):
@@ -32,7 +40,12 @@ class OpcionesManejo(models.Model):
     
     class Meta:
         verbose_name_plural = "Opciones de manejo"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Observacion(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
@@ -40,13 +53,23 @@ class Observacion(models.Model):
 
     class Meta:
         ordering = ('nombre',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Sistematica(models.Model):
     tipo = models.ManyToManyField(Observacion, verbose_name="Observaciones", null=True, blank=True)
     encuesta = models.ForeignKey(Encuesta)
     
     class Meta:
         verbose_name_plural = "Observación sistemática de"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 # Uso de semilla
         
@@ -59,6 +82,11 @@ class CultivosVariedad(models.Model):
         verbose_name_plural = "Cultivos variedad"
         ordering = ('cultivo',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Variedades(models.Model):
     cultivo = models.ForeignKey(CultivosVariedad)
     variedad = models.CharField(max_length=200)
@@ -68,7 +96,12 @@ class Variedades(models.Model):
     class Meta:
         verbose_name_plural = "Variedades"
         ordering = ('cultivo',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 CHOICE_ORIGEN = ((1,'Nativo'), (2,'Introducido'))
 
 class Semilla(models.Model):
@@ -84,19 +117,34 @@ class Semilla(models.Model):
     
     class Meta:
         verbose_name_plural = "Uso de Semilla"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 # participación de la familia en: labores, beneficios y la toma de decisiones
 
 class Rubros(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Decision(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Participasion(models.Model):
     rubro = models.ForeignKey(Rubros)
     labores = models.ManyToManyField(Decision, verbose_name="Labores", related_name="labore")
@@ -106,7 +154,12 @@ class Participasion(models.Model):
     
     class Meta:
         verbose_name_plural = "Participación de la familia en: labores, beneficios y la toma de decisión"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 # Suelo
 
 class Textura(models.Model):
@@ -119,6 +172,11 @@ class Textura(models.Model):
         verbose_name_plural = "Suelo - Textura"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Profundidad(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -128,6 +186,11 @@ class Profundidad(models.Model):
     class Meta:
         verbose_name_plural = "Suelo - Profundidad"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 # Esta clase de va a ocupar en varias de los tipos de caraterización
 # ya que contendra las opciones Alta, Media y Baja
@@ -141,6 +204,11 @@ class Densidad(models.Model):
         verbose_name_plural = "Suelo - Densidad"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Pendiente(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -151,6 +219,11 @@ class Pendiente(models.Model):
         verbose_name_plural = "Suelo - Pendiente"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Drenaje(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -160,7 +233,12 @@ class Drenaje(models.Model):
     class Meta:
         verbose_name_plural = "Suelo - Drenaje"
         ordering = ('nombre',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Suelo(models.Model):
     ''' Caracterización de terreno
     '''
@@ -185,7 +263,12 @@ class Suelo(models.Model):
     
     class Meta:
         verbose_name_plural = "Suelo"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 #Manejo del suelo
         
 class Preparar(models.Model):
@@ -198,6 +281,11 @@ class Preparar(models.Model):
         verbose_name_plural = "ManejoSuelo - preparar"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Traccion(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -207,6 +295,11 @@ class Traccion(models.Model):
     class Meta:
         verbose_name_plural = "ManejoSuelo - tracción"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Fertilizacion(models.Model):
     nombre = models.CharField(max_length=200)
@@ -218,6 +311,11 @@ class Fertilizacion(models.Model):
         verbose_name_plural = "ManejoSuelo - fertilizacion"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Conservacion(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -227,6 +325,11 @@ class Conservacion(models.Model):
     class Meta:
         verbose_name_plural = "ManejoSuelo - conservacion"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class ManejoSuelo(models.Model):
     ''' 12.2 Manejo de suelo
@@ -242,7 +345,12 @@ class ManejoSuelo(models.Model):
     
     class Meta:
         verbose_name_plural = "Manejo de Suelo"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Procesado(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
@@ -250,7 +358,12 @@ class Procesado(models.Model):
 
     class Meta:
         ordering = ('nombre',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 CHOICE_EMPAQUE = (  (1,'Biodegradable'),
                     (2,'Contaminante'),
                     (3,'Reutilisable')
@@ -266,7 +379,12 @@ class Procesamiento(models.Model):
     
     class Meta:
         verbose_name_plural = "Procesamiento de la producción"
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 # Otros ingresos de toda la familiar
 
 class Fuente(models.Model):
@@ -277,6 +395,11 @@ class Fuente(models.Model):
     class Meta:
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class TipoTrabajo(models.Model):
     fuente = models.ForeignKey(Fuente)
     nombre =  models.CharField(max_length=200)
@@ -285,6 +408,11 @@ class TipoTrabajo(models.Model):
 
     class Meta:
         ordering = ('fuente__nombre','nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 CHOICE_MANEJA = ((1,"Hombre"),(2,"Mujer"),(3,"Ambos"),(4,"Hijos/as"),
                  (5,'Hombre-Hijos'),(6,'Mujer-Hijos'),(7,'Todos'))
@@ -299,5 +427,10 @@ class OtrosIngresos(models.Model):
     
     class Meta:
         verbose_name_plural = "Otros Ingresos de toda la familia"
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
     

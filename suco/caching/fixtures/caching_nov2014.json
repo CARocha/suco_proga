@@ -1,0 +1,9 @@
+[
+    {
+        "model": "caching.caching",
+        "pk": "1",
+        "fields": {
+            "activado": 0
+        }
+    }
+]

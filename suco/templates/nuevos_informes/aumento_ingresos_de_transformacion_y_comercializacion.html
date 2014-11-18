@@ -1,0 +1,80 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 20%</h3>
+
+    {% include "nuevos_informes/common/parametros.html" %}
+    <div class="alert alert-warning">
+        <p>No disponemos de datos sobre el valor monetario de la producción. Sólo tenemos el número de jóvenes, la cantidad producida y la cantidad comercializada.</p>
+    </div>
+    <h2>Datos</h2>
+    <h3>Procesamiento y comercialización de la producción <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('process'); return false;">Exportar en Excel</a></h3>
+
+
+
+    <br/><br/>
+    <div id="process">
+
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Número de jóvenes{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    <th>% de jóvenes{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Número de jóvenes<br><small>Encuesta 2</small></th>
+                        <th>% de jóvenes<br><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia  entre los %</th>
+                    {% endif %}
+                    <th>Cantidad producida{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Cantidad producida<br><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                    <th>Cantidad comercializada{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Cantidad comercializada<br><small>Encuesta 2</small></th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.procesamiento_comercializacion.items%}
+                <tr>
+                    <td>{{key|unslugify}}</td>
+                    <td>{{value.frecuencia1|floatformat}}</td>
+                    <td>{{value.por_frecuencia1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.frecuencia2|floatformat}}</tdh>
+                        <td>{{value.por_frecuencia2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff">{{ value.por_frecuencia_diff|floatformat }}</td>
+                    {% endif %}
+                    <td>{{value.cantidad1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.cantidad2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff percent">{{value.cantidad_diff|percent}}</td>
+                    {% endif %}
+                    <td>{{value.comer1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.comer2|floatformat}}</td>
+                        <td class="format_diff percent">{{value.comer_diff|percent}}</td>
+                    {% endif %}
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        </div>
+        <div id="container"> </div>
+    </div>
+
+{% endblock %}

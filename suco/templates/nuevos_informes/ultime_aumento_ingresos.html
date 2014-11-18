@@ -1,0 +1,104 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 20%</h3>
+
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Ingresos totales</h2>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Ingresos totales{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+            {% if numero_encuesta == "3" %}
+                <th>Ingresos totales<br/><small>Encuesta 2</small></th>
+                <th>Diferencia (C$)</th>
+                <th>Diferencia (%)</th>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>{{ grande_total_ingresos1|floatformat:2 }}</td>
+            {% if numero_encuesta == "3" %}
+                <td>{{ grande_total_ingresos2|floatformat:2 }}</td>
+                <td class="format_diff">{{ grande_total_ingresos_diff|floatformat:2 }}</td>
+                <td class="format_diff">{{ grande_total_ingresos_diffpercent|percent }}</td>
+            {% endif %}
+        </tr>
+    </table>
+
+    <hr/>
+
+    <h2>Datos</h2>
+
+    {% for tipokey,tipo in data.tablas.ingresos_agro.items %}
+        <h3>{{ tipo.tiponame }}</h3>
+        <table class="table table-bordered table-striped">
+            <thead>
+                {% if numero_encuesta == "3" %}
+                    <tr>
+                        <th colspan="2"></th>
+                        <th colspan="4">Encuesta 1</th>
+                        <th colspan="4">Encuesta 2</th>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>RUBROS</th>
+                    <th class="last_datagroup_col">Unidad</th>
+                    <th>Número de familias que venden{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    <th>Cantidad vendida por familia{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    <th>Precio promedio{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    <th class="last_datagroup_col">Ingreso por venta{% if numero_encuesta == "3" %}<br><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Número de familias que venden<br><small>Encuesta 2</small></th>
+                        <th>Cantidad vendida por familia<br><small>Encuesta 2</small></th>
+                        <th>Precio promedio<br><small>Encuesta 2</small></th>
+                        <th>Ingreso por venta<br><small>Encuesta 2</small></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in tipo.entries.items%}
+                    <tr>
+                        <td>{{key|unslugify}}</td>
+                        <td class="last_datagroup_col">{{value.key2|unslugify}}</td>
+                        <td>{{value.numero1|floatformat}}</td>
+                        <td>{{value.cantidad1|floatformat}}</td>
+                        <td>{{value.precio1|floatformat}}</td>
+                        <td class="last_datagroup_col">{{value.ingreso1|floatformat}}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{value.numero2|floatformat}}</td>
+                            <td>{{value.cantidad2|floatformat}}</td>
+                            <td>{{value.precio2|floatformat}}</td>
+                            <td>{{value.ingreso2|floatformat}}</td>
+                        {% endif %}
+                    </tr>
+                {%endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>TOTAL VENTA RUBROS</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{tipo.total_ingresos_de_este_tipo_de_cultivo1|floatformat:2}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{tipo.total_ingresos_de_este_tipo_de_cultivo2|floatformat:2}}</td>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+    {% endfor %}
+
+{% endblock %}

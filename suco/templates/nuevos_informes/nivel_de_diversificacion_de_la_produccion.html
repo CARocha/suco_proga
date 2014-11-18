@@ -1,0 +1,121 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: Muy diversificada (más de 10 cultivos)</h3>
+
+
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Datos</h2>
+
+
+
+
+    <div id="diversificacion_cultivos">
+        <h3>Cultivos<a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('diversificacion_cultivos'); return false;">Exportar en Excel</a></h3>
+
+
+
+        <table  class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Número de cultivos</th>
+                    <th>Número de jovenes{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Número de jovenes<br/><small>Encuesta 2</small></th>
+                    {% endif %}
+                    <th>Porcentaje (%){% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Porcentaje  (%)<br/><small>Encuesta 2</small></th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>Cero</td>
+                        <td>{{ data.tablas.cultivos.encuesta1.cero }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.cero }}</td>
+                        {% endif %}
+                        <td>{{ data.tablas.cultivos.encuesta1.cero_porcentaje }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.cero_porcentaje }}</td>
+                            <td class="format_diff">{{ data.tablas.cultivos.cero_porcentaje_diff }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>De uno a cinco</td>
+                        <td>{{ data.tablas.cultivos.encuesta1.uno_a_cinco }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.uno_a_cinco }}</td>
+                        {% endif %}
+                        <td>{{ data.tablas.cultivos.encuesta1.uno_a_cinco_porcentaje }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.uno_a_cinco_porcentaje }}</td>
+                            <td class="format_diff">{{ data.tablas.cultivos.uno_a_cinco_porcentaje_diff }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>De seis a diez</td>
+                        <td>{{ data.tablas.cultivos.encuesta1.seis_a_diez }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.seis_a_diez }}</td>
+                        {% endif %}
+                        <td>{{ data.tablas.cultivos.encuesta1.seis_a_diez_porcentaje }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.seis_a_diez_porcentaje }}</td>
+                            <td class="format_diff">{{ data.tablas.cultivos.seis_a_diez_porcentaje_diff }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td>Más de diez</td>
+                        <td>{{ data.tablas.cultivos.encuesta1.mas_de_diez }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.mas_de_diez }}</td>
+                        {% endif %}
+                        <td>{{ data.tablas.cultivos.encuesta1.mas_de_diez_porcentaje }}</td>
+                        {% if numero_encuesta == "3" %}
+                            <td>{{ data.tablas.cultivos.encuesta2.mas_de_diez_porcentaje }}</td>
+                            <td class="format_diff">{{ data.tablas.cultivos.mas_de_diez_porcentaje_diff }}</td>
+                        {% endif %}
+                    </tr>
+            </tbody>
+        </table>
+        <br>
+        <h3>Promedio del numero de cultivos por familia</h3>
+        <table  class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Promedio del numero de cultivos por familia{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Promedio del numero de cultivos por familia<br/><small>Encuesta 2</small></th>
+                        <th>Diferencia</th>
+                    {% endif %}
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{ numero_promedio_de_cultivos_por_familia1|floatformat }}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{ numero_promedio_de_cultivos_por_familia2|floatformat }}</td>
+                        <td class="format_diff">{{ numero_promedio_de_cultivos_por_familia_diff|percent }}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+{% endblock %}

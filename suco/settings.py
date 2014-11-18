@@ -32,6 +32,16 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_DIR, 'static_media/files/'),
 )
 
+#Systema de caching. Desarollado en octubre / noviembre 2014 - No esta terminado. Por favor no utilizar todavia.
+#django.core.cache.backends.filebased.FileBasedCache'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': PROJECT_DIR+'/cache_encuestas/' #con LocMemCache solo sirve de token unique
+    }
+}
+
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -63,7 +73,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -101,6 +111,8 @@ INSTALLED_APPS = (
     'suco.seguridad',
     'south',
     'suco.smart_selects',
+    'suco.jovenes',
+    'suco.caching'
 )
 
 # A sample logging configuration. The only tangible logging

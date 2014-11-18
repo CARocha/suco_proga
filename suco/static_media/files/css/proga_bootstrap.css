@@ -1,0 +1,169 @@
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(../fonts/yanone.woff) format('woff');
+}
+
+body {}
+h1, h2, h3, h4 {font-family: "Yanone Kaffeesatz",sans-serif;}
+h3 {margin-top:0;}
+tfoot td {font-weight: bold; background:#999999}
+thead th {cursor:pointer}
+.header_row {background:#131313; color:#dce2b6; font-family: "Yanone Kaffeesatz",sans-serif; padding:6px 0 6px 30px;}
+    .site_title {color:#5e5e5c; font-size:40px;}
+    .site_slogan {padding-top:12px; font-size:22px;}
+
+.page_header_wrapper {background:#fff url(../img/menufondo.jpg) repeat-x; background-size:cover; height: auto; }
+
+/*Fix bootstrap responsive tables*/
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+/**************************/
+/********* Menu ***********/
+/**************************/
+
+
+#menu {border-bottom: 11px solid #013F78; padding-bottom: 30px; }
+#menu_form_wrapper { background:url(../img/fondo_form_index.png) repeat; padding:30px; margin-top:20px; border:1px solid #6E8262; color:#fff}
+.menu_logo_wrapper {padding:30px 0 0 22px}
+.estadisticas_generales a {color:#fff; font-size:16px; font-family: "Yanone Kaffeesatz",sans-serif; text-decoration: underline; float:right; margin-left:20px;}
+
+.table_param_leftcol {color:#fff; font-size:21px; font-family: "Yanone Kaffeesatz",sans-serif;}
+#encolaboracion_wrapper {padding-left:20px;}
+#encolaboracion{
+    background:#ededed;
+    height:26px;
+    color:#555753;
+    font-size:16px;
+    text-align:center;
+    padding-top:3px;
+    border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    -moz-border-radius-topright:5px;
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    border-top:#fff 2px solid;
+}
+
+/**************************/
+/******* Informes *********/
+/**************************/
+.last_datagroup_col {border-right:1px solid #000 !important;}
+
+
+.red_cell span {color:#d26565; float: right}
+.green_cell span {color:#00b050; float: right}
+
+.cambiar_form_parametros table td {color:#000}
+
+#jovenes_modal .modal-dialog
+{
+  width: 60%;
+}
+
+/**************************/
+/******* Footer ***********/
+/**************************/
+
+#franjaverde{
+    background: url(../img/franjaverde.jpg) no-repeat;
+    background-size:cover;
+    color:#3e581a;
+    padding:20px 70px 40px 0;
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    font-size:16px;
+}
+.tituloverde{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    color:#8cc63f;
+    font-size:30px;
+    font-weight:bold;
+    text-align:right;
+    padding-right:20px;
+}
+
+.bloque_dept {
+    padding-left:20px;
+    border-right:1px solid #f1f1f1;
+    border-left:1px solid #f1f1f1;
+}
+.nombre_dept{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    font-size:30px;
+    color:#93c8eb;
+    margin-bottom:20px;
+}
+
+.circle_encuesta{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    background: url(../img/circulo_num.jpg) no-repeat;
+    width:80px;
+    height:80px;
+    float:left;
+    text-align:center;
+    font-size:33px;
+    color:#fff;
+    padding-top:5px;
+
+}
+
+.circle_encuesta_gen{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    margin-top:73px;
+    margin-left:28px;
+    width:80px;
+    height:80px;
+    float:left;
+    text-align:center;
+    font-size:33px;
+    color:#fff;
+    padding-top:5px;
+    position: relative;
+    bottom:40px;
+    left:4px;
+
+}
+
+.cantidad{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+    font-size:14px;
+    position:relative;
+    bottom:28px;
+}
+.personas{
+    background: url(../img/personas.jpg) no-repeat ;
+    background-position:center bottom;
+}
+
+#home_logos {
+    background:#fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.footer_logos {text-align: center; padding:60px 0;}
+    .footer_logos img {padding:0px 30px; max-height: 40px}
+    .footer_logos img.logo_suco {max-height: 30px;}
+footer{
+    font-family: "Yanone Kaffeesatz",sans-serif;
+	background: #fff url(../img/footer.jpg) repeat-x;
+	height: 80px;
+    text-align: center;
+	padding-top: 10px;
+	font-size: 14px;
+    color:#babdb6;
+}
+footer a{
+	text-decoration:none;
+    color:#888a85;
+}
+
+footer a:hover{
+	text-decoration:none;
+    color:#000;
+}

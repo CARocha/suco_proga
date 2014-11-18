@@ -1,0 +1,24 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: medioambiente mejorado</h3>
+
+
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Datos</h2>
+    <div class="alert alert-danger">
+        <p>No hay datos sobre este indicador en la base de datos.</p>
+    </div>
+
+
+{% endblock %}

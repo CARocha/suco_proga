@@ -1,0 +1,60 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Tareas</h1>
+    <div class="alert alert-info">
+        <p>Esta tabla permite saber cuál encuestas faltan. Muestra los jóvenes activos que todavía no tienen todas sus encuestas.</p>
+        <p>Si un joven a abandonado el proyecto, por favor ponerlo no activo en Linea de Base y tambien en Seguimiento para que desaparezca de esta lista.</p>
+    </div>
+    {% for cr_key,cr in data.items %}
+        <h2 style="text-transform: uppercase; cursor:pointer; color:#006cb1" onclick="$(this).next().toggle();">{{ cr_key|unslugify }} </h2>
+        <div class="centroregional_wrapper" style="display: none;">
+            {% for grupo_key,grupo in cr.items %}
+                <h3>Grupo {{ grupo_key }} </h3>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>Joven</th>
+                        <th>Primera encuesta</th>
+                        <th>Segunda encuesta</th>
+                    </tr>
+                    {% for joven_key,joven in grupo.items %}
+                        {% if joven.primera_rellenada != 1 or joven.segunda_rellenada != 1 %}
+                            <tr>
+                                <td>{{ joven.nombre }}</td>
+                                <td>
+                                    {% if joven.primera_rellenada == 1%}
+                                        <div class="glyphicon glyphicon-ok" style="color:#84b83e"></div>
+                                    {% else %}
+                                        <div class="glyphicon glyphicon-remove" style="color:#F00"></div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if joven.segunda_rellenada == 1%}
+                                        <div class="glyphicon glyphicon-ok" style="color:#84b83e"></div>
+                                    {% else %}
+                                        <div class="glyphicon glyphicon-remove" style="color:#F00"></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% endfor %}
+            <hr/>
+        </div>
+
+    {% endfor %}
+
+
+
+
+
+{% endblock %}

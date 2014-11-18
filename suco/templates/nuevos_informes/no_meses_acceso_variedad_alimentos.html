@@ -1,0 +1,137 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>{{ data.strings.indicador_name }}</h1>
+    <h3>Meta: 12 meses</h3>
+
+
+    {% include "nuevos_informes/common/parametros.html" %}
+
+    <h2>Datos</h2>
+
+    <h3>Disponibilidad de alimentos <a href="#" class="exportar guardarXLS btn btn-warning" style="float:right" onclick="exportarXLS('alimentos'); return false;">Exportar in Excel</a></h3>
+    <br/><br/>
+    </div></div></div>
+    <div id="alimentos">
+        <table  class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th class="last_datagroup_col">ALIMENTOS</th>
+                    <th># de familias que producen{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th># de familias que producen<br/><small>Encuesta 2</small></th>
+                        <th>%<br/><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                    <th># de familias que compran{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th># de familias que compran<br/><small>Encuesta 2</small></th>
+                        <th>%<br/><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                    <th># de familias que consumen suficiente en verano{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th># de familias que consumen suficiente en verano<br/><small>Encuesta 2</small></th>
+                        <th>%<br/><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                    <th># de familias que consumen suficiente en invierno{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    <th>%</th>
+                    {% if numero_encuesta == "3" %}
+                        <th># de familias que consumen suficiente en invierno<br/><small>Encuesta 2</small></th>
+                        <th>%<br/><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                    <th>Numero de meses promedio con acceso{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                    {% if numero_encuesta == "3" %}
+                        <th>Numero de meses promedio con acceso<br/><small>Encuesta 2</small></th>
+                        <th class="last_datagroup_col">Diferencia</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {%for key, value in data.tablas.alimentos.items%}
+                <tr>
+                    <td class="last_datagroup_col">{{key|unslugify}}</td>
+                    <td>{{value.producen1|floatformat}}</td>
+                    <td>{{value.por_producen1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.producen2|floatformat}}</td>
+                        <td>{{value.por_producen2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff">{{ value.por_producen_diff|floatformat }}</td>
+                    {% endif %}
+                    <td>{{value.compran1|floatformat}}</td>
+                    <td>{{value.por_compran1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.compran2|floatformat}}</td>
+                        <td>{{value.por_compran2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff">{{ value.por_compran_diff|floatformat }}</td>
+                    {% endif %}
+                    <td>{{value.verano1|floatformat}}</td>
+                    <td>{{value.por_verano1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.verano2|floatformat}}</td>
+                        <td>{{value.por_verano2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff">{{ value.por_verano_diff|floatformat }}</td>
+                    {% endif %}
+                    <td>{{value.invierno1|floatformat}}</td>
+                    <td>{{value.por_invierno1|floatformat}}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{value.invierno2|floatformat}}</td>
+                        <td>{{value.por_invierno2|floatformat}}</td>
+                        <td class="last_datagroup_col format_diff">{{ value.por_invierno_diff|floatformat }}</td>
+                    {% endif %}
+                    <td>{{ value.no_mes_acceso1|floatformat }}</td>
+                    {% if numero_encuesta == "3" %}
+                        <td>{{ value.no_mes_acceso2|floatformat }}</td>
+                        <td class="format_diff">{{ value.no_mes_acceso_diff|floatformat }}</td>
+                    {% endif %}
+                </tr>
+                {%endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    {% if numero_encuesta == "3" %}
+                        <td class="last_datagroup_col"><strong>Totales</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ promedio_all_verano1|floatformat:2 }}</td>
+                        <td>{{ promedio_all_por_verano1|floatformat:2 }}</td>
+                        <td>{{ promedio_all_verano2|floatformat:2 }}</td>
+                        <td>{{ promedio_all_por_verano2|floatformat:2 }}</td>
+                        <td class="format_diff">{{ promedio_all_verano_diff|floatformat:2 }}</td>
+                        <td>{{ promedio_all_invierno1|floatformat:2 }}</td>
+                        <td>{{ promedio_all_por_invierno1|floatformat:2 }}</td>
+                        <td>{{ promedio_all_invierno2|floatformat:2 }}</td>
+                        <td>{{ promedio_all_por_invierno2|floatformat:2 }}</td>
+                        <td class="format_diff">{{ promedio_all_invierno_diff|floatformat:2 }}</td>
+                        <td>{{ promedio_all_no_mes_acceso1|floatformat:2 }}</td>
+                        <td>{{ promedio_all_no_mes_acceso2|floatformat:2 }}</td>
+                        <td class="format_diff">{{ promedio_all_no_mes_acceso_diff|floatformat:2 }}</td>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+    <div class="container"><div class="row"><div class="col-md-12">
+{% endblock %}

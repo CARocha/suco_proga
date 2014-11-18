@@ -9,10 +9,14 @@
 <script type="text/javascript" src="{{STATIC_URL}}js/grafico.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/table.exporting.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+<link href="{{STATIC_URL}}js/select2/select2.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{{STATIC_URL}}js/select2/select2.js"></script>
+
+
 <title>Sistema de Monitoreo PROGA | {%block title%}{%endblock%}</title>
     <script type="text/javascript">
     $(document).ready(function() {
+        $('.select2').select2();
         alto = $(".contenido").height();
         $('.sidebar').height(alto);
         $('#filtroslaterales').height(alto);

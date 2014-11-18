@@ -2,7 +2,9 @@
 
 from django.db import models
 from suco.encuesta.models import *
-
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 # Create your models here.
 
 class Animales(models.Model):
@@ -13,6 +15,10 @@ class Animales(models.Model):
     class Meta:
         verbose_name_plural = "Animales-Finca"
         ordering = ('nombre',)
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class ProductoAnimal(models.Model):
     animal = models.ForeignKey(Animales)
@@ -24,6 +30,10 @@ class ProductoAnimal(models.Model):
     class Meta:
         verbose_name_plural = "Finca - Producto"
         ordering = ('animal__nombre', 'nombre',)
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 
 class AnimalesFinca(models.Model):
@@ -39,12 +49,21 @@ class AnimalesFinca(models.Model):
     
     class Meta:
         verbose_name_plural = "Animales de la finca"
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 
 class AquienVende(models.Model):
     nombre = models.CharField(max_length=200)
     def __unicode__(self):
         return self.nombre
-        
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class ProduccionConsumo(models.Model):
     producto = models.ForeignKey(ProductoAnimal)
     total_produccion = models.FloatField('Total producion por año')
@@ -56,3 +75,7 @@ class ProduccionConsumo(models.Model):
     
     class Meta:
         verbose_name_plural = "Producción y consumo en la finca"
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")

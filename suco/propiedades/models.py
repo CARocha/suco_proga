@@ -3,6 +3,9 @@
 from django.db import models
 from suco.encuesta.models import *
 from suco.organizaciones.models import *
+from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 
 # Create your models here.
 
@@ -19,6 +22,11 @@ class Piso(models.Model):
         verbose_name_plural = "Pisos"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Techo(models.Model):
     nombre = models.CharField(max_length=100)
     def __unicode__(self):
@@ -27,6 +35,11 @@ class Techo(models.Model):
     class Meta:
         verbose_name_plural = "Techos"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class TipoCasa(models.Model):
     '''Modelo tipos de casa
@@ -41,6 +54,11 @@ class TipoCasa(models.Model):
 
     class Meta:
         verbose_name_plural = "Tipos de Casas"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class DetalleCasa(models.Model):
     '''Modelo detalle de casa
@@ -57,6 +75,11 @@ class DetalleCasa(models.Model):
     class Meta:
         verbose_name_plural = "Detalle casa"
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Equipos(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -67,6 +90,11 @@ class Equipos(models.Model):
         verbose_name_plural = "Equipos"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 
 class Infraestructuras(models.Model):
     nombre = models.CharField(max_length=100)
@@ -76,7 +104,12 @@ class Infraestructuras(models.Model):
     class Meta:
         verbose_name_plural = "Infraestructuras"
         ordering = ('nombre',)
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Electro(models.Model):
     nombre = models.CharField(max_length=100)
     def __unicode__(self):
@@ -85,6 +118,11 @@ class Electro(models.Model):
     class Meta:
         verbose_name_plural = "Electrodomésticos"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
         
 class Sanamiento(models.Model):
@@ -95,6 +133,11 @@ class Sanamiento(models.Model):
     class Meta:
         verbose_name_plural = "Equipos para seneamiento ambiental"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class PropiedadEquipo(models.Model):
     '''Modelo propiedades
@@ -108,7 +151,12 @@ class PropiedadEquipo(models.Model):
     
     class Meta:
         verbose_name_plural = "Equipos para la producción"
-     
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class PropiedadInfra(models.Model):  
     infraestructura = models.ForeignKey(Infraestructuras, verbose_name="Infraestructuras")
     cantidad = models.IntegerField('Cantidad')
@@ -119,7 +167,12 @@ class PropiedadInfra(models.Model):
     
     class Meta:
         verbose_name_plural = "Infraestructura para la produccion"
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Electrodomestico(models.Model):  
     electro = models.ForeignKey(Electro, verbose_name="Electrodomésticos")
     cantidad = models.IntegerField('Cantidad')
@@ -130,7 +183,12 @@ class Electrodomestico(models.Model):
     
     class Meta:
         verbose_name_plural = "Electrodomésticos"
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Sana(models.Model):  
     electro = models.ForeignKey(Sanamiento, verbose_name="Equipos para saneamiento ambiental")
     cantidad = models.IntegerField('Cantidad')
@@ -141,7 +199,12 @@ class Sana(models.Model):
     
     class Meta:
         verbose_name_plural = "Equipos para seneamiento ambiental"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 #Herramientas
 
 class NombreHerramienta(models.Model):
@@ -152,6 +215,11 @@ class NombreHerramienta(models.Model):
     class Meta:
         verbose_name_plural = "Herramientas-Nombres"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Herramientas(models.Model):
     '''Modelo herramientas
@@ -166,6 +234,11 @@ class Herramientas(models.Model):
     class Meta:
         verbose_name_plural = "Herramientas"
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 
 class NombreTransporte(models.Model):
     nombre = models.CharField(max_length=100)
@@ -176,6 +249,11 @@ class NombreTransporte(models.Model):
     class Meta:
         verbose_name_plural = "Transporte-Nombre"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 class Transporte(models.Model):
     '''Modelo transporte
@@ -189,6 +267,11 @@ class Transporte(models.Model):
     
     class Meta:
         verbose_name_plural = "Transporte"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 #Ahorro
 
@@ -205,7 +288,12 @@ class AhorroPregunta(models.Model):
         ordering = ('nombre',)
     def __unicode__(self):
         return self.nombre
-    
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class Ahorro(models.Model):
     ''' modelos ahorro
     '''
@@ -218,7 +306,12 @@ class Ahorro(models.Model):
     
     class Meta:
         verbose_name_plural = "Ahorro de la o el joven participante"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 # credito
 
 class DaCredito(models.Model):
@@ -231,6 +324,11 @@ class DaCredito(models.Model):
         verbose_name_plural = "Credito-Dacredito"
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class OcupaCredito(models.Model):
     nombre = models.CharField(max_length=100)
     def __unicode__(self):
@@ -239,6 +337,11 @@ class OcupaCredito(models.Model):
     class Meta:
         verbose_name_plural = "Credito-Ocupa"
         ordering = ('nombre',)
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
 
 CHOICE_SATISFACCION = ( (1,"Menos de 25 % de las necesidades"),
                         (2,"Entre 25 y 50 % de las necesidades"),
@@ -267,3 +370,8 @@ class Credito(models.Model):
     
     class Meta:
         verbose_name_plural = "Credito en efectivo y/o materiales de la o el joven participante"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")

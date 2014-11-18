@@ -1,10 +1,15 @@
 # -*- coding: UTF-8 -*-
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
+from django.core.cache import cache
 from suco.lugar.models import *
+from suco.jovenes.models import *
 from django.contrib.auth.models import User
 import datetime
 from suco.smart_selects.db_fields import ChainedForeignKey 
+
 
 # Create your models here.
 class Recolector(models.Model):
@@ -18,7 +23,13 @@ class Recolector(models.Model):
     class Meta:
         ordering = ('nombre',)
         verbose_name_plural = "Recolector"
-        
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
+
 class Escolaridad(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -28,7 +39,12 @@ class Escolaridad(models.Model):
     class Meta:
         ordering = ('nombre',)
         verbose_name_plural = "Escolaridad"
-        
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
+
 class Tecnica(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -38,7 +54,11 @@ class Tecnica(models.Model):
     class Meta:
         ordering = ('nombre',)
         verbose_name_plural = "Formación técnica"
-        
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
 class ParticipacionProyecto(models.Model):
     nombre = models.CharField(max_length=200)
 
@@ -48,20 +68,37 @@ class ParticipacionProyecto(models.Model):
     class Meta:
         ordering = ('nombre',)
 
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")
+
+
 CHOICE_OPCION = ((1,'Si'),(2,'No')) # Este choice se utilizara en toda la aplicacion que necesite si o no
+
 CHOICE_SEXO = ( (1,'Hombre'),
                 (2,'Mujer')
               )
-        
+
+CHOICE_ENCUESTA_NUMERO = (
+    (1,'Primera encuesta'),
+    (2,'Segunda encuesta'),
+    )
+
 class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
     '''
+    activado  = models.BooleanField(default=1)
     fecha = models.DateField()
+    encuesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
     recolector = models.ForeignKey(Recolector)
-    nombre = models.CharField('Nombre de entrevistado/a', max_length=200)
-    cedula = models.CharField('cedula de entrevistado', max_length=200, null=True, blank=True)
-    edad = models.IntegerField()
-    sexo = models.IntegerField(choices=CHOICE_SEXO)
+    joven = models.ForeignKey(Joven,null=True)
+    nombre = models.CharField('Nombre (vieja manera)', max_length=200)
+    cedula = models.CharField('Cedula (vieja manera)', max_length=200, null=True, blank=True)
+    edad = models.IntegerField(blank=True, null=True, default=0)
+    sexo = models.IntegerField(choices=CHOICE_SEXO, blank=True, default=0)
+
+
     escolaridad = models.ForeignKey(Escolaridad)
     formacion = models.ForeignKey(Tecnica)
     participacion = models.ManyToManyField(ParticipacionProyecto)
@@ -73,11 +110,16 @@ class Encuesta(models.Model):
         chained_model_field="municipio", 
         show_all=False, 
         auto_choose=True
-                        )
+    )
     usuario = models.ForeignKey(User)
     
     def __unicode__(self):
-        return self.nombre
+        return self.joven.nombre
         
     class Meta:
-        verbose_name_plural = "Encuesta"
+        verbose_name_plural = "Encuestas"
+
+    def clear_cache(sender, **kwargs):
+        cache.clear()
+    post_save.connect(clear_cache, dispatch_uid="clear_cache_postsave")
+    post_delete.connect(clear_cache, dispatch_uid="clear_cache_postdelete")

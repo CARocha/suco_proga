@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Línea de base - PROGA-Jóvenes | {%block title%}{%endblock%}</title>
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.1.11.1.min.js"></script>
+    <link href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}js/select2/select2.css" rel="stylesheet" type="text/css">
+    <link href="{{STATIC_URL}}css/proga_bootstrap.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{STATIC_URL}}js/select2/select2.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{{STATIC_URL}}js/tablesorter.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/nuevos_informes.js"></script>
+    {%block extra_header%}{%endblock%}
+
+  </head>
+  <body>
+    <div class="container">
+        <div class="row header_row">
+            <div class="col-md-2 site_title">
+                Línea de base
+            </div>
+            <div class="col-md-2 ">
+                <div id ="navegacion" class="header">
+                    <div id ="botones-nav">
+                        <a href="/"><img src="{{STATIC_URL}}img/inicio_nav.png"></a>
+                        <a href="/admin"><img src="{{STATIC_URL}}img/admin_nav.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 site_slogan">
+                Mejoramiento de la productividad y de la gestión agrícola de jóvenes productores y productoras
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            {%block content%}
+            {%endblock%}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 footer_logos">
+                <img src="{{STATIC_URL}}img/logogrande.png" alt="">
+                <img src="{{STATIC_URL}}img/logosuco_grande.jpg" alt="" class="logo_suco">
+                <img src="{{STATIC_URL}}img/logo_inatec.png" alt="">
+                <img src="{{STATIC_URL}}img/logo_inprhu.png" alt="">
+                <img src="{{STATIC_URL}}img/logo_canada.png" alt="">
+
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    Desarrollado por  <a href="http://www.simas.org.ni">SIMAS</a> y <a href="http://www.suco.org">SUCO</a>, bajo plataforma <a href="http://djangoproject.org">Django</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/highcharts.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/exporting_patched.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/grafico.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/table.exporting.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
+  </body>
+</html>
