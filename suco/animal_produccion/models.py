@@ -41,7 +41,7 @@ class AnimalesFinca(models.Model):
     '''
     animales = models.ForeignKey(Animales)
     cantidad = models.FloatField('Cantidad de animales')
-    valor = models.FloatField('Valor total')
+    valor = models.FloatField('Valor unitario')
     encuesta = models.ForeignKey(Encuesta)
     
     def __unicode__(self):

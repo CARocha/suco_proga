@@ -72,7 +72,7 @@ class Cultivos(models.Model):
     area = models.FloatField('Area Mz')
     total = models.FloatField('Total producción por año')
     consumo = models.FloatField('Consumo por año')
-    precio = models.FloatField('Precio de venta en el mercado local')
+    precio = models.FloatField('Precio unitario de venta en el mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)
@@ -101,10 +101,10 @@ class Patio(models.Model):
 
 class CultivosPatio(models.Model):
     cultivo = models.ForeignKey(Patio, verbose_name="Cultivos")
-    area = models.CharField('Números de arboles', max_length=200)
+    area = models.CharField('Area Mz', max_length=200)
     total = models.FloatField('Total producción por año')
     consumo = models.FloatField('Consumo por año')
-    precio = models.FloatField('Precio de venta en el mercado local')
+    precio = models.FloatField('Precio unitario de venta en el mercado local')
     venta_libre = models.ManyToManyField(AquienVende, verbose_name='Venta libre por año')
     venta_organizada = models.IntegerField('Venta organizada por año', choices=CHOICE_OPCION)
     encuesta = models.ForeignKey(Encuesta)
