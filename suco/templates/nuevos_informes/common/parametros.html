@@ -1,4 +1,4 @@
-
+    {% load tools  %}
 
     <h2>Parametros <button class="btn btn-primary " style="float: right" data-toggle="modal" data-target="#parametros_modal">Cambiar los parámetros</button></h2>
 
@@ -81,14 +81,15 @@
                 <tr>
                     <td>
                         {% for enc in primera_encuesta %}
-                            <a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank"/>{{ enc.joven }} (ID: {{ enc.id }})<br/>
+
+                            (<a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank">Encuesta</a> | <a href="/admin/jovenes/joven/{{ enc.joven.id }}" target="_blank"/>Joven</a> | <a href="{{ request.path|este_informe_con_joven:enc.joven }}" target="_blank">Ver con solo este joven</a>) {{ enc.joven.nombre }} <br/>
                         {% endfor %}
                     </td>
                     {% if numero_encuesta == "3" %}
                         <td>
-                            {% for enc in segunda_encuesta %}
-                                <a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank"/>{{ enc.joven }} (ID: {{ enc.id }})<br/>
-                            {% endfor %}
+                        {% for enc in segunda_encuesta %}
+                            (<a href="/admin/encuesta/encuesta/{{ enc.id }}" target="_blank">Encuesta</a> | <a href="/admin/jovenes/joven/{{ enc.joven.id }}" target="_blank"/>Joven</a> | <a href="{{ request.path|este_informe_con_joven:enc.joven }}" target="_blank">Ver con solo este joven</a>) {{ enc.joven.nombre }} <br/>
+                        {% endfor %}
                         </td>
                     {% endif %}
                 </tr>

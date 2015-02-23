@@ -49,3 +49,9 @@ def percent(value):
     if value == 0: return "n/d"
     #return floatformat(value, 2)
     return floatformat(value * 100.0, 2) + '%'
+
+#cambia el URL del informe actual para mostrar el mismo informe solo para un joven.
+@register.filter
+def este_informe_con_joven(currenturl,joven):
+    joven_url = currenturl.replace('auto', str(joven.id))
+    return joven_url
