@@ -1,0 +1,21 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Validacion time 2!!</h1>
+    <h2>Centro : {{ centro }}</h2>
+
+    <p>Por favor escojer el grupo :</p>
+
+    {% for grupo in grupos %}
+        <a href="{% url validacion_jovenlist centro.id grupo.id %}">{{ grupo }}</a><br/>
+    {% endfor %}
+
+{% endblock %}

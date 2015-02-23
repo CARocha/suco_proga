@@ -1,0 +1,19 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Validacion time!!</h1>
+
+    <p>Por favor escojer el centro: </p>
+    {% for centro in centros %}
+        <a href="{% url validacion_centrochosen centro.id %}">{{ centro }}</a><br/>
+    {% endfor %}
+
+{% endblock %}
