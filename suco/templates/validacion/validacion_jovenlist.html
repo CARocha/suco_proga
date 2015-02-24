@@ -15,5 +15,31 @@
 
     <h3>Lista de jovenes</h3>
 
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Joven</th>
+                <th>Primera encuesta</th>
+                <th>Segunda encuesta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for joven in jovenes %}
+                <tr>
+                    <td>{{ joven.nombre }}</td>
+                    <td>{{ joven.encuesta1.fecha }} {{ joven.encuesta1_msg }}</td>
+                    <td>{{ joven.encuesta2.fecha }} {{ joven.encuesta2_msg }}</td>
+                    <td>
+                        {% if joven.encuesta1 != None and joven.encuesta2 != None %}
+                            <a href="{% url validacion_verifyjoven centro.id grupo.id joven.id %}">
+                                Verificar los datos
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 
 {% endblock %}

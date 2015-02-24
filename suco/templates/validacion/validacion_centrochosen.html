@@ -15,7 +15,7 @@
     <p>Por favor escojer el grupo :</p>
 
     {% for grupo in grupos %}
-        <a href="{% url validacion_jovenlist centro.id grupo.id %}">{{ grupo }}</a><br/>
+        <a href="{% url validacion_jovenlist centro.id grupo.id %}" class="btn btn-primary">{{ grupo }}</a>
     {% endfor %}
 
 {% endblock %}

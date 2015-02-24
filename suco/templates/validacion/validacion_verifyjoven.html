@@ -1,0 +1,40 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Validacion time 3!!</h1>
+    <h2>Centro : {{ centro }}</h2>
+    <h2>Grupo : {{ grupo }}</h2>
+    <h2>Joven : {{ joven.nombre }}</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Encuesta 1</th>
+                <th>Encuesta 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {% for uso in encuesta1.usotierra_set.all %}
+                        {{ uso.tierra.id }} {{ uso.tierra }} - {{ uso.area }}mz<br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for uso in encuesta2.usotierra_set.all %}
+                        {{ uso.tierra.id }} - {{ uso.tierra }} - {{ uso.area }}mz<br/>
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -13,7 +13,7 @@
 
     <p>Por favor escojer el centro: </p>
     {% for centro in centros %}
-        <a href="{% url validacion_centrochosen centro.id %}">{{ centro }}</a><br/>
+        <a href="{% url validacion_centrochosen centro.id %}" class="btn btn-primary">{{ centro }}</a>
     {% endfor %}
 
 {% endblock %}

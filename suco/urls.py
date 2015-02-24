@@ -22,7 +22,8 @@ urlpatterns = patterns('',
     (r'^xls/$', 'suco.utils.save_as_xls'),
     (r'^$', 'suco.encuesta.views.index'),
     (r'^', include('suco.encuesta.urls')),
-    url(r'^validacion/(?P<centroid>\d+)$', 'suco.validacion.views.validacion_centrochosen'),
+
+
 )
 
 handler404 = 'suco.views.file_not_found_404'
