@@ -15,31 +15,61 @@
 
     <h3>Lista de jovenes</h3>
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Joven</th>
-                <th>Primera encuesta</th>
-                <th>Segunda encuesta</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for joven in jovenes %}
-                <tr>
-                    <td>{{ joven.nombre }}</td>
-                    <td>{{ joven.encuesta1.fecha }} {{ joven.encuesta1_msg }}</td>
-                    <td>{{ joven.encuesta2.fecha }} {{ joven.encuesta2_msg }}</td>
-                    <td>
-                        {% if joven.encuesta1 != None and joven.encuesta2 != None %}
-                            <a href="{% url validacion_verifyjoven centro.id grupo.id joven.id %}">
-                                Verificar los datos
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
+    {% for joven in jovenes %}
+        <div class="panel panel-default">
+          <div class="panel-heading" style="overflow:hidden;">
+              <span style="font-size:18px; position:relative; top:10px;">{{ joven.nombre }}</span>
+              <div style="text-align: right; float: right; ">
+                  Acceso rapido al admin:<br/>
+                  <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank">Joven</a> |
+                  {% for e in joven.all_encuestas1 %}
+                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank">Encuesta 1</a> |
+                  {% endfor %}
+                  {% for e in joven.all_encuestas2 %}
+                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank">Encuesta 2</a> |
+                  {% endfor %}
+              </div>
+
+          </div>
+          <div class="panel-body">
+            {% if joven.all_encuestas1|length < 1 %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene primera encuesta.<br/>
+            {% endif %}
+
+            {% if joven.all_encuestas1|length > 1 %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene mas que una primera encuesta.  Por favor poner no-activas las encuestas que no sirven.
+            {% endif %}
+
+            {% if joven.all_encuestas2|length < 1 %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene segunda encuesta.<br/>
+            {% endif %}
+
+            {% if joven.all_encuestas2|length > 1 %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene mas que una segunda encuesta. Por favor poner no-activas las encuestas que no sirven.<br/>
+            {% endif %}
+
+            {% if joven.all_encuestas1|length == 1 and joven.demasadio_cultivos_vs_uso1 == "bug" %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area1 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos1 }}mz. Por favor verificar.<br/>
+            {% endif %}
+
+            {% if joven.all_encuestas2|length == 1 and joven.demasadio_cultivos_vs_uso2 == "bug" %}
+                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area2 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos2 }}mz. Por favor verificar.<br/>
+            {% endif %}
+            <br/>
+
+            {% for key, cultivo in joven.cultivos_in_encuesta.items %}
+
+                {{ cultivo.enc1 }} / {{ cultivo.enc1.area }} / {{ cultivo.enc1.total }}<br/>
+                {{ cultivo.enc2 }} / {{ cultivo.enc2.area }} / {{ cultivo.enc2.total }}<br/>
+                <hr/>
             {% endfor %}
-        </tbody>
-    </table>
+
+          </div>
+        </div>
+    {% endfor %}
+
+
+
 
 
 {% endblock %}

@@ -1,0 +1,73 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Validacion time 3!!</h1>
+    <h2>Centro : {{ centro }}</h2>
+    <h2>Grupo : {{ grupo }}</h2>
+
+    <h3>Lista de jovenes</h3>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width:25%;">Joven</th>
+                <th style="width:25%;">Primera encuesta</th>
+                <th style="width:25%;">Segunda encuesta</th>
+                <th style="width:25%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for joven in jovenes %}
+                <tr>
+                    <td>{{ joven.nombre }}</td>
+                    <td>
+                        {% if joven.encuesta1 == None %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> No hay una primery encuesta para este joven. <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank">Por favor poner el/la joven no activo si se fue del proyecto</a>
+                        {% endif %}
+
+                        {{ joven.encuesta1.fecha }}
+                        {% if joven.encuesta1_msg != "" %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span>
+                            {{ joven.encuesta1_msg }}<br/>
+                            {% for e in joven.all_encuestas1 %}
+                                {{ e.id }}<br/>
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if joven.encuesta2 == None %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> No hay una segunda encuesta en la base de datos. <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank">Por favor poner el/la joven no activo si se fue del proyecto</a>.
+                        {% endif %}
+
+                        {{ joven.encuesta2.fecha }}
+                        {% if joven.encuesta2_msg != "" %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span>
+                            {{ joven.encuesta2_msg }}<br/>
+                            {% for e in joven.all_encuestas2 %}
+                                {{ e.id }}<br/>
+                            {% endfor %}
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        {% if joven.encuesta1 != None and joven.encuesta2 != None and joven.encuesta1 != "multiple" and joven.encuesta2 != "multiple" %}
+                            <a href="{% url validacion_verifyjoven centro.id grupo.id joven.id %}">
+                                Verificar los datos
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

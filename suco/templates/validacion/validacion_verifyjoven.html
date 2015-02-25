@@ -14,6 +14,15 @@
     <h2>Grupo : {{ grupo }}</h2>
     <h2>Joven : {{ joven.nombre }}</h2>
 
+    <h2>Numero de encuestas</h2>
+    {% if num_encuesta1 != 1 or num_encuesta2 != 1 %}
+        <span class="glyphicon glyphicon-remove-sign" style="color:#f00"></span> Hay {{ num_encuesta1 }} primera encuesta y {{ num_encuesta2 }} segunda encuesta para este joven.
+    {% else %}
+        <span class="glyphicon glyphicon-ok" style="color:#398439"></span> OK. Hay {{ num_encuesta1 }} primera encuesta y {{ num_encuesta2 }} segunda encuesta para este joven.
+    {% endif %}
+
+
+
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -23,15 +32,24 @@
         </thead>
         <tbody>
             <tr>
+                <td></td>
+            </tr>
+            <tr>
                 <td>
                     {% for uso in encuesta1.usotierra_set.all %}
                         {{ uso.tierra.id }} {{ uso.tierra }} - {{ uso.area }}mz<br/>
                     {% endfor %}
+                    <br>
+                    Area total de los cultivos (Uso de la tierra) : {{ encuesta1.total_cultivo_area }}<br/>
+                    Area total de los cultivos (Suma de cada cultivo) : {{ encuesta1.area_cultivos }}
                 </td>
                 <td>
                     {% for uso in encuesta2.usotierra_set.all %}
                         {{ uso.tierra.id }} - {{ uso.tierra }} - {{ uso.area }}mz<br/>
                     {% endfor %}
+                    <br>
+                    Area total de los cultivos (Uso de la tierra) : {{ encuesta2.total_cultivo_area }}<br/>
+                    Area total de los cultivos (Suma de cada cultivo) : {{ encuesta2.area_cultivos }}
                 </td>
             </tr>
         </tbody>
