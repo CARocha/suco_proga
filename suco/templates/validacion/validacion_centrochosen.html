@@ -8,11 +8,11 @@
     </script>
 {%endblock%}
 {% block content %}
-
-    <h1>Validacion time 2!!</h1>
-    <h2>Centro : {{ centro }}</h2>
-
-    <p>Por favor escojer el grupo :</p>
+    <br/>
+    <a href="/validacion">Atrás</a>
+    <h1>Validación de datos - {{ centro }}</h1>
+    <p><strong>Paso 2</strong></p>
+    <p>Por favor escoger el grupo:</p>
 
     {% for grupo in grupos %}
         <a href="{% url validacion_jovenlist centro.id grupo.id %}" class="btn btn-primary">{{ grupo }}</a>

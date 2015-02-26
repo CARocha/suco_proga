@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.db import models
 from suco.lugar.models import *
 from django.core.cache import cache
@@ -34,7 +35,8 @@ class Joven(models.Model):
     idseguimiento = models.IntegerField()
     centroregional = models.ForeignKey(Centroregional)
     activo = models.IntegerField(choices=CHOICE_ACTIVO, verbose_name=u'Activo?', default=1)
-
+    validacion_datos_comentario_direccion = models.TextField(default="", blank=True, verbose_name=u'Preguntas de la dirección, errores potenciales en los datos')
+    validacion_datos_comentario_centro = models.TextField(default="", blank=True, verbose_name=u'Respuesta y explicaciones de los datos por el equipo regional')
     def __unicode__(self):
         return self.nombre+ " - "+self.grupo.nombre
 

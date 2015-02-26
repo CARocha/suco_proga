@@ -13,20 +13,24 @@ from suco.encuesta.models import *
 from suco.cultivos.models import *
 from django.db.models import Sum, Count, Avg
 from django.template.defaultfilters import slugify
-
+import json
 import collections
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def validacion (request, template="validacion/validacion.html"):
 
     centros = Centroregional.objects.all()
 
     return render(request, template, locals())
 
+
 def validacion_centrochosen (request, centroid, template="validacion/validacion_centrochosen.html"):
     centro = Centroregional.objects.get(id=centroid)
     grupos = Grupo.objects.all()
 
     return render(request, template, locals())
+
 
 def validacion_jovenlist (request, centroid, grupoid, template="validacion/validacion_jovenlist.html"):
     centro = Centroregional.objects.get(id=centroid)
@@ -71,6 +75,7 @@ def validacion_jovenlist (request, centroid, grupoid, template="validacion/valid
             for uso in joven.encuesta1.usotierra_set.all():
                 if uso.tierra.id == 4:
                     joven.total_cultivo_area1 = uso.area
+                    joven.total_cultivo_area1_triple = uso.area * 3
             #Area total de cultivos - SUMA de cada cultivo
             joven.area_cultivos1 = encuesta1.aggregate(area=Sum('cultivos__area'))['area']
             if joven.area_cultivos1 > (joven.total_cultivo_area1 * 3):
@@ -82,6 +87,7 @@ def validacion_jovenlist (request, centroid, grupoid, template="validacion/valid
             for uso in joven.encuesta2.usotierra_set.all():
                 if uso.tierra.id == 4:
                     joven.total_cultivo_area2 = uso.area
+                    joven.total_cultivo_area2_triple = uso.area * 3
             #Area total de cultivos - SUMA de cada cultivo
             joven.area_cultivos2 = encuesta2.aggregate(area=Sum('cultivos__area'))['area']
             if joven.area_cultivos2 > (joven.total_cultivo_area2 * 3):
@@ -91,64 +97,44 @@ def validacion_jovenlist (request, centroid, grupoid, template="validacion/valid
         for tipocultivo in TipoCultivos.objects.all().order_by('nombre'):
             joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)] = collections.OrderedDict()
             try:
-                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'] = Cultivos.objects.filter(encuesta=encuesta1,cultivo=tipocultivo)[0]
+                qs = Cultivos.objects.filter(encuesta=encuesta1,cultivo=tipocultivo)
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'] = qs[0]
             except:
                 joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'] = None
             try:
-                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'] = Cultivos.objects.filter(encuesta=encuesta2,cultivo=tipocultivo)[0]
+                qs=Cultivos.objects.filter(encuesta=encuesta2,cultivo=tipocultivo)
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'] = qs[0]
             except:
                 joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'] = None
 
+            #KG por hectare
+            if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'] is not None:
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].converted_kg = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].cultivo.conversion_kg * joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].total
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].area
+            if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'] is not None:
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].converted_kg = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].cultivo.conversion_kg * joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].total
+                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].area
 
 
 
 
     return render(request, template, locals())
 
-def validacion_verifyjoven (request, centroid, grupoid, jovenid, template="validacion/validacion_verifyjoven.html"):
-    centro = Centroregional.objects.get(id=centroid)
-    grupo = Grupo.objects.get(id=grupoid)
-    joven = Joven.objects.get(id=jovenid)
-    query1 = Encuesta.objects.filter(joven=joven, encuesta_numero=1, activado=True)
-    query2 = Encuesta.objects.filter(joven=joven, encuesta_numero=2, activado=True)
-
-    errors = collections.OrderedDict()
-
-    #Tipos de error
-    errors['mismo_num_de_encuestas'] = [True, '']
-    errors['uso_global_enc1']  = [True, '']
-    errors['uso_global_enc2']  = [True, '']
-
-    #Numero de encuestas 1 VS encuestas 2. Solo debe ser 1.
-    num_encuesta1 = query1.count()
-    num_encuesta2 = query2.count()
-
-    encuesta1 = query1[0]
-    encuesta2 = query2[0]
-
-    #Area total de cultivos - USO de la tierra
-    encuesta1.total_cultivo_area = 0.0
-    for uso in encuesta1.usotierra_set.all():
-        if uso.tierra.id == 4:
-            encuesta1.total_cultivo_area = uso.area
 
 
-    encuesta2.total_cultivo_area = 0.0
-    for uso in encuesta2.usotierra_set.all():
-        if uso.tierra.id == 4:
-            encuesta2.total_cultivo_area = uso.area
+def validacion_save_joven_comment (request):
+    jovenid = request.POST.get('jovenid')
+    comment = request.POST.get('comment')
 
-    #Area total de cultivos - SUMA de cada cultivo
-    encuesta1.area_cultivos = query1.aggregate(area=Sum('cultivos__area'))['area']
-    encuesta2.area_cultivos = query2.aggregate(area=Sum('cultivos__area'))['area']
+    try:
+        joven = Joven.objects.get(id=jovenid)
+        joven.validacion_datos_comentario_centro = comment
+        joven.save()
+    except:
+        response_data = {}
+        response_data['msg'] = 'error'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-    if (encuesta1.total_cultivo_area * 3) < encuesta1.area_cultivos:
-        errors['uso_global_enc1']  = [False, 'Areas de cultivos no se pueden.']
-    if (encuesta2.total_cultivo_area * 3) < encuesta2.area_cultivos:
-        errors['uso_global_enc1']  = [False, 'Areas de cultivos no se pueden.']
-
-    #Detalaes de cada cultivo
-    cultivos = TipoCultivos.objects.all().order_by('nombre')
-
-
-    return render(request, template, locals())
+    response_data = {}
+    response_data['msg'] = 'ok'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

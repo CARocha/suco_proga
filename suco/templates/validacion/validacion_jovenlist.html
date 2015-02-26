@@ -2,67 +2,141 @@
 {% load unslugify %}
 {% load tools %}
 {%block extra_header%}
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.crypt.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.showsaveifchanged.js"></script>
+
     <script>
         $(document).ready( function () {
+            $('textarea').showsaveifchanged();
+
+            $(".joven_errors_list").each(function(i) {
+                if ($.trim($(this).html()) == "") $(this).replaceWith("<span class='glyphicon glyphicon-ok' style='color:#00B050; font-size:20px'></span> No se han detectado errores.<br/><br/>");
+            });
         });
+
+
+        function save_comment (jovenid)
+        {
+            dataString = "jovenid="+jovenid+"&comment="+$('#comment_'+jovenid).val()
+            $.ajax({
+                async: false, //Para cuando uno guarda 40 indicadores.. mejor asi que de hacer 40 requests al mismo tiempo.
+                type: 'POST',
+                beforeSend: function (request)
+                {
+                    request.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                url: "{% url validacion_save_joven_comment %}",
+                data: dataString,
+                dataType: 'json',
+                contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                success: function(data){
+                    if (data.msg == "ok")
+                    {
+                        $('#save_comment_button_'+jovenid).data('initialmd5', $().crypt({method:"md5",source:$('#comment_'+jovenid).val()}));
+                        $('#save_comment_button_'+jovenid).hide();
+                        $('#comment_'+jovenid).showsaveifchanged();
+                    } else {
+                        alert('error');
+                    }
+                },
+                complete: function () {
+
+                }
+            });
+        }
+
     </script>
 {%endblock%}
 {% block content %}
-
-    <h1>Validacion time 3!!</h1>
-    <h2>Centro : {{ centro }}</h2>
-    <h2>Grupo : {{ grupo }}</h2>
-
-    <h3>Lista de jovenes</h3>
+    <br/>
+    <a href="{% url validacion_centrochosen centro.id %}">Atrás</a>
+    <h1>Validación de datos - {{ centro }} - {{ grupo }}</h1>
+    <p>Lista de jovenes</p>
 
     {% for joven in jovenes %}
         <div class="panel panel-default">
-          <div class="panel-heading" style="overflow:hidden;">
-              <span style="font-size:18px; position:relative; top:10px;">{{ joven.nombre }}</span>
+          <div class="panel-heading" style="overflow:hidden; background: #006cb1; color:#fff">
+              <span style="font-size:18px; position:relative; top:10px; ">{{ joven.nombre }}</span>
               <div style="text-align: right; float: right; ">
                   Acceso rapido al admin:<br/>
-                  <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank">Joven</a> |
+                  <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank" style="color:#ccc;">Joven</a> |
                   {% for e in joven.all_encuestas1 %}
-                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank">Encuesta 1</a> |
+                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank" style="color:#ccc;">Encuesta 1</a> |
                   {% endfor %}
                   {% for e in joven.all_encuestas2 %}
-                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank">Encuesta 2</a> |
+                      <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank" style="color:#ccc;">Encuesta 2</a> |
                   {% endfor %}
               </div>
 
           </div>
           <div class="panel-body">
-            {% if joven.all_encuestas1|length < 1 %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene primera encuesta.<br/>
-            {% endif %}
+            <div class="alert alert-warning joven_errors_list">
+                {% if joven.all_encuestas1|length < 1 %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene primera encuesta. Por favor poner el/la joven no-activo si se fue del proyecto.<br/>
+                {% endif %}
 
-            {% if joven.all_encuestas1|length > 1 %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene mas que una primera encuesta.  Por favor poner no-activas las encuestas que no sirven.
-            {% endif %}
+                {% if joven.all_encuestas1|length > 1 %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene más  que una primera encuesta.  Por favor poner no-activas las encuestas que no sirven.<br/>
+                {% endif %}
 
-            {% if joven.all_encuestas2|length < 1 %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene segunda encuesta.<br/>
-            {% endif %}
+                {% if joven.all_encuestas2|length < 1 %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven no tiene segunda encuesta. Por favor poner el/la joven no-activo si se fue del proyecto.<br/>
+                {% endif %}
 
-            {% if joven.all_encuestas2|length > 1 %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene mas que una segunda encuesta. Por favor poner no-activas las encuestas que no sirven.<br/>
-            {% endif %}
+                {% if joven.all_encuestas2|length > 1 %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> Este joven tiene más  que una segunda encuesta. Por favor poner no-activas las encuestas que no sirven.<br/>
+                {% endif %}
 
-            {% if joven.all_encuestas1|length == 1 and joven.demasadio_cultivos_vs_uso1 == "bug" %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area1 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos1 }}mz. Por favor verificar.<br/>
-            {% endif %}
+                {% if joven.all_encuestas1|length == 1 and joven.demasadio_cultivos_vs_uso1 == "bug" %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area1 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos1 }}mz. Por favor verificar.<br/>
+                {% endif %}
 
-            {% if joven.all_encuestas2|length == 1 and joven.demasadio_cultivos_vs_uso2 == "bug" %}
-                <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area2 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos2 }}mz. Por favor verificar.<br/>
-            {% endif %}
-            <br/>
+                {% if joven.all_encuestas2|length == 1 and joven.demasadio_cultivos_vs_uso2 == "bug" %}
+                    <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, dice en la parte "Uso de la tierra" que hay {{ joven.total_cultivo_area2 }}mz para cultivos, pero la suma de los cultivos en la encuesta da {{ joven.area_cultivos2 }}mz. Por favor verificar.<br/>
+                {% endif %}
 
-            {% for key, cultivo in joven.cultivos_in_encuesta.items %}
 
-                {{ cultivo.enc1 }} / {{ cultivo.enc1.area }} / {{ cultivo.enc1.total }}<br/>
-                {{ cultivo.enc2 }} / {{ cultivo.enc2.area }} / {{ cultivo.enc2.total }}<br/>
-                <hr/>
-            {% endfor %}
+                {% for key, cultivo in joven.cultivos_in_encuesta.items %}
+                    {% if cultivo.enc1 != None %}
+                        {% if cultivo.enc1.area > joven.total_cultivo_area1_triple %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, hay {{ cultivo.enc1.area }} manzanas de {{ cultivo.enc1.cultivo.nombre }}, pero el area total de los cultivos en "Uso de la tierra" solo dice {{ joven.total_cultivo_area1 }}mz. Por favor verificar.<br/>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if cultivo.enc2 != None %}
+                        {% if cultivo.enc2.area > joven.total_cultivo_area2_triple %}
+                            <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, hay {{ cultivo.enc2.area }} manzanas de {{ cultivo.enc2.cultivo.nombre }}, pero el area total de los cultivos en "Uso de la tierra" solo dice {{ joven.total_cultivo_area2 }}mz. Por favor verificar.<br/>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if cultivo.enc1.kg_por_manzana > 1500 and cultivo.enc1.cultivo.utilizar_en_kg_por_hectare %}
+                        <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, hay {{ cultivo.enc1.total }} {{ cultivo.enc1.cultivo.unidad }} ({{ cultivo.enc1.converted_kg }}kg) de {{ cultivo.enc1.cultivo.nombre }} en {{ cultivo.enc1.area }}mz. Eso da un rendimiento de {{ cultivo.enc1.kg_por_manzana|floatformat }}kg/manzana, lo que parece alto. Por favor verificar.<br/>
+                    {% endif %}
+
+
+                    {% if cultivo.enc2.kg_por_manzana > 1500 and cultivo.enc2.cultivo.utilizar_en_kg_por_hectare %}
+                        <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, hay {{ cultivo.enc2.total }} {{ cultivo.enc2.cultivo.unidad }} ({{ cultivo.enc2.converted_kg }}kg) de {{ cultivo.enc2.cultivo.nombre }} en {{ cultivo.enc2.area }}mz. Eso da un rendimiento de {{ cultivo.enc2.kg_por_manzana|floatformat }}kg/manzana, lo que parece alto. Por favor verificar.<br/>
+                    {% endif %}
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <div class="alert alert-info">
+                <p><strong>Solicitudes de información adicional de parte de la direccion:</strong></p>
+                {% if joven.validacion_datos_comentario_direccion != "" %}
+                    {{ joven.validacion_datos_comentario_direccion }}<br/><br/>
+                {% else %}
+                    <p>Fueron verificados los datos?</p>
+                {% endif %}
+                <p><strong>Sus comentarios y notas sobre este(a) joven:</strong><br>Por favor escribir al menos "Datos verificados" en los comentarios, o dar más explicaciones si aplica.</p>
+                <textarea autocomplete="off" class="form-control" name="respuesta_{{ joven.id }}" style="height: 180px;" id="comment_{{ joven.id }}">{{ joven.validacion_datos_comentario_centro }}</textarea>
+                <a class="btn btn-primary btn-sm showsaveifchanged_button" style="margin-top:8px;" onclick="save_comment({{ joven.id }})" href="javascript:void(0);" id="save_comment_button_{{ joven.id }}">Grabar</a>
+            </div>
+
 
           </div>
         </div>

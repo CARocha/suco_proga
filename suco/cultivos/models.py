@@ -55,6 +55,7 @@ class TipoCultivos(models.Model):
     nombre = models.CharField(max_length=200)
     unidad = models.CharField(max_length=20)
     conversion_kg = models.FloatField('Conversión a kilo (multiplicar con)', default=1)
+    utilizar_en_kg_por_hectare = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.nombre+ " (Unidad : "+self.unidad+")"
