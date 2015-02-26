@@ -110,10 +110,12 @@ def validacion_jovenlist (request, centroid, grupoid, template="validacion/valid
             #KG por hectare
             if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'] is not None:
                 joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].converted_kg = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].cultivo.conversion_kg * joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].total
-                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].area
+                if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].area > 0:
+                    joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc1'].area
             if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'] is not None:
                 joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].converted_kg = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].cultivo.conversion_kg * joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].total
-                joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].area
+                if joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].area > 0:
+                    joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].kg_por_manzana = joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].converted_kg / joven.cultivos_in_encuesta[slugify(tipocultivo.nombre)]['enc2'].area
 
 
 
