@@ -150,7 +150,7 @@
                 {% if joven.validacion_datos_comentario_direccion != "" %}
                     {{ joven.validacion_datos_comentario_direccion }}<br/><br/>
                 {% else %}
-                    <p>Fueron verificados los datos?</p>
+
                 {% endif %}
                 <p><strong>Sus comentarios y notas sobre este(a) joven:</strong><br>Por favor escribir al menos "Datos verificados" en los comentarios, o dar más explicaciones si aplica.</p>
                 <textarea autocomplete="off" class="form-control" name="respuesta_{{ joven.id }}" style="height: 180px;" id="comment_{{ joven.id }}">{{ joven.validacion_datos_comentario_centro }}</textarea>
