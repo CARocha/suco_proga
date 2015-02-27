@@ -191,9 +191,11 @@
                     <a href="javascript:void(0);" id="link_informes_originales" onclick="show_informe_menu_de_tipo('informes_originales');">Informes originales de Linea de base (2011-2014)</a>
                     <a href="javascript:void(0);" id="link_informes_nuevos" onclick="show_informe_menu_de_tipo('informes_nuevos');">Informes nuevos (2014+)</a>
                     <a href="/general">Estadísticas generales</a>
-                    <a href="/tareas">Tareas</a>
                     {% if user and not user.is_anonymous %}
-                    <a href="/validacion">Validacion de datos</a>
+                        <a href="/tareas">Tareas</a>
+                        <a href="/validacion">Validación de datos</a>
+                    {% else %}
+                        <a href="/admin?next=gallery">Por favor inicie sesión para el acceso a las Tareas y Validación de datos</a>
                     {% endif %}
                 </div>
                 <div class="col-md-2">
