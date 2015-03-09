@@ -61,7 +61,10 @@
           <div class="panel-heading" style="overflow:hidden; background: #006cb1; color:#fff">
               <span style="font-size:18px; position:relative; top:10px; ">{{ joven.nombre }}</span>
               <div style="text-align: right; float: right; ">
-                  Acceso rapido al admin:<br/>
+                  Acceso rapido:<br/>
+                  <a href="http://lb.proga-jovenes.org/nuevos_informes/aumento_de_la_produccion/1_2_3_4/1_2_3_4/3/1/1/3/{{ joven.id }}/" style="color:#ccc;" target="_blank">
+                      Comparar datos de producción
+                  </a> |
                   <a href="/admin/jovenes/joven/{{ joven.id }}" target="_blank" style="color:#ccc;">Joven</a> |
                   {% for e in joven.all_encuestas1 %}
                       <a href="/admin/encuesta/encuesta/{{ e.id }}" target="_blank" style="color:#ccc;">Encuesta 1</a> |
@@ -148,7 +151,7 @@
             <div class="alert alert-info">
                 <p><strong>Solicitudes de información adicional de parte de la direccion:</strong></p>
                 {% if joven.validacion_datos_comentario_direccion != "" %}
-                    {{ joven.validacion_datos_comentario_direccion }}<br/><br/>
+                    {{ joven.validacion_datos_comentario_direccion|linebreaksbr }}<br/><br/>
                 {% else %}
 
                 {% endif %}
