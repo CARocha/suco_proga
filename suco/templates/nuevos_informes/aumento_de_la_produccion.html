@@ -4,6 +4,10 @@
 {%block extra_header%}
     <script>
         $(document).ready( function () {
+            $('.nav-tabs').removeClass('active');
+            $('.nav-tabs:first-child').addClass('active');
+            $('.tab-pane').removeClass('active');
+            $('.tab-pane:first-child').addClass('active');
         });
     </script>
     <style>
