@@ -136,11 +136,11 @@
 
                     {% comment %} RENDIMIENTO KG/Manzana {% endcomment %}
                     {% if cultivo.enc1.kg_por_manzana > 1500 and cultivo.enc1.cultivo.utilizar_en_kg_por_hectare %}
-                        <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, hay {{ cultivo.enc1.total }} {{ cultivo.enc1.cultivo.unidad }} ({{ cultivo.enc1.converted_kg }}kg) de {{ cultivo.enc1.cultivo.nombre }} en {{ cultivo.enc1.area }}mz. Eso da un rendimiento de {{ cultivo.enc1.kg_por_manzana|floatformat }}kg/manzana, lo que parece alto. Por favor verificar.<br/>
+                        <span class='glyphicon glyphicon-remove-sign' style='color:#d2a61e; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta1.id }}" target="_blank">Encuesta 1</a>, hay {{ cultivo.enc1.total }} {{ cultivo.enc1.cultivo.unidad }} ({{ cultivo.enc1.converted_kg }}kg) de {{ cultivo.enc1.cultivo.nombre }} en {{ cultivo.enc1.area }}mz. Eso da un rendimiento de {{ cultivo.enc1.kg_por_manzana|floatformat }}kg/manzana, lo que puede ser alto. (Este mensaje aparece automaticamente para todos los cultivos que salen a mas que 1500kg/mz). Por favor verificar.<br/>
                     {% endif %}
 
                     {% if cultivo.enc2.kg_por_manzana > 1500 and cultivo.enc2.cultivo.utilizar_en_kg_por_hectare %}
-                        <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, hay {{ cultivo.enc2.total }} {{ cultivo.enc2.cultivo.unidad }} ({{ cultivo.enc2.converted_kg }}kg) de {{ cultivo.enc2.cultivo.nombre }} en {{ cultivo.enc2.area }}mz. Eso da un rendimiento de {{ cultivo.enc2.kg_por_manzana|floatformat }}kg/manzana, lo que parece alto. Por favor verificar.<br/>
+                        <span class='glyphicon glyphicon-remove-sign' style='color:#d2a61e; font-size:20px'></span> En la <a href="/admin/encuesta/encuesta/{{ joven.encuesta2.id }}" target="_blank">Encuesta 2</a>, hay {{ cultivo.enc2.total }} {{ cultivo.enc2.cultivo.unidad }} ({{ cultivo.enc2.converted_kg }}kg) de {{ cultivo.enc2.cultivo.nombre }} en {{ cultivo.enc2.area }}mz. Eso da un rendimiento de {{ cultivo.enc2.kg_por_manzana|floatformat }}kg/manzana, lo que puede ser alto. (Este mensaje aparece automaticamente para todos los cultivos que salen a mas que 1500kg/mz). Por favor verificar.<br/>
                     {% endif %}
 
                 {% endfor %}
