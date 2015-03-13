@@ -6,6 +6,18 @@
         $(document).ready( function () {
         });
     </script>
+    <style>
+        .nav-tabs > li, .nav-pills > li {
+            float:none;
+            display:inline-block;
+            *display:inline; /* ie7 fix */
+             zoom:1; /* hasLayout ie7 trigger */
+        }
+
+        .nav-tabs, .nav-pills {
+            text-align:center;
+        }
+    </style>
 {%endblock%}
 {% block content %}
 
@@ -18,194 +30,407 @@
 
 
 
-    <h2>Datos</h2>
-    <h3 style="padding-bottom:20px;">Cultivos en la finca <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('finca'); return false;">Exportar en Excel</a></h3>
-
-        </div></div></div>
-    
-        <div id="finca">
-            <div class="table-responsive" >
-                <table class="table table-striped table-bordered table-condensed tablesorter">
-                    <thead>
-                        <tr>
-                            <th>CULTIVOS</th>
-
-                            <th class="last_datagroup_col">Unidad</th>
-
-                            <th>Áreas{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Áreas <br/><small>Encuesta 2</small></th>
-                                <th class="last_datagroup_col">Áreas <br/><small>Diferencia</small></th>
-                            {% endif %}
+    <h3>Datos de producción</h3>
 
 
-                            <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %} <small>En su unidad</small></th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
-                            {% endif %}
+    </div></div></div>
+    <div role="tabpanel">
 
-                            <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
-                                <th class="last_datagroup_col">Total producción por año <br/><small>Diferencia</small></th>
-                            {% endif %}
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        {% for cat in categorias %}
+            {% if cat.cultivos|length > 0 and cat.has_production %}
+                <li role="presentation" class="{% if forloop.counter == 1 %}active{% endif %}"><a href="#cat_{{ cat.id }}" aria-controls="cat_{{ cat.id }}" role="tab" data-toggle="tab">{{ cat.nombre }}</a></li>
+            {% endif %}
+        {% endfor %}
+        <li role="presentation" class=""><a href="#cat_todos" aria-controls="cat_todos" role="tab" data-toggle="tab">Todos los cultivos juntos</a></li>
+      </ul>
 
-                            <th>KG por hectare{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
-                            {% if numero_encuesta == "3" %}
-                                <th>KG por hectare<br/><small>Encuesta 2</small></th>
-                                <th class="last_datagroup_col">KG por hectare<br/><small>Diferencia</small></th>
-                            {% endif %}
+      <!-- Tab panes -->
+      <div class="tab-content">
+        {% for cat in categorias %}
+            {% if cat.cultivos|length > 0 and cat.has_production %}
+                <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="cat_{{ cat.id }}" style="background:#F9F9F9; min-height:400px; padding:20px;">
+                    <h3>{{ cat.nombre }}</h3>
 
-                            <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>En su unidad</small></th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
-                            {% endif %}
+                        <table class="table table-striped table-bordered table-condensed tablesorter">
+                            <thead>
+                                <tr>
+                                    <th>CULTIVOS</th>
 
-                            <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
-                                <th class="last_datagroup_col">Consumo<br/><small>Diferencia</small></th>
-                            {% endif %}
+                                    <th class="last_datagroup_col">Unidad</th>
 
-
-
-                            <th>Precio promedio de venta en mercado promedio{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Precio promedio de venta en mercado promedio <br/><small>Encuesta 2</small></th>
-                                <th class="last_datagroup_col">Precio<br/><small>Diferencia</small></th>
-                            {% endif %}
-
-                            <th>Valor producida {% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
-                            {% if numero_encuesta == "3" %}
-                                <th>Valor producida <br/><small>Encuesta 2</small></th>
-                                <th class="last_datagroup_col">Valor<br/><small>Diferencia</small></th>
-                            {% endif %}
+                                    <th>Áreas (mz){% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Áreas (mz)<br/><small>Encuesta 2</small></th>
+                                        <th class="last_datagroup_col">Áreas (mz)<br/><small>Diferencia</small></th>
+                                    {% endif %}
 
 
+                                    <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %} <small>En su unidad</small></th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
+                                    {% endif %}
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%for key, value in data.tablas.tabla_cultivos.items%}
-                        <tr>
-                            <td>
-                                {{key|unslugify}}
-                            </td>
+                                    <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
+                                        <th class="last_datagroup_col">Total producción por año <br/><small>Diferencia</small></th>
+                                    {% endif %}
 
-                            <td class="last_datagroup_col">{{value.key2|unslugify}}</td>
+                                    <th>KG por hectare{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>KG por hectare<br/><small>Encuesta 2</small></th>
+                                        <th class="last_datagroup_col">KG por hectare<br/><small>Diferencia</small></th>
+                                    {% endif %}
 
-                            <td>{{value.area1}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.area2|floatformat:2}}</td>
-                                <td class="last_datagroup_col format_diff">{{value.area_diff|percent}}</td>
-                            {% endif %}
+                                    <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>En su unidad</small></th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
+                                    {% endif %}
 
+                                    <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
+                                        <th class="last_datagroup_col">Consumo<br/><small>Diferencia</small></th>
+                                    {% endif %}
 
-                            <td>{{value.totales1|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.totales2|floatformat:2}}</td>
-                            {% endif %}
+                                    <th>Precio promedio de venta en mercado promedio{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Precio promedio de venta en mercado promedio <br/><small>Encuesta 2</small></th>
+                                        <th class="last_datagroup_col">Precio<br/><small>Diferencia</small></th>
+                                    {% endif %}
 
+                                    <th>Valor producida {% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                    {% if numero_encuesta == "3" %}
+                                        <th>Valor producida <br/><small>Encuesta 2</small></th>
+                                        <th class="last_datagroup_col">Valor<br/><small>Diferencia</small></th>
+                                    {% endif %}
 
-                            <td>{{value.totales1_kg|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.totales2_kg|floatformat:2}}</td>
-                                <td class="last_datagroup_col format_diff">{{value.totales_diff|percent}}</td>
-                            {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {%for cultivo in cat.cultivos %}
+                                    {% if cultivo.has_production %}
+                                        <tr>
+                                            <td>
+                                                {{ cultivo.nombre }}
+                                            </td>
 
-                            <td>{{value.kg_por_hectare1|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.kg_por_hectare2|floatformat:2}}</td>
-                                <td class="last_datagroup_col format_diff">{{value.kg_por_hectare_diff|percent}}</td>
-                            {% endif %}
+                                            <td class="last_datagroup_col">{{cultivo.unidad}}</td>
 
-
-                            <td>{{value.consumo1|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.consumo2|floatformat:2}}</td>
-                            {% endif %}
-
-                            <td>{{value.consumo1_kg|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.consumo2_kg|floatformat:2}}</td>
-                                <td class="last_datagroup_col format_diff">{{value.consumo_diff|percent}}</td>
-                            {% endif %}
-
-
-                            <td>{{value.precio1|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>
-                                    {{value.precio2|floatformat:2}}
-                                </td>
-                                <td class="last_datagroup_col format_diff">{{value.precio_diff|percent}}</td>
-                            {% endif %}
+                                            <td>{{cultivo.area1}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.area2|floatformat:2}}</td>
+                                                <td class="last_datagroup_col format_diff">{{cultivo.area_diff|percent}}</td>
+                                            {% endif %}
 
 
-                            <td>{{value.valor1|floatformat:2}}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{value.valor2|floatformat:2}}</td>
-                                <td class="format_diff">{{value.valor_diff|percent}}</td>
-                            {% endif %}
+                                            <td>{{cultivo.totales1|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.totales2|floatformat:2}}</td>
+                                            {% endif %}
 
-                        </tr>
-                        {%endfor%}
 
-                    <tbody>
-                    <tfoot>
-                        <tr style="border-top:2px solid #000000">
-                            <td colspan="2">Totales</td>
+                                            <td>{{cultivo.totales1_kg|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.totales2_kg|floatformat:2}}</td>
+                                                <td class="last_datagroup_col format_diff">{{cultivo.totales_diff|percent}}</td>
+                                            {% endif %}
 
-                            <td>{{ area1_total|floatformat:2 }}</td>
+                                            <td>{{cultivo.kg_por_hectare1|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.kg_por_hectare2|floatformat:2}}</td>
+                                                <td class="last_datagroup_col format_diff">{{cultivo.kg_por_hectare_diff|percent}}</td>
+                                            {% endif %}
 
-                            {% if numero_encuesta == "3" %}
-                                <td>{{ area2_total|floatformat:2 }}</td>
-                                <td class="format_diff">{{ area_total_diff|percent }}</td>
-                            {% endif %}
 
-                            <td></td>
-                            {% if numero_encuesta == "3" %}
-                                <td></td>
-                            {% endif %}
+                                            <td>{{cultivo.consumo1|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.consumo2|floatformat:2}}</td>
+                                            {% endif %}
 
-                            <td>{{ totales1kg_total|floatformat:2 }}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{ totales2kg_total|floatformat:2 }}</td>
-                                <td class="format_diff">{{ totaleskg_total_diff|percent }}</td>
-                            {% endif %}
+                                            <td>{{cultivo.consumo1_kg|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.consumo2_kg|floatformat:2}}</td>
+                                                <td class="last_datagroup_col format_diff">{{cultivo.consumo_diff|percent}}</td>
+                                            {% endif %}
 
-                            <td>{{ kg_por_hectare_total1|floatformat:2 }}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{ kg_por_hectare_total2|floatformat:2 }}</td>
-                                <td class="format_diff">{{ kg_por_hectare_total_diff|percent }}</td>
-                            {% endif %}
 
-                            <td></td>
-                            {% if numero_encuesta == "3" %}
-                                <td></td>
-                            {% endif %}
+                                            <td>{{cultivo.precio1|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>
+                                                    {{cultivo.precio2|floatformat:2}}
+                                                </td>
+                                                <td class="last_datagroup_col format_diff">{{cultivo.precio_diff|percent}}</td>
+                                            {% endif %}
 
-                            <td>{{ consumo1kg_total|floatformat:2 }}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{ consumo2kg_total|floatformat:2 }}</td>
-                                <td class="format_diff">{{ consumokg_total_diff|percent }}</td>
-                            {% endif %}
 
-                            <td></td>
-                            {% if numero_encuesta == "3" %}
-                                <td></td>
-                                <td></td>
-                            {% endif %}
+                                            <td>{{cultivo.valor1|floatformat:2}}</td>
+                                            {% if numero_encuesta == "3" %}
+                                                <td>{{cultivo.valor2|floatformat:2}}</td>
+                                                <td class="format_diff">{{cultivo.valor_diff|percent}}</td>
+                                            {% endif %}
 
-                            <td>{{ valor1_total|floatformat:2 }}</td>
-                            {% if numero_encuesta == "3" %}
-                                <td>{{ valor2_total|floatformat:2 }}</td>
-                                <td class="format_diff">{{ valor_total_diff|percent }}</td>
-                            {% endif %}
-                        </tr>
-                    </tfoot>
-                </table>
+                                        </tr>
+                                    {% endif %}
+                                {%endfor%}
+
+                            <tbody>
+                            <tfoot>
+                                <tr style="border-top:2px solid #000000">
+                                    <td colspan="2">Totales</td>
+
+                                    <td>{{ cat.area1_total|floatformat:2 }}</td>
+
+                                    {% if numero_encuesta == "3" %}
+                                        <td>{{ cat.area2_total|floatformat:2 }}</td>
+                                        <td class="format_diff">{{ cat.area_total_diff|percent }}</td>
+                                    {% endif %}
+
+                                    <td></td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td></td>
+                                    {% endif %}
+
+                                    <td>{{ cat.totales1kg_total|floatformat:2 }}</td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td>{{ cat.totales2kg_total|floatformat:2 }}</td>
+                                        <td class="format_diff">{{ cat.totaleskg_total_diff|percent }}</td>
+                                    {% endif %}
+
+                                    <td>{{ cat.kg_por_hectare_total1|floatformat:2 }}</td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td>{{ cat.kg_por_hectare_total2|floatformat:2 }}</td>
+                                        <td class="format_diff">{{ cat.kg_por_hectare_total_diff|percent }}</td>
+                                    {% endif %}
+
+                                    <td></td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td></td>
+                                    {% endif %}
+
+                                    <td>{{ cat.consumo1kg_total|floatformat:2 }}</td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td>{{ cat.consumo2kg_total|floatformat:2 }}</td>
+                                        <td class="format_diff">{{ cat.consumokg_total_diff|percent }}</td>
+                                    {% endif %}
+
+                                    <td></td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+
+                                    <td>{{ cat.valor1_total|floatformat:2 }}</td>
+                                    {% if numero_encuesta == "3" %}
+                                        <td>{{ cat.valor2_total|floatformat:2 }}</td>
+                                        <td class="format_diff">{{ cat.valor_total_diff|percent }}</td>
+                                    {% endif %}
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                </div>
+            {% endif %}
+        {% endfor %}
+            <div role="tabpanel" class="tab-pane" id="cat_todos"  style="background:#F9F9F9; min-height:400px; padding:20px;">
+                    <h3 style="padding-bottom:20px;">Todos los cultivos juntos <a href="#" style="float:right" class="exportar guardarXLS btn btn-warning" onclick="exportarXLS('finca'); return false;">Exportar en Excel</a></h3>
+                   <div id="finca">
+                        <div class="table-responsive" >
+                            <table class="table table-striped table-bordered table-condensed tablesorter">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>CULTIVOS</th>
+
+                                        <th class="last_datagroup_col">Unidad</th>
+
+                                        <th>Áreas (mz){% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Áreas (mz)<br/><small>Encuesta 2</small></th>
+                                            <th class="last_datagroup_col">Áreas (mz)<br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+
+                                        <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %} <small>En su unidad</small></th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
+                                        {% endif %}
+
+                                        <th>Total producción por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Total producción por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
+                                            <th class="last_datagroup_col">Total producción por año <br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+                                        <th>KG por hectare{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>KG por hectare<br/><small>Encuesta 2</small></th>
+                                            <th class="last_datagroup_col">KG por hectare<br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+                                        <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>En su unidad</small></th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>En su unidad</small></th>
+                                        {% endif %}
+
+                                        <th>Consumo por año{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}<br/><small>Kilos (Kg)</small></th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Consumo por año <br/><small>Encuesta 2</small><br/><small>Kilos (Kg)</small></th>
+                                            <th class="last_datagroup_col">Consumo<br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+
+
+                                        <th>Precio promedio de venta en mercado promedio{% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Precio promedio de venta en mercado promedio <br/><small>Encuesta 2</small></th>
+                                            <th class="last_datagroup_col">Precio<br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+                                        <th>Valor producida {% if numero_encuesta == "3" %}<br/><small>Encuesta 1</small>{% endif %}</th>
+                                        {% if numero_encuesta == "3" %}
+                                            <th>Valor producida <br/><small>Encuesta 2</small></th>
+                                            <th class="last_datagroup_col">Valor<br/><small>Diferencia</small></th>
+                                        {% endif %}
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {%for key, value in data.tablas.tabla_cultivos.items%}
+                                    <tr>
+                                        <td>
+                                            {{ value.cultivo.tipo }}
+                                        </td>
+                                        <td>
+                                            {{key|unslugify}}
+                                        </td>
+
+                                        <td class="last_datagroup_col">{{value.key2|unslugify}}</td>
+
+                                        <td>{{value.area1}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.area2|floatformat:2}}</td>
+                                            <td class="last_datagroup_col format_diff">{{value.area_diff|percent}}</td>
+                                        {% endif %}
+
+
+                                        <td>{{value.totales1|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.totales2|floatformat:2}}</td>
+                                        {% endif %}
+
+
+                                        <td>{{value.totales1_kg|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.totales2_kg|floatformat:2}}</td>
+                                            <td class="last_datagroup_col format_diff">{{value.totales_diff|percent}}</td>
+                                        {% endif %}
+
+                                        <td>{{value.kg_por_hectare1|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.kg_por_hectare2|floatformat:2}}</td>
+                                            <td class="last_datagroup_col format_diff">{{value.kg_por_hectare_diff|percent}}</td>
+                                        {% endif %}
+
+
+                                        <td>{{value.consumo1|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.consumo2|floatformat:2}}</td>
+                                        {% endif %}
+
+                                        <td>{{value.consumo1_kg|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.consumo2_kg|floatformat:2}}</td>
+                                            <td class="last_datagroup_col format_diff">{{value.consumo_diff|percent}}</td>
+                                        {% endif %}
+
+
+                                        <td>{{value.precio1|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>
+                                                {{value.precio2|floatformat:2}}
+                                            </td>
+                                            <td class="last_datagroup_col format_diff">{{value.precio_diff|percent}}</td>
+                                        {% endif %}
+
+
+                                        <td>{{value.valor1|floatformat:2}}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{value.valor2|floatformat:2}}</td>
+                                            <td class="format_diff">{{value.valor_diff|percent}}</td>
+                                        {% endif %}
+
+                                    </tr>
+                                    {%endfor%}
+
+                                <tbody>
+                                <tfoot>
+                                    <tr style="border-top:2px solid #000000">
+                                        <td colspan="3">Totales</td>
+
+                                        <td>{{ area1_total|floatformat:2 }}</td>
+
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{ area2_total|floatformat:2 }}</td>
+                                            <td class="format_diff">{{ area_total_diff|percent }}</td>
+                                        {% endif %}
+
+                                        <td></td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td></td>
+                                        {% endif %}
+
+                                        <td>{{ totales1kg_total|floatformat:2 }}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{ totales2kg_total|floatformat:2 }}</td>
+                                            <td class="format_diff">{{ totaleskg_total_diff|percent }}</td>
+                                        {% endif %}
+
+                                        <td>{{ kg_por_hectare_total1|floatformat:2 }}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{ kg_por_hectare_total2|floatformat:2 }}</td>
+                                            <td class="format_diff">{{ kg_por_hectare_total_diff|percent }}</td>
+                                        {% endif %}
+
+                                        <td></td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td></td>
+                                        {% endif %}
+
+                                        <td>{{ consumo1kg_total|floatformat:2 }}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{ consumo2kg_total|floatformat:2 }}</td>
+                                            <td class="format_diff">{{ consumokg_total_diff|percent }}</td>
+                                        {% endif %}
+
+                                        <td></td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td></td>
+                                            <td></td>
+                                        {% endif %}
+
+                                        <td>{{ valor1_total|floatformat:2 }}</td>
+                                        {% if numero_encuesta == "3" %}
+                                            <td>{{ valor2_total|floatformat:2 }}</td>
+                                            <td class="format_diff">{{ valor_total_diff|percent }}</td>
+                                        {% endif %}
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+
             </div>
-        </div>
+      </div>
+
+    </div>
+
+
+
+
 
         <div class="container"><div class="row"><div class="col-md-12">
 

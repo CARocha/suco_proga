@@ -88,7 +88,7 @@ CHOICE_ENCUESTA_NUMERO = (
 class Encuesta(models.Model):
     ''' Esta es la parte de la encuesta donde van los demas
     '''
-    activado  = models.BooleanField(default=1)
+    activado  = models.BooleanField(default=1, verbose_name='Activo')
     fecha = models.DateField()
     encuesta_numero = models.IntegerField(choices=CHOICE_ENCUESTA_NUMERO,default=3)
     recolector = models.ForeignKey(Recolector)

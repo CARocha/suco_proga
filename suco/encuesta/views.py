@@ -410,6 +410,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
 
 
     data['tablas']['tabla_cultivos'] = collections.OrderedDict()
+
     for i in TipoCultivos.objects.all().order_by('nombre'):   #todos los tipos de cultivos (col A)
 
         key = slugify(i.nombre).replace('-', '_')   #ex: platano
@@ -486,6 +487,7 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
         if totales1 > 0 or totales2 > 0:
 
             data['tablas']['tabla_cultivos'][key] = {
+                'cultivo': i,
                 'id': i.id,
                 'key2':key2,
                 'area1':area1,
@@ -521,6 +523,107 @@ def aumento_de_la_produccion(request, indicador, grupos, centroregional, numero_
     kg_por_hectare_total2 = (totales2kg_total / (area2_total * una_manzana_nica_en_hectare)) if area2_total is not None and area2_total > 0 else 0
     kg_por_hectare_total_diff = saca_aumento_regresso(kg_por_hectare_total1, kg_por_hectare_total2, False, "percent")
 
+    ######################################################
+    #TABLA CULTIVOS - NUEVA VERSION SEPARADA POR TIPO DE CULTIVOS
+    ######################################################
+    categorias = Componente.objects.all()
+    for cat in categorias:
+        cat.cultivos = TipoCultivos.objects.filter(tipo=cat)
+        cat.has_production = False
+        #prep empty vars
+        cat.area1_total = 0
+        cat.area2_total = 0
+        cat.totales1kg_total = 0
+        cat.totales2kg_total = 0
+        cat.consumo1kg_total = 0
+        cat.consumo2kg_total = 0
+        cat.valor1_total = 0
+        cat.valor2_total = 0
+        #add cultivos
+        for cultivo in cat.cultivos:
+            #reset vars
+            cultivo.area1 = 0
+            cultivo.totales1 = 0
+            cultivo.totales1_kg = 0
+            cultivo.kg_por_hectare1 = 0
+            cultivo.consumo1 = 0
+            cultivo.consumo1_kg = 0
+            cultivo.precio1 = 0
+            cultivo.area1 = 0
+            cultivo.valor1 = 0
+            cultivo.area2 = 0
+            cultivo.totales2 = 0
+            cultivo.totales2_kg = 0
+            cultivo.kg_por_hectare2 = 0
+            cultivo.consumo2 = 0
+            cultivo.consumo2_kg = 0
+            cultivo.precio2 = 0
+            cultivo.area2 = 0
+            cultivo.valor2 = 0
+
+            #primera encuesta
+            query = primera_encuesta.filter(cultivos__cultivo = cultivo)
+            cultivo.area1 = query.aggregate(area=Sum('cultivos__area'))['area']
+            cultivo.totales1 = query.aggregate(total=Sum('cultivos__total'))['total']
+            cultivo.totales1_kg = (cultivo.totales1 * cultivo.conversion_kg) if cultivo.totales1 is not None else 0
+            cultivo.kg_por_hectare1 = (cultivo.totales1_kg / (cultivo.area1 * una_manzana_nica_en_hectare)) if cultivo.area1 is not None and cultivo.area1 > 0 else 0
+            cultivo.consumo1 = query.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+            cultivo.consumo1_kg = (cultivo.consumo1 * cultivo.conversion_kg) if cultivo.consumo1 is not None  else 0
+            cultivo.precio1 = query.aggregate(precio=Avg('cultivos__precio'))['precio']
+            cultivo.precio1 = cultivo.precio1 if cultivo.precio1 is not None else 0
+            cultivo.valor1 = (cultivo.totales1 * cultivo.precio1) if (cultivo.totales1 is not None and cultivo.precio1 is not None) else 0
+            if numero_encuesta == "3":
+                query2 = segunda_encuesta.filter(cultivos__cultivo = cultivo)
+                cultivo.area2 = query2.aggregate(area=Sum('cultivos__area'))['area']
+                cultivo.totales2 = query2.aggregate(total=Sum('cultivos__total'))['total']
+                cultivo.totales2_kg = (cultivo.totales2 * cultivo.conversion_kg) if cultivo.totales2 is not None else 0
+                cultivo.kg_por_hectare2 = (cultivo.totales2_kg / (cultivo.area2 * una_manzana_nica_en_hectare)) if cultivo.area2 is not None and cultivo.area2 > 0 else 0
+                cultivo.consumo2 = query2.aggregate(consumo=Sum('cultivos__consumo'))['consumo']
+                cultivo.consumo2_kg = (cultivo.consumo2 * cultivo.conversion_kg) if cultivo.consumo2 is not None else 0
+                cultivo.precio2 = query2.aggregate(precio=Avg('cultivos__precio'))['precio']
+                cultivo.precio2 = cultivo.precio2 if cultivo.precio2 is not None else 0
+                cultivo.valor2 = (cultivo.totales2 * cultivo.precio2) if (cultivo.totales2 is not None and cultivo.precio2 is not None) else 0
+
+            ######################################################
+            #Diferencias (%) entre las dos encuestas
+            cultivo.area_diff = saca_aumento_regresso(cultivo.area1, cultivo.area2, False)
+            cultivo.totales_diff = saca_aumento_regresso(cultivo.totales1, cultivo.totales2, False)
+            cultivo.consumo_diff = saca_aumento_regresso(cultivo.consumo1, cultivo.consumo2, False)
+            cultivo.precio_diff = saca_aumento_regresso(cultivo.precio1, cultivo.precio2, False)
+            cultivo.valor_diff = saca_aumento_regresso(cultivo.valor1, cultivo.valor2, False)
+            cultivo.kg_por_hectare_diff = saca_aumento_regresso(cultivo.kg_por_hectare1, cultivo.kg_por_hectare2, False, "percent")
+
+            ######################################################
+            #Totales - Incrementa los totales
+            cat.area1_total = (cat.area1_total + cultivo.area1) if (cultivo.area1 is not None) else cat.area1_total
+            cat.area2_total = (cat.area2_total + cultivo.area2) if (cultivo.area2 is not None) else cat.area2_total
+            cat.totales1kg_total += cultivo.totales1_kg
+            cat.totales2kg_total += cultivo.totales2_kg
+            cat.consumo1kg_total += cultivo.consumo1_kg
+            cat.consumo2kg_total += cultivo.consumo2_kg
+            cat.valor1_total += cultivo.valor1
+            cat.valor2_total += cultivo.valor2
+
+            cultivo.has_production = True
+            if  numero_encuesta == "3":
+                if (cultivo.totales1 == 0 or cultivo.totales1 == None) and (cultivo.totales2 == 0 or cultivo.totales2 == None) and (cultivo.area1 == 0 or cultivo.area1 == None) and (cultivo.area2 == 0 or cultivo.area2 == None):
+                    cultivo.has_production = False
+                else:
+                    cat.has_production = True
+            else:
+                if (cultivo.totales1 == 0 or cultivo.totales1 == None) and (cultivo.area1 == 0 or cultivo.area1 == None):
+                    cultivo.has_production = False
+                else:
+                    cat.has_production = True
+
+
+        cat.area_total_diff = saca_aumento_regresso(cat.area1_total, cat.area2_total, False)
+        cat.totaleskg_total_diff = saca_aumento_regresso(cat.totales1kg_total, cat.totales2kg_total, False)
+        cat.consumokg_total_diff = saca_aumento_regresso(cat.consumo1kg_total, cat.consumo2kg_total, False)
+        cat.valor_total_diff = saca_aumento_regresso(cat.valor1_total, cat.valor2_total, False)
+        cat.kg_por_hectare_total1 = (cat.totales1kg_total / (cat.area1_total * una_manzana_nica_en_hectare)) if cat.area1_total is not None and cat.area1_total > 0 else 0
+        cat.kg_por_hectare_total2 = (cat.totales2kg_total / (cat.area2_total * una_manzana_nica_en_hectare)) if cat.area2_total is not None and cat.area2_total > 0 else 0
+        cat.kg_por_hectare_total_diff = saca_aumento_regresso(cat.kg_por_hectare_total1, cat.kg_por_hectare_total2, False, "percent")
 
     ######################################################
     #TABLA PROMEDIOS - CULTIVOS
