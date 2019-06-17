@@ -16,11 +16,14 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
+    (r'^', include('suco.validacion.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('suco.smart_selects.urls')),
     (r'^xls/$', 'suco.utils.save_as_xls'),
     (r'^$', 'suco.encuesta.views.index'),
     (r'^', include('suco.encuesta.urls')),
+
+
 )
 
 handler404 = 'suco.views.file_not_found_404'

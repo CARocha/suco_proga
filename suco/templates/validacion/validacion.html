@@ -1,0 +1,31 @@
+{% extends "basenueva_bootstrap.html" %}
+{% load unslugify %}
+{% load tools %}
+{%block extra_header%}
+    <script>
+        $(document).ready( function () {
+        });
+    </script>
+{%endblock%}
+{% block content %}
+
+    <h1>Validación de datos</h1>
+
+    <p><strong>Este sistema verifica:</strong></p>
+    <ul>
+        <li>Si cada joven tiene exactamente una primera encuesta y una segunda encuesta.</li>
+        <li>Si el área de cada cultivo no es más que 3 veces el área total de cultivos en la parte “Uso de la tierra”. (Suponemos que el área total de cultivo puede contener hasta 3 ciclos de producción.)</li>
+        <li>Si el rendimiento en KG/Manzana se puede.</li>
+        <li>Si hay cultivos con 0 en la cantidad o area.</li>
+    </ul>
+
+    <p><strong>Instrucciones</strong></p>
+    <p>Por favor, consulte la lista de jóvenes. Cada error potencial será marcada con un símbolo <span class='glyphicon glyphicon-remove-sign' style='color:#f00; font-size:20px'></span>. Por favor, corrija los datos en la encuesta.</p>
+
+    <p><strong>Paso 1</strong></p>
+    <p>Por favor escoger su centro regional:</p>
+    {% for centro in centros %}
+        <a href="{% url validacion_centrochosen centro.id %}" class="btn btn-primary">{{ centro }}</a>
+    {% endfor %}
+
+{% endblock %}
